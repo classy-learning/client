@@ -1,0 +1,16 @@
+{
+  "trigger": true,
+  "modules": [
+    "add-to-group"
+  ],
+  "parentResource": "client7e9ab9c1",
+  "functionName": "client7e9ab9c1PostConfirmation",
+  "resourceName": "client7e9ab9c1PostConfirmation",
+  "parentStack": "auth",
+  "triggerEnvs": [],
+  "triggerDir": "/home/ben/.nvm/versions/node/v14.4.0/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/utils/../triggers/PostConfirmation",
+  "triggerTemplate": "PostConfirmation.json.ejs",
+  "roleName": "client7e9ab9c1PostConfirmation",
+  "skipEdit": true,
+  "GROUP": "customers"
+}

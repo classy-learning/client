@@ -10,6 +10,26 @@
             "StackName": "amplify-client-dev-221802",
             "StackId": "arn:aws:cloudformation:us-east-1:998711510845:stack/amplify-client-dev-221802/09457760-ea67-11ea-b126-12e727a79a85",
             "AmplifyAppId": "d3lgvhl2yoh3h9"
+        },
+        "categories": {
+            "function": {
+                "client7e9ab9c1DefineAuthChallenge": {},
+                "client7e9ab9c1CreateAuthChallenge": {},
+                "client7e9ab9c1VerifyAuthChallengeResponse": {
+                    "RECAPTCHASECRET": "6LcwKMUZAAAAAGHvZ0IOu4qnGJ2Wd9KvaycPt3st"
+                },
+                "client7e9ab9c1CustomMessage": {
+                    "REDIRECTURL": "https://classy.name",
+                    "EMAILSUBJECT": "Account confirmation",
+                    "EMAILMESSAGE": "Welcome to Classy! Thanks for signing up. To get started, let's confirm your account. Click the link to continue"
+                },
+                "client7e9ab9c1PostConfirmation": {
+                    "GROUP": "customers"
+                }
+            },
+            "auth": {
+                "client7e9ab9c1": {}
+            }
         }
     }
 }
