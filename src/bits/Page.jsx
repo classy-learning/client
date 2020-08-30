@@ -1,4 +1,4 @@
-import { Button, Grid, Header, Menu } from "semantic-ui-react";
+import { Button, Container, Grid, Header, Menu } from "semantic-ui-react";
 
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -36,7 +36,9 @@ const Page = (props) => {
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
-        <Grid.Column>{props.children}</Grid.Column>
+        <Grid.Column>
+          <Container text>{props.children}</Container>
+        </Grid.Column>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>Footer</Grid.Column>
