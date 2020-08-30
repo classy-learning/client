@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import Authenticator from "bits/Authenticator";
 import PropTypes from "prop-types";
+import { UserProvider } from "bits/UserContext";
 
 const AuthWrapper = (props) => {
   // TODO: store authState context and user context
@@ -17,7 +18,7 @@ const AuthWrapper = (props) => {
   }, []);
 
   return authState === AuthState.SignedIn && user ? (
-    props.children
+    <UserProvider value={user}>{props.children}</UserProvider>
   ) : (
     <Authenticator></Authenticator>
   );

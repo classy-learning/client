@@ -1,9 +1,22 @@
-import PropTypes from "prop-types";
-import React from "react";
+import React, { useContext } from "react";
+
+import CustomerApp from "bits/customer/App";
+import StudentApp from "bits/student/App";
+import TeacherApp from "bits/teacher/App";
+import UserContext from "bits/UserContext";
 
 const AppRouter = (props) => {
-  // TODO: route to sub-app based on cognito group from user context
-  return <p>App Router</p>;
+  const user = useContext(UserContext);
+  const group = user.signInUserSession.accessToken.payload["cognito:groups"][0];
+  return group === "customers" ? (
+    <CustomerApp></CustomerApp>
+  ) : group === "students" ? (
+    <StudentApp></StudentApp>
+  ) : group === "teachers" ? (
+    <TeacherApp></TeacherApp>
+  ) : (
+    <p>Whoops...</p>
+  );
 };
 
 export default AppRouter;
