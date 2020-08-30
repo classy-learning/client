@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import { UserProvider } from "bits/UserContext";
 
 const AuthWrapper = (props) => {
-  // TODO: store authState context and user context
   const [authState, setAuthState] = useState();
   const [user, setUser] = useState();
 
