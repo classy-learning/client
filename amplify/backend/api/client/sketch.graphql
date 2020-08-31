@@ -1,0 +1,92 @@
+enum AWSMFADeliveryMedium {
+  EMAIL
+  SMS
+}
+
+type AWSMFAOption {
+  attributeName: string!
+  deliveryMedium: AWSMFADeliveryMedium!
+}
+
+type AWSUser {
+  enabled: Boolean!
+  mfaOptions: [AWSMFAOption!]!
+  preferredMfaSetting: string!
+  userAttributes: [AWSUserAttribute!]!
+  userCreateDate: AWSDate!
+  username: string!
+  userLastModifiedDate: AWSDate!
+  userMfaSettingList: [string!]!
+  userStatus: AWSUserStatus!
+}
+
+# TODO: use AWSUserConstructor to create a new cognito user
+input AWSUserConstructor {
+  user: UserConstructor!
+  userPoolId: string!
+}
+
+type AWSUserAttribute {
+  name: string!
+  value: string!
+}
+
+enum AWSUserStatus {
+  ARCHIVED
+  COMPROMISED
+  CONFIRMED
+  UNCONFIRMED
+  UNKNOWN
+}
+
+input ContactConstructor {
+  email: AWSEmail!
+  phone: AWSPhone!
+}
+
+type Customer implements IUser @model {
+  id: ID!
+  user: AWSUser!
+  username: string!
+  userPoolId: string!
+}
+
+interface IUser {
+  id: ID!
+  userPoolId: string!
+  username: string!
+  user: AWSUser!
+}
+
+input PersonConstructor {
+  firstName: string!
+  lastName: string!
+  birthday: AWSDate!
+}
+
+type Student implements IUser @model {
+  id: ID!
+  userPoolId: string!
+  username: string!
+  user: AWSUser!
+}
+
+input StudentConstructor {
+  user: UserConstructor!
+}
+
+type Teacher implements IUser @model {
+  id: ID!
+  userPoolId: string!
+  username: string!
+  user: AWSUser!
+}
+
+type TeacherConstructor {
+  user: UserConstructor!
+}
+
+input UserConstructor {
+  person: PersonConstructor!
+  contact: ContactConstructor!
+}

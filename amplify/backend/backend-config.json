@@ -79,5 +79,22 @@
 			],
 			"customAuth": true
 		}
+	},
+	"api": {
+		"client": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"authConfig": {
+					"defaultAuthentication": {
+						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
+						"userPoolConfig": {
+							"userPoolId": "authclient7e9ab9c1"
+						}
+					},
+					"additionalAuthenticationProviders": []
+				}
+			}
+		}
 	}
 }

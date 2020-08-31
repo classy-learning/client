@@ -9,6 +9,7 @@ import React from "react";
 import Student from "bits/customer/Student";
 
 const App = (props) => {
+  // TODO: get students from api
   // TODO: set students context
   return (
     <Page
