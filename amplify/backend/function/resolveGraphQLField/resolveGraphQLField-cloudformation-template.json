@@ -76,7 +76,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-client-dev-221802-deployment",
-					"S3Key": "amplify-builds/resolveGraphQLField-7a617455755639614a6a-build.zip"
+					"S3Key": "amplify-builds/resolveGraphQLField-747552696f4862713163-build.zip"
 				}
 			}
 		},

@@ -15,12 +15,39 @@ type StudentAccount
   ) {
   id: ID!
   customerId: ID!
-  customer: User @function(name: "resolveGraphQLField")
+  customer: CognitoUser @function(name: "resolveGraphQLField")
   studentId: ID!
-  student: User @function(name: "resolveGraphQLField")
+  student: CognitoUser @function(name: "resolveGraphQLField")
 }
 
-# TODO: return useful data in user object
-type User {
-  id: ID!
+type CognitoUser {
+  Username: String!
+  UserAttributes: [CognitoUserAttribute]
+  UserCreateDate: String
+  UserLastModifiedDate: String
+  Enabled: Boolean
+  UserStatus: CognitoUserStatus
+  MFAOptions: [CognitoMFAOption]
+  PreferredMfaSetting: String
+  UserMFASettingList: String
+}
+
+type CognitoUserAttribute {
+  Name: String!
+  Value: String
+}
+
+type CognitoMFAOption {
+  DeliveryMedium: String
+  AttributeName: String
+}
+
+enum CognitoUserStatus {
+  UNCONFIRMED
+  CONFIRMED
+  ARCHIVED
+  COMPROMISED
+  UNKNOWN
+  RESET_REQUIRED
+  FORCE_CHANGE_PASSWORD
 }
