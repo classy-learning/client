@@ -13,22 +13,22 @@
         },
         "categories": {
             "function": {
-                "client7e9ab9c1DefineAuthChallenge": {},
-                "client7e9ab9c1CreateAuthChallenge": {},
-                "client7e9ab9c1VerifyAuthChallengeResponse": {
-                    "RECAPTCHASECRET": "6LcwKMUZAAAAAGHvZ0IOu4qnGJ2Wd9KvaycPt3st"
+                "client936872c9DefineAuthChallenge": {},
+                "client936872c9CreateAuthChallenge": {},
+                "client936872c9VerifyAuthChallengeResponse": {
+                    "RECAPTCHASECRET": "6Lfq-8cZAAAAAF3Ztq_wRb4jUwB8ptAnowfAp3Wa"
                 },
-                "client7e9ab9c1CustomMessage": {
+                "client936872c9CustomMessage": {
                     "REDIRECTURL": "https://classy.name",
                     "EMAILSUBJECT": "Account confirmation",
-                    "EMAILMESSAGE": "Welcome to Classy! Thanks for signing up. To get started, let's confirm your account. Click the link to continue"
+                    "EMAILMESSAGE": "Thanks for signing up for Classy! Click the link to confirm your account"
                 },
-                "client7e9ab9c1PostConfirmation": {
-                    "GROUP": "customers"
+                "client936872c9PostConfirmation": {
+                    "GROUP": "Customers"
                 }
             },
             "auth": {
-                "client7e9ab9c1": {}
+                "client936872c9": {}
             }
         }
     }

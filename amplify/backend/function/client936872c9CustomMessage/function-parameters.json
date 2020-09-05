@@ -1,0 +1,20 @@
+{
+  "trigger": true,
+  "modules": [
+    "verification-link"
+  ],
+  "parentResource": "client936872c9",
+  "functionName": "client936872c9CustomMessage",
+  "resourceName": "client936872c9CustomMessage",
+  "parentStack": "auth",
+  "triggerEnvs": "[{\"key\":\"RESOURCENAME\",\"value\":\"resourceName\"}]",
+  "triggerDir": "/home/ben/.nvm/versions/node/v14.4.0/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/utils/../triggers/CustomMessage",
+  "triggerTemplate": "CustomMessage.json.ejs",
+  "roleName": "client936872c9CustomMessage",
+  "skipEdit": true,
+  "REDIRECTURL": "https://classy.name",
+  "EMAILSUBJECT": "Account confirmation",
+  "EMAILMESSAGE": "Thanks for signing up for Classy! Click the link to confirm your account",
+  "RESOURCENAME": "resourceName",
+  "triggerEventPath": "CustomMessage.event.json"
+}

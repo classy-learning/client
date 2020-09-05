@@ -1,39 +1,53 @@
 {
 	"function": {
-		"client7e9ab9c1DefineAuthChallenge": {
+		"client936872c9DefineAuthChallenge": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda"
 		},
-		"client7e9ab9c1CreateAuthChallenge": {
+		"client936872c9CreateAuthChallenge": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda"
 		},
-		"client7e9ab9c1VerifyAuthChallengeResponse": {
+		"client936872c9VerifyAuthChallengeResponse": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda"
 		},
-		"client7e9ab9c1CustomMessage": {
+		"client936872c9CustomMessage": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda"
 		},
-		"client7e9ab9c1PostConfirmation": {
+		"client936872c9PostConfirmation": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda"
+		},
+		"resolveGraphQLField": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda",
+			"dependsOn": [
+				{
+					"category": "auth",
+					"resourceName": "client936872c9",
+					"attributes": [
+						"UserPoolId"
+					]
+				}
+			]
 		}
 	},
 	"auth": {
-		"client7e9ab9c1": {
+		"client936872c9": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": [
 				{
 					"category": "function",
-					"resourceName": "client7e9ab9c1DefineAuthChallenge",
+					"resourceName": "client936872c9DefineAuthChallenge",
 					"triggerProvider": "Cognito",
 					"attributes": [
 						"Arn",
@@ -42,7 +56,7 @@
 				},
 				{
 					"category": "function",
-					"resourceName": "client7e9ab9c1CreateAuthChallenge",
+					"resourceName": "client936872c9CreateAuthChallenge",
 					"triggerProvider": "Cognito",
 					"attributes": [
 						"Arn",
@@ -51,7 +65,7 @@
 				},
 				{
 					"category": "function",
-					"resourceName": "client7e9ab9c1VerifyAuthChallengeResponse",
+					"resourceName": "client936872c9VerifyAuthChallengeResponse",
 					"triggerProvider": "Cognito",
 					"attributes": [
 						"Arn",
@@ -60,7 +74,7 @@
 				},
 				{
 					"category": "function",
-					"resourceName": "client7e9ab9c1CustomMessage",
+					"resourceName": "client936872c9CustomMessage",
 					"triggerProvider": "Cognito",
 					"attributes": [
 						"Arn",
@@ -69,7 +83,7 @@
 				},
 				{
 					"category": "function",
-					"resourceName": "client7e9ab9c1PostConfirmation",
+					"resourceName": "client936872c9PostConfirmation",
 					"triggerProvider": "Cognito",
 					"attributes": [
 						"Arn",
@@ -78,10 +92,26 @@
 				}
 			],
 			"customAuth": true
+		},
+		"userPoolGroups": {
+			"service": "Cognito-UserPool-Groups",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "auth",
+					"resourceName": "client936872c9",
+					"attributes": [
+						"UserPoolId",
+						"AppClientIDWeb",
+						"AppClientID",
+						"IdentityPoolId"
+					]
+				}
+			]
 		}
 	},
 	"api": {
-		"classy": {
+		"client": {
 			"service": "AppSync",
 			"providerPlugin": "awscloudformation",
 			"output": {
@@ -89,7 +119,7 @@
 					"defaultAuthentication": {
 						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
 						"userPoolConfig": {
-							"userPoolId": "authclient7e9ab9c1"
+							"userPoolId": "authclient936872c9"
 						}
 					},
 					"additionalAuthenticationProviders": []
