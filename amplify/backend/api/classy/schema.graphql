@@ -1,0 +1,24 @@
+type StudentAccount
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Customers"], operations: [create] }
+      { allow: groups, groups: ["Teachers"], operations: [read] }
+      {
+        allow: owner
+        ownerField: "customerId"
+        operations: [read, update, delete]
+      }
+      { allow: owner, ownerField: "studentId", operations: [read] }
+    ]
+  ) {
+  id: ID!
+  customerId: ID!
+  customer: User @function(name: "resolveField")
+  studentId: ID!
+  student: User @function(name: "resolveField")
+}
+
+type User {
+  id: ID!
+}

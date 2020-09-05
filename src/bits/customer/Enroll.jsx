@@ -1,3 +1,4 @@
+import { API, graphqlOperation } from "aws-amplify";
 import {
   Checkbox,
   Form,
@@ -11,6 +12,8 @@ import React, { useState } from "react";
 
 import moment from "moment";
 import { useHistory } from "react-router-dom";
+
+// TODO: import createStudent mutation from graphql service
 
 // TODO: focus on first blank required field when user views form
 const Enroll = (props) => {
@@ -28,13 +31,13 @@ const Enroll = (props) => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState({ content: "", header: "" });
 
-  const handleInputChange = (e) => {
-    setInput({ ...input, [e.currentTarget.name]: e.currentTarget.value });
+  const handleCheckboxChange = (e, { name, checked }) => {
+    setInput({ ...input, [name]: checked });
     console.log(input);
   };
 
-  const handleCheckboxChange = (e, { name, checked }) => {
-    setInput({ ...input, [name]: checked });
+  const handleInputChange = (e) => {
+    setInput({ ...input, [e.currentTarget.name]: e.currentTarget.value });
     console.log(input);
   };
 
@@ -70,6 +73,7 @@ const Enroll = (props) => {
                 setFormState("loading");
                 submitFormData()
                   .then((studentId) => {
+                    // TODO: update student context to reflect new student
                     history.push(`/student/${studentId}`);
                   })
                   .catch((error) => {
