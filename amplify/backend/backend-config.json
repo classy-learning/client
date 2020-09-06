@@ -38,6 +38,34 @@
 					]
 				}
 			]
+		},
+		"createStudentAccount": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda",
+			"dependsOn": [
+				{
+					"category": "auth",
+					"resourceName": "client936872c9",
+					"attributes": [
+						"UserPoolId"
+					]
+				}
+			]
+		},
+		"deleteStudentAccount": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda",
+			"dependsOn": [
+				{
+					"category": "auth",
+					"resourceName": "client936872c9",
+					"attributes": [
+						"UserPoolId"
+					]
+				}
+			]
 		}
 	},
 	"auth": {
