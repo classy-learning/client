@@ -5,13 +5,41 @@ export const getStudentAccount = /* GraphQL */ `
   query GetStudentAccount($id: ID!) {
     getStudentAccount(id: $id) {
       id
-      customerId
-      customer {
-        id
+      customerUsername
+      customerUser {
+        Username
+        UserAttributes {
+          Name
+          Value
+        }
+        UserCreateDate
+        UserLastModifiedDate
+        Enabled
+        UserStatus
+        MFAOptions {
+          DeliveryMedium
+          AttributeName
+        }
+        PreferredMfaSetting
+        UserMFASettingList
       }
-      studentId
-      student {
-        id
+      studentUsername
+      studentUser {
+        Username
+        UserAttributes {
+          Name
+          Value
+        }
+        UserCreateDate
+        UserLastModifiedDate
+        Enabled
+        UserStatus
+        MFAOptions {
+          DeliveryMedium
+          AttributeName
+        }
+        PreferredMfaSetting
+        UserMFASettingList
       }
       createdAt
       updatedAt
@@ -27,13 +55,25 @@ export const listStudentAccounts = /* GraphQL */ `
     listStudentAccounts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        customerId
-        customer {
-          id
+        customerUsername
+        customerUser {
+          Username
+          UserCreateDate
+          UserLastModifiedDate
+          Enabled
+          UserStatus
+          PreferredMfaSetting
+          UserMFASettingList
         }
-        studentId
-        student {
-          id
+        studentUsername
+        studentUser {
+          Username
+          UserCreateDate
+          UserLastModifiedDate
+          Enabled
+          UserStatus
+          PreferredMfaSetting
+          UserMFASettingList
         }
         createdAt
         updatedAt

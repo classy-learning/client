@@ -8,33 +8,41 @@ export const createStudentAccount = /* GraphQL */ `
   ) {
     createStudentAccount(input: $input, condition: $condition) {
       id
-      customerId
-      customer {
-        id
+      customerUsername
+      customerUser {
+        Username
+        UserAttributes {
+          Name
+          Value
+        }
+        UserCreateDate
+        UserLastModifiedDate
+        Enabled
+        UserStatus
+        MFAOptions {
+          DeliveryMedium
+          AttributeName
+        }
+        PreferredMfaSetting
+        UserMFASettingList
       }
-      studentId
-      student {
-        id
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateStudentAccount = /* GraphQL */ `
-  mutation UpdateStudentAccount(
-    $input: UpdateStudentAccountInput!
-    $condition: ModelStudentAccountConditionInput
-  ) {
-    updateStudentAccount(input: $input, condition: $condition) {
-      id
-      customerId
-      customer {
-        id
-      }
-      studentId
-      student {
-        id
+      studentUsername
+      studentUser {
+        Username
+        UserAttributes {
+          Name
+          Value
+        }
+        UserCreateDate
+        UserLastModifiedDate
+        Enabled
+        UserStatus
+        MFAOptions {
+          DeliveryMedium
+          AttributeName
+        }
+        PreferredMfaSetting
+        UserMFASettingList
       }
       createdAt
       updatedAt
@@ -48,13 +56,41 @@ export const deleteStudentAccount = /* GraphQL */ `
   ) {
     deleteStudentAccount(input: $input, condition: $condition) {
       id
-      customerId
-      customer {
-        id
+      customerUsername
+      customerUser {
+        Username
+        UserAttributes {
+          Name
+          Value
+        }
+        UserCreateDate
+        UserLastModifiedDate
+        Enabled
+        UserStatus
+        MFAOptions {
+          DeliveryMedium
+          AttributeName
+        }
+        PreferredMfaSetting
+        UserMFASettingList
       }
-      studentId
-      student {
-        id
+      studentUsername
+      studentUser {
+        Username
+        UserAttributes {
+          Name
+          Value
+        }
+        UserCreateDate
+        UserLastModifiedDate
+        Enabled
+        UserStatus
+        MFAOptions {
+          DeliveryMedium
+          AttributeName
+        }
+        PreferredMfaSetting
+        UserMFASettingList
       }
       createdAt
       updatedAt

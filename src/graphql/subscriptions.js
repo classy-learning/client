@@ -5,30 +5,41 @@ export const onCreateStudentAccount = /* GraphQL */ `
   subscription OnCreateStudentAccount($customerId: String, $studentId: String) {
     onCreateStudentAccount(customerId: $customerId, studentId: $studentId) {
       id
-      customerId
-      customer {
-        id
+      customerUsername
+      customerUser {
+        Username
+        UserAttributes {
+          Name
+          Value
+        }
+        UserCreateDate
+        UserLastModifiedDate
+        Enabled
+        UserStatus
+        MFAOptions {
+          DeliveryMedium
+          AttributeName
+        }
+        PreferredMfaSetting
+        UserMFASettingList
       }
-      studentId
-      student {
-        id
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateStudentAccount = /* GraphQL */ `
-  subscription OnUpdateStudentAccount($customerId: String, $studentId: String) {
-    onUpdateStudentAccount(customerId: $customerId, studentId: $studentId) {
-      id
-      customerId
-      customer {
-        id
-      }
-      studentId
-      student {
-        id
+      studentUsername
+      studentUser {
+        Username
+        UserAttributes {
+          Name
+          Value
+        }
+        UserCreateDate
+        UserLastModifiedDate
+        Enabled
+        UserStatus
+        MFAOptions {
+          DeliveryMedium
+          AttributeName
+        }
+        PreferredMfaSetting
+        UserMFASettingList
       }
       createdAt
       updatedAt
@@ -39,13 +50,41 @@ export const onDeleteStudentAccount = /* GraphQL */ `
   subscription OnDeleteStudentAccount($customerId: String, $studentId: String) {
     onDeleteStudentAccount(customerId: $customerId, studentId: $studentId) {
       id
-      customerId
-      customer {
-        id
+      customerUsername
+      customerUser {
+        Username
+        UserAttributes {
+          Name
+          Value
+        }
+        UserCreateDate
+        UserLastModifiedDate
+        Enabled
+        UserStatus
+        MFAOptions {
+          DeliveryMedium
+          AttributeName
+        }
+        PreferredMfaSetting
+        UserMFASettingList
       }
-      studentId
-      student {
-        id
+      studentUsername
+      studentUser {
+        Username
+        UserAttributes {
+          Name
+          Value
+        }
+        UserCreateDate
+        UserLastModifiedDate
+        Enabled
+        UserStatus
+        MFAOptions {
+          DeliveryMedium
+          AttributeName
+        }
+        PreferredMfaSetting
+        UserMFASettingList
       }
       createdAt
       updatedAt
