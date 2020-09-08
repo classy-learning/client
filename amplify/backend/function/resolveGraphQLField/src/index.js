@@ -14,9 +14,11 @@ if (!COGNITO_USERPOOL_ID) {
 
 async function getUser(username) {
   try {
-    return await cognitoIdentityServiceProvider
+    const result = await cognitoIdentityServiceProvider
       .adminGetUser({ UserPoolId: COGNITO_USERPOOL_ID, Username: username })
       .promise();
+    console.log(result);
+    return result;
   } catch (e) {
     throw new Error(`NOT FOUND`);
   }
@@ -24,8 +26,8 @@ async function getUser(username) {
 
 const resolvers = {
   StudentAccount: {
-    customer: (event) => getUser(event.source.customerId),
-    student: (event) => getUser(event.source.studentId),
+    customerUser: (event) => getUser(event.source.customerId),
+    studentUser: (event) => getUser(event.source.studentId),
   },
 };
 

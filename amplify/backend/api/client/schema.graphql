@@ -1,51 +1,6 @@
-type Mutation {
-  createStudentAccount(
-    input: CreateStudentAccountInput!
-    condition: ModelStudentAccountConditionInput
-  ): StudentAccount
-  deleteStudentAccount(
-    input: DeleteStudentAccountInput!
-    condition: ModelStudentAccountConditionInput
-  ): StudentAccount
-}
-
-type Subscription {
-  onCreateStudentAccount(customerId: String, studentId: String): StudentAccount
-    @aws_subscribe(mutations: ["createStudentAccount"])
-  onDeleteStudentAccount(customerId: String, studentId: String): StudentAccount
-    @aws_subscribe(mutations: ["deleteStudentAccount"])
-}
-
-input CreateStudentAccountInput {
-  id: ID
-  customerId: ID!
-}
-
-input DeleteStudentAccountInput {
-  id: ID
-}
-
-input ModelStudentAccountConditionInput {
-  and: [ModelStudentAccountConditionInput]
-  or: [ModelStudentAccountConditionInput]
-  not: ModelStudentAccountConditionInput
-}
-
-type StudentAccount
-  @model(mutations: null, subscriptions: null)
-  @auth(
-    rules: [
-      { allow: groups, groups: ["Customers"], operations: [create] }
-      { allow: groups, groups: ["Teachers"], operations: [read] }
-      { allow: owner, ownerField: "customerId", operations: [read, delete] }
-      { allow: owner, ownerField: "studentId", operations: [read] }
-    ]
-  ) {
-  id: ID!
-  customerUsername: ID!
-  customerUser: CognitoUser @function(name: "resolveGraphQLField")
-  studentUsername: ID!
-  studentUser: CognitoUser @function(name: "resolveGraphQLField")
+type CognitoMFAOption {
+  DeliveryMedium: String
+  AttributeName: String
 }
 
 type CognitoUser {
@@ -65,11 +20,6 @@ type CognitoUserAttribute {
   Value: String
 }
 
-type CognitoMFAOption {
-  DeliveryMedium: String
-  AttributeName: String
-}
-
 enum CognitoUserStatus {
   UNCONFIRMED
   CONFIRMED
@@ -78,4 +28,57 @@ enum CognitoUserStatus {
   UNKNOWN
   RESET_REQUIRED
   FORCE_CHANGE_PASSWORD
+}
+
+input CreateStudentAccountInput {
+  id: ID
+  givenName: String!
+  familyName: String!
+  birthdate: AWSDate!
+  email: AWSEmail!
+}
+
+input DeleteStudentAccountInput {
+  id: ID
+}
+
+input ModelStudentAccountConditionInput {
+  and: [ModelStudentAccountConditionInput]
+  or: [ModelStudentAccountConditionInput]
+  not: ModelStudentAccountConditionInput
+}
+
+type Mutation {
+  createStudentAccount(
+    input: CreateStudentAccountInput!
+    condition: ModelStudentAccountConditionInput
+  ): StudentAccount
+  deleteStudentAccount(
+    input: DeleteStudentAccountInput!
+    condition: ModelStudentAccountConditionInput
+  ): StudentAccount
+}
+
+type StudentAccount
+  @model(mutations: null, subscriptions: null)
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Customers"], operations: [create] }
+      { allow: groups, groups: ["Teachers"], operations: [read] }
+      { allow: owner, ownerField: "customerId", operations: [read, delete] }
+      { allow: owner, ownerField: "studentId", operations: [read] }
+    ]
+  ) {
+  id: ID!
+  customerUsername: ID!
+  customerUser: CognitoUser @function(name: "resolveGraphQLField")
+  studentUsername: ID!
+  studentUser: CognitoUser @function(name: "resolveGraphQLField")
+}
+
+type Subscription {
+  onCreateStudentAccount(customerId: String, studentId: String): StudentAccount
+    @aws_subscribe(mutations: ["createStudentAccount"])
+  onDeleteStudentAccount(customerId: String, studentId: String): StudentAccount
+    @aws_subscribe(mutations: ["deleteStudentAccount"])
 }

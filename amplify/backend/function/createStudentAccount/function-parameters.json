@@ -2,6 +2,7 @@
   "permissions": {
     "auth": {
       "client936872c9": [
+        "create",
         "read"
       ]
     }

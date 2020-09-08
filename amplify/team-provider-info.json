@@ -28,7 +28,8 @@
                 }
             },
             "auth": {
-                "client936872c9": {}
+                "client936872c9": {},
+                "userPoolGroups": {}
             }
         }
     }
