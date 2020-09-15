@@ -30,6 +30,7 @@ const documentClient = new AWS.DynamoDB.DocumentClient();
 exports.handler = async (event) => {
   const args = event.arguments.input;
   const username = await getUsername(args.givenName, args.familyName);
+  console.log(username);
   const user = await createUser(
     username,
     args.birthdate,
@@ -72,22 +73,23 @@ function createUser(username, birthdate, email, givenName, familyName) {
     .promise();
 }
 
-// TODO: fix "User account already exists" error
-async function getUsername(givenName, familyName) {
+function getUsername(givenName, familyName) {
   const prefix = (givenName + familyName).toLowerCase();
   let suffix = 0;
-  const concatenate = () => prefix + suffix;
-  const response = await cognitoIdentityServiceProvider
+  return cognitoIdentityServiceProvider
     .listUsers({
       UserPoolId: COGNITO_USERPOOL_ID,
       Filter: `username ^= \"${prefix}\"`,
     })
-    .promise();
-  const claimedUsernames = response.Users;
-  while (claimedUsernames && claimedUsernames.includes(concatenate())) {
-    suffix++;
-  }
-  return concatenate();
+    .promise()
+    .then((data) => {
+      const claimedUsernames = data.Users.map((user) => user.Username);
+      console.log(claimedUsernames);
+      while (claimedUsernames && claimedUsernames.includes(prefix + suffix)) {
+        suffix++;
+      }
+      return prefix + suffix;
+    });
 }
 
 function groupUser(username, group) {
