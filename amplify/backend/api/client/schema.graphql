@@ -31,7 +31,6 @@ enum CognitoUserStatus {
 }
 
 input CreateStudentAccountInput {
-  id: ID
   givenName: String!
   familyName: String!
   birthdate: AWSDate!

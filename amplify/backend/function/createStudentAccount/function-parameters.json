@@ -5,6 +5,11 @@
         "create",
         "read"
       ]
+    },
+    "storage": {
+      "StudentAccount:@model(appsync)": [
+        "create"
+      ]
     }
   },
   "lambdaLayers": []

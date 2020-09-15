@@ -13,6 +13,10 @@
     "authclient936872c9UserPoolId": {
       "Type": "String",
       "Default": "authclient936872c9UserPoolId"
+    },
+    "apiclientGraphQLAPIIdOutput": {
+      "Type": "String",
+      "Default": "apiclientGraphQLAPIIdOutput"
     }
   },
   "Conditions": {
@@ -62,6 +66,35 @@
             },
             "AUTH_CLIENT936872C9_USERPOOLID": {
               "Ref": "authclient936872c9UserPoolId"
+            },
+            "API_CLIENT_STUDENTACCOUNTTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StudentAccountTable:Name"
+              }
+            },
+            "API_CLIENT_STUDENTACCOUNTTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StudentAccountTable:Name"
+                    }
+                  }
+                ]
+              ]
+            },
+            "API_CLIENT_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apiclientGraphQLAPIIdOutput"
             }
           }
         },
@@ -76,7 +109,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createStudentAccount-2f47414f4f66704d6f47-build.zip"
+          "S3Key": "amplify-builds/createStudentAccount-7a7574354b6b54625747-build.zip"
         }
       }
     },
@@ -257,6 +290,59 @@
                       {
                         "Ref": "authclient936872c9UserPoolId"
                       }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StudentAccountTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StudentAccountTable:Name"
+                        }
+                      },
+                      "/index/*"
                     ]
                   ]
                 }

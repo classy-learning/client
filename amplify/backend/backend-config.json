@@ -50,6 +50,13 @@
           "attributes": [
             "UserPoolId"
           ]
+        },
+        {
+          "category": "api",
+          "resourceName": "client",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
         }
       ]
     },
