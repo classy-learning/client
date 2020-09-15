@@ -30,7 +30,6 @@ const documentClient = new AWS.DynamoDB.DocumentClient();
 exports.handler = async (event) => {
   const args = event.arguments.input;
   const username = await getUsername(args.givenName, args.familyName);
-  console.log(username);
   const user = await createUser(
     username,
     args.birthdate,

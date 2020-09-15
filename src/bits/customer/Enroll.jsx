@@ -1,4 +1,3 @@
-import { API, graphqlOperation } from "aws-amplify";
 import {
   Checkbox,
   Form,
@@ -10,20 +9,20 @@ import {
 } from "semantic-ui-react";
 import React, { useState } from "react";
 
+import { API } from "aws-amplify";
+import { createStudentAccount } from "graphql/mutations";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
-
-// TODO: import createStudent mutation from graphql service
+import validator from "email-validator";
 
 // TODO: focus on first blank required field when user views form
 const Enroll = (props) => {
   const history = useHistory();
 
   const [input, setInput] = useState({
-    firstName: "",
-    lastName: "",
-    birthday: "",
-    bio: "",
+    givenName: "",
+    familyName: "",
+    birthdate: "",
     agree: false,
   });
 
@@ -46,7 +45,25 @@ const Enroll = (props) => {
     setLoading(state === "loading");
   };
 
+  // TODO: return id of created account
   async function submitFormData() {
+    try {
+      const result = await API.graphql({
+        query: createStudentAccount,
+        variables: {
+          input: {
+            givenName: input.givenName,
+            familyName: input.familyName,
+            birthdate: input.birthdate,
+            email: input.email,
+          },
+        },
+      });
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
+
     // TODO: use form data to create student in graphql api
     // TODO: THEN: return newly created student id from this function
     // TODO: CATCH: return error object: {content: "string", header: "string"} on error
@@ -54,10 +71,10 @@ const Enroll = (props) => {
   }
 
   const validateFormData = () =>
-    input.firstName.trim() &&
-    input.lastName.trim() &&
-    moment(input.birthday, "YYYY-MM-DD", true).isValid() &&
-    input.bio.length <= 1024 &&
+    input.givenName.trim() &&
+    input.familyName.trim() &&
+    moment(input.birthdate, "YYYY-MM-DD", true).isValid() &&
+    validator.validate(input.email) &&
     input.agree;
 
   return (
@@ -68,7 +85,8 @@ const Enroll = (props) => {
           <Form
             error={error}
             loading={loading}
-            onSubmit={() => {
+            onSubmit={(e) => {
+              e.preventDefault();
               if (validateFormData()) {
                 setFormState("loading");
                 submitFormData()
@@ -93,7 +111,7 @@ const Enroll = (props) => {
             <Form.Field id="form-input-control-first-name" required>
               <label>First name</label>
               <Form.Input
-                name={"firstName"}
+                name={"givenName"}
                 onChange={handleInputChange}
                 placeholder="First name"
               ></Form.Input>
@@ -101,27 +119,27 @@ const Enroll = (props) => {
             <Form.Field id="form-input-control-last-name" required>
               <label>Last name</label>
               <Form.Input
-                name={"lastName"}
+                name={"familyName"}
                 onChange={handleInputChange}
                 placeholder="Last name"
               ></Form.Input>
             </Form.Field>
-            <Form.Field id="form-input-control-birthday" required>
+            <Form.Field id="form-input-control-birthdate" required>
               <label>Birthday</label>
               <Form.Input
-                name={"birthday"}
+                name={"birthdate"}
                 onChange={handleInputChange}
                 type="date"
               ></Form.Input>
             </Form.Field>
-            <Form.Field
-              control={TextArea}
-              id="form-textarea-control-about"
-              label="About"
-              name={"bio"}
-              onChange={handleInputChange}
-              placeholder="Anything you want us to know?"
-            />
+            <Form.Field id="form-input-control-email" required>
+              <label>Email</label>
+              <Form.Input
+                name={"email"}
+                onChange={handleInputChange}
+                type="email"
+              ></Form.Input>
+            </Form.Field>
             <Form.Field
               control={Checkbox}
               id="form-checkbox-control-agreement"
