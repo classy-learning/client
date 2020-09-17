@@ -82,3 +82,47 @@ export const listStudentAccounts = /* GraphQL */ `
     }
   }
 `;
+export const studentAccountsByCustomerUsername = /* GraphQL */ `
+  query StudentAccountsByCustomerUsername(
+    $customerUsername: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelStudentAccountFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    studentAccountsByCustomerUsername(
+      customerUsername: $customerUsername
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        customerUsername
+        customerUser {
+          Username
+          UserCreateDate
+          UserLastModifiedDate
+          Enabled
+          UserStatus
+          PreferredMfaSetting
+          UserMFASettingList
+        }
+        studentUsername
+        studentUser {
+          Username
+          UserCreateDate
+          UserLastModifiedDate
+          Enabled
+          UserStatus
+          PreferredMfaSetting
+          UserMFASettingList
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

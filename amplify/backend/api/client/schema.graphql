@@ -79,9 +79,9 @@ type StudentAccount
   @model(mutations: null, subscriptions: null) {
   id: ID!
   customerUsername: ID!
-  customerUser: CognitoUser @function(name: "resolveGraphQLField")
+  customerUser: CognitoUser @function(name: "resolveField-${env}")
   studentUsername: ID!
-  studentUser: CognitoUser @function(name: "resolveGraphQLField")
+  studentUser: CognitoUser @function(name: "resolveField-${env}")
 }
 
 type Subscription {

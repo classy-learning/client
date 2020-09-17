@@ -37,12 +37,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "resolveGraphQLField",
+            "resolveField",
             {
               "Fn::Join": [
                 "",
                 [
-                  "resolveGraphQLField",
+                  "resolveField",
                   "-",
                   {
                     "Ref": "env"
@@ -76,7 +76,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/resolveGraphQLField-3145573465554a736335-build.zip"
+          "S3Key": "amplify-builds/resolveField-33593331794a43357973-build.zip"
         }
       }
     },
@@ -86,12 +86,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRole4abb5d81",
+            "clientLambdaRolefa3645b0",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRole4abb5d81",
+                  "clientLambdaRolefa3645b0",
                   "-",
                   {
                     "Ref": "env"

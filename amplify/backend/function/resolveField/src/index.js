@@ -26,8 +26,8 @@ async function getUser(username) {
 
 const resolvers = {
   StudentAccount: {
-    customerUser: (event) => getUser(event.source.customerId),
-    studentUser: (event) => getUser(event.source.studentId),
+    customerUser: (event) => getUser(event.source.customerUsername),
+    studentUser: (event) => getUser(event.source.studentUsername),
   },
 };
 

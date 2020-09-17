@@ -2,8 +2,14 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateStudentAccount = /* GraphQL */ `
-  subscription OnCreateStudentAccount($customerId: String, $studentId: String) {
-    onCreateStudentAccount(customerId: $customerId, studentId: $studentId) {
+  subscription OnCreateStudentAccount(
+    $customerUsername: String
+    $studentUsername: String
+  ) {
+    onCreateStudentAccount(
+      customerUsername: $customerUsername
+      studentUsername: $studentUsername
+    ) {
       id
       customerUsername
       customerUser {
@@ -47,8 +53,14 @@ export const onCreateStudentAccount = /* GraphQL */ `
   }
 `;
 export const onDeleteStudentAccount = /* GraphQL */ `
-  subscription OnDeleteStudentAccount($customerId: String, $studentId: String) {
-    onDeleteStudentAccount(customerId: $customerId, studentId: $studentId) {
+  subscription OnDeleteStudentAccount(
+    $customerUsername: String
+    $studentUsername: String
+  ) {
+    onDeleteStudentAccount(
+      customerUsername: $customerUsername
+      studentUsername: $studentUsername
+    ) {
       id
       customerUsername
       customerUser {
