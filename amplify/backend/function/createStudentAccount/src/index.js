@@ -44,6 +44,8 @@ exports.handler = async (event) => {
     studentUsername: username,
   };
   await createAccount(account);
+  // TODO: make sure this actually returns the right thing? <== <== <==
+  // ... it works fine when i run mutation from the api console but not when i use graphqlOperation
   return account;
 };
 

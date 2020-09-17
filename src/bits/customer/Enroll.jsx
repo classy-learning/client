@@ -1,3 +1,4 @@
+import { API, graphqlOperation } from "aws-amplify";
 import {
   Checkbox,
   Form,
@@ -9,8 +10,7 @@ import {
 } from "semantic-ui-react";
 import React, { useState } from "react";
 
-import { API } from "aws-amplify";
-import { createStudentAccount } from "graphql/mutations";
+import createStudentAccount from "bits/customer/createStudentAccount";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 import validator from "email-validator";
@@ -32,12 +32,12 @@ const Enroll = (props) => {
 
   const handleCheckboxChange = (e, { name, checked }) => {
     setInput({ ...input, [name]: checked });
-    console.log(input);
+    // console.log(input);
   };
 
   const handleInputChange = (e) => {
     setInput({ ...input, [e.currentTarget.name]: e.currentTarget.value });
-    console.log(input);
+    // console.log(input);
   };
 
   const setFormState = (state) => {
@@ -45,29 +45,17 @@ const Enroll = (props) => {
     setLoading(state === "loading");
   };
 
-  // TODO: return id of created account
-  async function submitFormData() {
-    try {
-      const result = await API.graphql({
-        query: createStudentAccount,
-        variables: {
-          input: {
-            givenName: input.givenName,
-            familyName: input.familyName,
-            birthdate: input.birthdate,
-            email: input.email,
-          },
+  function submitFormData() {
+    return API.graphql(
+      graphqlOperation(createStudentAccount, {
+        input: {
+          givenName: input.givenName,
+          familyName: input.familyName,
+          birthdate: input.birthdate,
+          email: input.email,
         },
-      });
-      console.log(result);
-    } catch (e) {
-      console.log(e);
-    }
-
-    // TODO: use form data to create student in graphql api
-    // TODO: THEN: return newly created student id from this function
-    // TODO: CATCH: return error object: {content: "string", header: "string"} on error
-    return "testStudent";
+      })
+    );
   }
 
   const validateFormData = () =>
@@ -90,18 +78,20 @@ const Enroll = (props) => {
               if (validateFormData()) {
                 setFormState("loading");
                 submitFormData()
-                  .then((studentId) => {
-                    // TODO: update student context to reflect new student
-                    history.push(`/student/${studentId}`);
+                  .then((response) => {
+                    const username =
+                      response.data.createStudentAccount.studentUsername;
+                    history.push(`/student/${username}`);
                   })
                   .catch((error) => {
+                    // TODO: transform error into something you can use for seterrormessage
                     console.log(error);
                     setErrorMessage(error);
                     setFormState("error");
                   });
               } else {
                 setErrorMessage({
-                  header: "Invalid input",
+                  header: "Oops...",
                   content: "Required fields are marked with an asterisk.",
                 });
                 setFormState("error");
