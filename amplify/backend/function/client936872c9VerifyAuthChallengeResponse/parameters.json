@@ -1,1 +1,3 @@
-{"modules":"captcha-verify"}
+{
+  "modules": "captcha-verify"
+}

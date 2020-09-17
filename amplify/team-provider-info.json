@@ -1,36 +1,36 @@
 {
-    "dev": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-client-dev-221802-authRole",
-            "UnauthRoleArn": "arn:aws:iam::998711510845:role/amplify-client-dev-221802-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::998711510845:role/amplify-client-dev-221802-authRole",
-            "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-client-dev-221802-deployment",
-            "UnauthRoleName": "amplify-client-dev-221802-unauthRole",
-            "StackName": "amplify-client-dev-221802",
-            "StackId": "arn:aws:cloudformation:us-east-1:998711510845:stack/amplify-client-dev-221802/09457760-ea67-11ea-b126-12e727a79a85",
-            "AmplifyAppId": "d3lgvhl2yoh3h9"
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-client-dev-221802-authRole",
+      "UnauthRoleArn": "arn:aws:iam::998711510845:role/amplify-client-dev-221802-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::998711510845:role/amplify-client-dev-221802-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-client-dev-221802-deployment",
+      "UnauthRoleName": "amplify-client-dev-221802-unauthRole",
+      "StackName": "amplify-client-dev-221802",
+      "StackId": "arn:aws:cloudformation:us-east-1:998711510845:stack/amplify-client-dev-221802/09457760-ea67-11ea-b126-12e727a79a85",
+      "AmplifyAppId": "d3lgvhl2yoh3h9"
+    },
+    "categories": {
+      "function": {
+        "client936872c9DefineAuthChallenge": {},
+        "client936872c9CreateAuthChallenge": {},
+        "client936872c9VerifyAuthChallengeResponse": {
+          "RECAPTCHASECRET": "6Lfq-8cZAAAAAF3Ztq_wRb4jUwB8ptAnowfAp3Wa"
         },
-        "categories": {
-            "function": {
-                "client936872c9DefineAuthChallenge": {},
-                "client936872c9CreateAuthChallenge": {},
-                "client936872c9VerifyAuthChallengeResponse": {
-                    "RECAPTCHASECRET": "6Lfq-8cZAAAAAF3Ztq_wRb4jUwB8ptAnowfAp3Wa"
-                },
-                "client936872c9CustomMessage": {
-                    "REDIRECTURL": "https://classy.name",
-                    "EMAILSUBJECT": "Account confirmation",
-                    "EMAILMESSAGE": "Thanks for signing up for Classy! Click the link to confirm your account"
-                },
-                "client936872c9PostConfirmation": {
-                    "GROUP": "Customers"
-                }
-            },
-            "auth": {
-                "client936872c9": {},
-                "userPoolGroups": {}
-            }
+        "client936872c9CustomMessage": {
+          "REDIRECTURL": "https://classy.name",
+          "EMAILSUBJECT": "Account confirmation",
+          "EMAILMESSAGE": "Thanks for signing up for Classy! Click the link to confirm your account"
+        },
+        "client936872c9PostConfirmation": {
+          "GROUP": "Customers"
         }
+      },
+      "auth": {
+        "client936872c9": {},
+        "userPoolGroups": {}
+      }
     }
+  }
 }

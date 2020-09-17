@@ -44,8 +44,6 @@ exports.handler = async (event) => {
     studentUsername: username,
   };
   await createAccount(account);
-  // TODO: make sure this actually returns the right thing? <== <== <==
-  // ... it works fine when i run mutation from the api console but not when i use graphqlOperation
   return account;
 };
 
@@ -85,7 +83,6 @@ function getUsername(givenName, familyName) {
     .promise()
     .then((data) => {
       const claimedUsernames = data.Users.map((user) => user.Username);
-      console.log(claimedUsernames);
       while (claimedUsernames && claimedUsernames.includes(prefix + suffix)) {
         suffix++;
       }

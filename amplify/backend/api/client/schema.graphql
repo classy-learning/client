@@ -58,9 +58,7 @@ type Mutation {
   ): StudentAccount
 }
 
-# TODO: add byCustomerUsername key
 type StudentAccount
-  @model(mutations: null, subscriptions: null)
   @auth(
     rules: [
       { allow: groups, groups: ["Customers"], operations: [create] }
@@ -72,7 +70,13 @@ type StudentAccount
       }
       { allow: owner, ownerField: "studentUsername", operations: [read] }
     ]
-  ) {
+  )
+  @key(
+    name: "ByCustomerUsername"
+    fields: ["customerUsername"]
+    queryField: "studentAccountsByCustomerUsername"
+  )
+  @model(mutations: null, subscriptions: null) {
   id: ID!
   customerUsername: ID!
   customerUser: CognitoUser @function(name: "resolveGraphQLField")

@@ -10,5 +10,9 @@
     {
         "groupName": "Teachers",
         "precedence": 3
+    },
+    {
+        "groupName": "Admin",
+        "precedence": 4
     }
 ]
