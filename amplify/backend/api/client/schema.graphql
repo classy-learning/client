@@ -58,14 +58,19 @@ type Mutation {
   ): StudentAccount
 }
 
+# TODO: add byCustomerUsername key
 type StudentAccount
   @model(mutations: null, subscriptions: null)
   @auth(
     rules: [
       { allow: groups, groups: ["Customers"], operations: [create] }
       { allow: groups, groups: ["Teachers"], operations: [read] }
-      { allow: owner, ownerField: "customerId", operations: [read, delete] }
-      { allow: owner, ownerField: "studentId", operations: [read] }
+      {
+        allow: owner
+        ownerField: "customerUsername"
+        operations: [read, delete]
+      }
+      { allow: owner, ownerField: "studentUsername", operations: [read] }
     ]
   ) {
   id: ID!
@@ -76,8 +81,12 @@ type StudentAccount
 }
 
 type Subscription {
-  onCreateStudentAccount(customerId: String, studentId: String): StudentAccount
-    @aws_subscribe(mutations: ["createStudentAccount"])
-  onDeleteStudentAccount(customerId: String, studentId: String): StudentAccount
-    @aws_subscribe(mutations: ["deleteStudentAccount"])
+  onCreateStudentAccount(
+    customerUsername: String
+    studentUsername: String
+  ): StudentAccount @aws_subscribe(mutations: ["createStudentAccount"])
+  onDeleteStudentAccount(
+    customerUsername: String
+    studentUsername: String
+  ): StudentAccount @aws_subscribe(mutations: ["deleteStudentAccount"])
 }
