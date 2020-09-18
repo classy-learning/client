@@ -2,7 +2,15 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Lambda resource stack creation using Amplify CLI",
   "Parameters": {
-    "GROUP": {
+    "REDIRECTURL": {
+      "Type": "String",
+      "Default": ""
+    },
+    "EMAILMESSAGE": {
+      "Type": "String",
+      "Default": ""
+    },
+    "EMAILSUBJECT": {
       "Type": "String",
       "Default": ""
     },
@@ -61,12 +69,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "client936872c9PostConfirmation",
+            "client01a53182CustomMessage",
             {
               "Fn::Join": [
                 "",
                 [
-                  "client936872c9PostConfirmation",
+                  "client01a53182CustomMessage",
                   "-",
                   {
                     "Ref": "env"
@@ -87,8 +95,17 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "GROUP": {
-              "Ref": "GROUP"
+            "REDIRECTURL": {
+              "Ref": "REDIRECTURL"
+            },
+            "EMAILSUBJECT": {
+              "Ref": "EMAILSUBJECT"
+            },
+            "EMAILMESSAGE": {
+              "Ref": "EMAILMESSAGE"
+            },
+            "RESOURCENAME": {
+              "Ref": "resourceName"
             }
           }
         },
@@ -102,7 +119,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/client936872c9PostConfirmation-584a6c58674733426c6c-build.zip"
+          "S3Key": "amplify-builds/client01a53182CustomMessage-736d4e50613069754333-build.zip"
         }
       }
     },
@@ -112,12 +129,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "client936872c9PostConfirmation",
+            "client01a53182CustomMessage",
             {
               "Fn::Join": [
                 "",
                 [
-                  "client936872c9PostConfirmation",
+                  "client01a53182CustomMessage",
                   "-",
                   {
                     "Ref": "env"

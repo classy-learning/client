@@ -13,23 +13,17 @@
     },
     "categories": {
       "function": {
-        "client936872c9DefineAuthChallenge": {},
-        "client936872c9CreateAuthChallenge": {},
-        "client936872c9VerifyAuthChallengeResponse": {
-          "RECAPTCHASECRET": "6Lfq-8cZAAAAAF3Ztq_wRb4jUwB8ptAnowfAp3Wa"
-        },
-        "client936872c9CustomMessage": {
+        "client01a53182CustomMessage": {
           "REDIRECTURL": "https://classy.name",
-          "EMAILSUBJECT": "Account confirmation",
-          "EMAILMESSAGE": "Thanks for signing up for Classy! Click the link to confirm your account"
+          "EMAILSUBJECT": "Confirm your Classy account",
+          "EMAILMESSAGE": "Thanks for signing up! Please click the following link to confirm your account"
         },
-        "client936872c9PostConfirmation": {
+        "client01a53182PostConfirmation": {
           "GROUP": "Customers"
         }
       },
       "auth": {
-        "client936872c9": {},
-        "userPoolGroups": {}
+        "client01a53182": {}
       }
     }
   }

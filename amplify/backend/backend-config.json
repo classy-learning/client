@@ -1,30 +1,5 @@
 {
   "function": {
-    "client936872c9DefineAuthChallenge": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "client936872c9CreateAuthChallenge": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "client936872c9VerifyAuthChallengeResponse": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "client936872c9CustomMessage": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "client936872c9PostConfirmation": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "createStudentAccount": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -32,7 +7,7 @@
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "client936872c9",
+          "resourceName": "client01a53182",
           "attributes": [
             "UserPoolId"
           ]
@@ -53,7 +28,7 @@
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "client936872c9",
+          "resourceName": "client01a53182",
           "attributes": [
             "UserPoolId"
           ]
@@ -67,22 +42,32 @@
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "client936872c9",
+          "resourceName": "client01a53182",
           "attributes": [
             "UserPoolId"
           ]
         }
       ]
+    },
+    "client01a53182CustomMessage": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "client01a53182PostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "auth": {
-    "client936872c9": {
+    "client01a53182": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
           "category": "function",
-          "resourceName": "client936872c9DefineAuthChallenge",
+          "resourceName": "client01a53182CustomMessage",
           "triggerProvider": "Cognito",
           "attributes": [
             "Arn",
@@ -91,34 +76,7 @@
         },
         {
           "category": "function",
-          "resourceName": "client936872c9CreateAuthChallenge",
-          "triggerProvider": "Cognito",
-          "attributes": [
-            "Arn",
-            "Name"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "client936872c9VerifyAuthChallengeResponse",
-          "triggerProvider": "Cognito",
-          "attributes": [
-            "Arn",
-            "Name"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "client936872c9CustomMessage",
-          "triggerProvider": "Cognito",
-          "attributes": [
-            "Arn",
-            "Name"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "client936872c9PostConfirmation",
+          "resourceName": "client01a53182PostConfirmation",
           "triggerProvider": "Cognito",
           "attributes": [
             "Arn",
@@ -126,7 +84,7 @@
           ]
         }
       ],
-      "customAuth": true
+      "customAuth": false
     },
     "userPoolGroups": {
       "service": "Cognito-UserPool-Groups",
@@ -134,7 +92,7 @@
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "client936872c9",
+          "resourceName": "client01a53182",
           "attributes": [
             "UserPoolId",
             "AppClientIDWeb",
@@ -154,7 +112,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authclient936872c9"
+              "userPoolId": "authclient01a53182"
             }
           },
           "additionalAuthenticationProviders": []

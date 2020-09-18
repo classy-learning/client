@@ -1,8 +1,8 @@
 {
   "permissions": {
     "auth": {
-      "client936872c9": [
-        "read"
+      "client01a53182": [
+        "delete"
       ]
     }
   },

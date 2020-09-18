@@ -21,7 +21,6 @@ const Student = (props) => {
   const { studentUsername } = useParams();
   const [student, setStudent] = useState();
 
-  // TODO: set student using studentUsername
   useEffect(() => {
     if (studentAccounts === undefined) {
       return;

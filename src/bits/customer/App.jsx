@@ -15,7 +15,6 @@ const App = (props) => {
   // TODO: refresh studentAccounts when you enroll a new student
   const [studentAccounts, setStudentAccounts] = useState();
 
-  // TODO: add .picture to studentAccount UserAttributes
   useEffect(() => {
     API.graphql(graphqlOperation(listStudentAccounts)).then((response) => {
       setStudentAccounts(
@@ -28,6 +27,9 @@ const App = (props) => {
             )[0].Value,
             familyName: item.studentUser.UserAttributes.filter(
               (attribute) => attribute.Name === "family_name"
+            )[0].Value,
+            picture: item.studentUser.UserAttributes.filter(
+              (attribute) => attribute.Name === "picture"
             )[0].Value,
           };
         })

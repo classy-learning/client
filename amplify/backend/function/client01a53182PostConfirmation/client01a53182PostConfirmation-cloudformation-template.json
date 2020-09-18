@@ -2,7 +2,7 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Lambda resource stack creation using Amplify CLI",
   "Parameters": {
-    "CHALLENGEANSWER": {
+    "GROUP": {
       "Type": "String",
       "Default": ""
     },
@@ -61,12 +61,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "client936872c9CreateAuthChallenge",
+            "client01a53182PostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "client936872c9CreateAuthChallenge",
+                  "client01a53182PostConfirmation",
                   "-",
                   {
                     "Ref": "env"
@@ -87,8 +87,8 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "CHALLENGEANSWER": {
-              "Ref": "CHALLENGEANSWER"
+            "GROUP": {
+              "Ref": "GROUP"
             }
           }
         },
@@ -102,7 +102,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/client936872c9CreateAuthChallenge-35614a70754755355461-build.zip"
+          "S3Key": "amplify-builds/client01a53182PostConfirmation-6d697647506753733030-build.zip"
         }
       }
     },
@@ -112,12 +112,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "client936872c9CreateAuthChallenge",
+            "client01a53182PostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "client936872c9CreateAuthChallenge",
+                  "client01a53182PostConfirmation",
                   "-",
                   {
                     "Ref": "env"

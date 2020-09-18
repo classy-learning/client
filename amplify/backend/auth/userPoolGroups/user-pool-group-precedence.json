@@ -12,7 +12,7 @@
         "precedence": 3
     },
     {
-        "groupName": "Admin",
+        "groupName": "Admins",
         "precedence": 4
     }
 ]

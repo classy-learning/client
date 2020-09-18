@@ -1,11 +1,13 @@
 /* Amplify Params - DO NOT EDIT
-	AUTH_CLIENT936872C9_USERPOOLID
+	AUTH_CLIENT01A53182_USERPOOLID
+	ENV
+	REGION
 Amplify Params - DO NOT EDIT */
 
 const { CognitoIdentityServiceProvider } = require("aws-sdk");
 const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
 
-const COGNITO_USERPOOL_ID = process.env.AUTH_CLIENT936872C9_USERPOOLID;
+const COGNITO_USERPOOL_ID = process.env.AUTH_CLIENT01A53182_USERPOOLID;
 if (!COGNITO_USERPOOL_ID) {
   throw new Error(
     `Function requires environment variable: 'COGNITO_USERPOOL_ID'`

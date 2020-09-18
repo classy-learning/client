@@ -10,13 +10,13 @@
     "env": {
       "Type": "String"
     },
-    "authclient936872c9UserPoolId": {
-      "Type": "String",
-      "Default": "authclient936872c9UserPoolId"
-    },
     "apiclientGraphQLAPIIdOutput": {
       "Type": "String",
       "Default": "apiclientGraphQLAPIIdOutput"
+    },
+    "authclient01a53182UserPoolId": {
+      "Type": "String",
+      "Default": "authclient01a53182UserPoolId"
     }
   },
   "Conditions": {
@@ -64,9 +64,6 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "AUTH_CLIENT936872C9_USERPOOLID": {
-              "Ref": "authclient936872c9UserPoolId"
-            },
             "API_CLIENT_STUDENTACCOUNTTABLE_NAME": {
               "Fn::ImportValue": {
                 "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StudentAccountTable:Name"
@@ -95,6 +92,9 @@
             },
             "API_CLIENT_GRAPHQLAPIIDOUTPUT": {
               "Ref": "apiclientGraphQLAPIIdOutput"
+            },
+            "AUTH_CLIENT01A53182_USERPOOLID": {
+              "Ref": "authclient01a53182UserPoolId"
             }
           }
         },
@@ -109,7 +109,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createStudentAccount-4353616f48425477482b-build.zip"
+          "S3Key": "amplify-builds/createStudentAccount-4b487977306558622b68-build.zip"
         }
       }
     },
@@ -288,7 +288,7 @@
                       },
                       ":userpool/",
                       {
-                        "Ref": "authclient936872c9UserPoolId"
+                        "Ref": "authclient01a53182UserPoolId"
                       }
                     ]
                   ]
