@@ -6,7 +6,6 @@ import {
   Header,
   Message,
   Segment,
-  TextArea,
 } from "semantic-ui-react";
 import React, { useState } from "react";
 

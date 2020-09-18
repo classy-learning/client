@@ -7,21 +7,32 @@ import {
   useParams,
   useRouteMatch,
 } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import Lessons from "bits/customer/Lessons";
 import Projects from "bits/customer/Projects";
-import PropTypes from "prop-types";
 import Stats from "bits/customer/Stats";
+import StudentsContext from "bits/customer/StudentsContext";
 
 const Student = (props) => {
+  const studentAccounts = useContext(StudentsContext);
   const location = useLocation();
   const { path, url } = useRouteMatch();
-  const { studentId } = useParams();
-  const [student, setStudent] = useState({
-    img: "https://react.semantic-ui.com/images/avatar/small/laura.jpg",
-    name: "Laura",
-  });
+  const { studentUsername } = useParams();
+  const [student, setStudent] = useState();
+
+  // TODO: set student using studentUsername
+  useEffect(() => {
+    if (studentAccounts === undefined) {
+      return;
+    }
+    setStudent(
+      studentAccounts.filter(
+        (account) => account.username === studentUsername
+      )[0]
+    );
+  }, [studentAccounts, studentUsername]);
+
   return (
     <Grid>
       <Grid.Row>
@@ -31,37 +42,43 @@ const Student = (props) => {
               <Image
                 circular
                 size="mini"
-                src={student.img}
+                src={student?.picture}
                 style={{ marginRight: "1rem" }}
               />
-              {student.name}
+              {student?.givenName}
             </Menu.Item>
             <Menu.Menu position="right">
               <Menu.Item
                 as={Link}
                 to={`${url}`}
-                active={location.pathname === `/student/${studentId}`}
+                active={location.pathname === `/student/${studentUsername}`}
               >
                 Home
               </Menu.Item>
               <Menu.Item
                 as={Link}
                 to={`${url}/lessons`}
-                active={location.pathname === `/student/${studentId}/lessons`}
+                active={
+                  location.pathname === `/student/${studentUsername}/lessons`
+                }
               >
                 Lessons
               </Menu.Item>
               <Menu.Item
                 as={Link}
                 to={`${url}/projects`}
-                active={location.pathname === `/student/${studentId}/projects`}
+                active={
+                  location.pathname === `/student/${studentUsername}/projects`
+                }
               >
                 Projects
               </Menu.Item>
               <Menu.Item
                 as={Link}
                 to={`${url}/stats`}
-                active={location.pathname === `/student/${studentId}/stats`}
+                active={
+                  location.pathname === `/student/${studentUsername}/stats`
+                }
               >
                 Stats
               </Menu.Item>
@@ -73,7 +90,7 @@ const Student = (props) => {
         <Grid.Column>
           <Switch>
             <Route exact path={path}>
-              {student.name}
+              {student?.givenName}
             </Route>
             <Route path={`${path}/lessons`}>
               <Lessons></Lessons>

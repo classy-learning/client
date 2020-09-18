@@ -1,57 +1,95 @@
+import { API, graphqlOperation } from "aws-amplify";
 import { Dropdown, Menu } from "semantic-ui-react";
 import { Link, Route, Switch } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 
 import Account from "bits/customer/Account";
 import Enroll from "bits/customer/Enroll";
 import Home from "bits/customer/Home";
 import Page from "bits/Page";
-import React from "react";
 import Student from "bits/customer/Student";
+import { StudentsProvider } from "bits/customer/StudentsContext";
+import listStudentAccounts from "bits/customer/listStudentAccounts";
 
 const App = (props) => {
-  // TODO: get students from api
-  // TODO: set students context
+  // TODO: refresh studentAccounts when you enroll a new student
+  const [studentAccounts, setStudentAccounts] = useState();
+
+  // TODO: add .picture to studentAccount UserAttributes
+  useEffect(() => {
+    API.graphql(graphqlOperation(listStudentAccounts)).then((response) => {
+      setStudentAccounts(
+        response.data.listStudentAccounts.items.map((item) => {
+          return {
+            id: item.id,
+            username: item.studentUser.Username,
+            givenName: item.studentUser.UserAttributes.filter(
+              (attribute) => attribute.Name === "given_name"
+            )[0].Value,
+            familyName: item.studentUser.UserAttributes.filter(
+              (attribute) => attribute.Name === "family_name"
+            )[0].Value,
+          };
+        })
+      );
+    });
+  }, []);
+
   return (
-    <Page
-      menu={
-        <Menu.Menu>
-          <Menu.Item as={Link} to="/">
-            Home
-          </Menu.Item>
-          <Menu.Item as={Link} to="/account">
-            Account
-          </Menu.Item>
-          <Dropdown className="link item" text="Students">
-            <Dropdown.Menu>
-              <Dropdown.Header>Students</Dropdown.Header>
-              <Dropdown.Divider></Dropdown.Divider>
-              <Dropdown.Item
-                as={Link}
-                icon="add user"
-                key="enroll"
-                text="Enroll"
-                to="/enroll"
-              ></Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Menu.Menu>
-      }
-    >
-      <Switch>
-        <Route exact path="/">
-          <Home></Home>
-        </Route>
-        <Route path="/account">
-          <Account></Account>
-        </Route>
-        <Route path="/enroll">
-          <Enroll></Enroll>
-        </Route>
-        <Route path="/student/:studentId">
-          <Student></Student>
-        </Route>
-      </Switch>
-    </Page>
+    <StudentsProvider value={studentAccounts}>
+      <Page
+        menu={
+          <Menu.Menu>
+            <Menu.Item as={Link} to="/">
+              Home
+            </Menu.Item>
+            <Menu.Item as={Link} to="/account">
+              Account
+            </Menu.Item>
+            <Dropdown className="link item" text="Students">
+              <Dropdown.Menu>
+                <Dropdown.Header>Students</Dropdown.Header>
+                {studentAccounts?.map((studentAccount) => (
+                  <Dropdown.Item
+                    as={Link}
+                    key={studentAccount.username}
+                    text={`${studentAccount.givenName}`}
+                    to={`student/${studentAccount.username}`}
+                    image={{
+                      avatar: true,
+                      src: studentAccount.picture,
+                    }}
+                  ></Dropdown.Item>
+                ))}
+                <Dropdown.Divider></Dropdown.Divider>
+                <Dropdown.Item
+                  as={Link}
+                  icon="add user"
+                  key="enroll"
+                  text="Enroll"
+                  to="/enroll"
+                ></Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Menu.Menu>
+        }
+      >
+        <Switch>
+          <Route exact path="/">
+            <Home></Home>
+          </Route>
+          <Route path="/account">
+            <Account></Account>
+          </Route>
+          <Route path="/enroll">
+            <Enroll></Enroll>
+          </Route>
+          <Route path="/student/:studentUsername">
+            <Student></Student>
+          </Route>
+        </Switch>
+      </Page>
+    </StudentsProvider>
   );
 };
 

@@ -1,14 +1,11 @@
-import React, { useContext } from "react";
-
 import CustomerApp from "bits/customer/App";
+import React from "react";
 import StudentApp from "bits/student/App";
 import TeacherApp from "bits/teacher/App";
-import UserContext from "bits/UserContext";
 
 const AppRouter = (props) => {
-  const user = useContext(UserContext);
   // const group = user.signInUserSession.accessToken.payload["cognito:groups"][0];
-  const group = "customers"; // TODO: debug above line and use that instead
+  const group = "customers"; // TODO: determine actual group
   return group === "customers" ? (
     <CustomerApp></CustomerApp>
   ) : group === "students" ? (
