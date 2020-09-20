@@ -1,19 +1,30 @@
+import React, { useContext, useEffect, useState } from "react";
+
+import { AmplifyContainer } from "@aws-amplify/ui-react";
 import CustomerApp from "bits/customer/App";
-import React from "react";
+import { Loader } from "semantic-ui-react";
 import StudentApp from "bits/student/App";
 import TeacherApp from "bits/teacher/App";
+import UserContext from "bits/UserContext";
 
 const AppRouter = (props) => {
-  // const group = user.signInUserSession.accessToken.payload["cognito:groups"][0];
-  const group = "customers"; // TODO: determine actual group
-  return group === "customers" ? (
+  const user = useContext(UserContext);
+  const [group, setGroup] = useState();
+
+  useEffect(() => {
+    setGroup(user.signInUserSession.accessToken.payload["cognito:groups"][0]);
+  }, [user]);
+
+  return group === "Customers" ? (
     <CustomerApp></CustomerApp>
-  ) : group === "students" ? (
+  ) : group === "Students" ? (
     <StudentApp></StudentApp>
-  ) : group === "teachers" ? (
+  ) : group === "Teachers" ? (
     <TeacherApp></TeacherApp>
   ) : (
-    <p>Whoops...</p>
+    <AmplifyContainer>
+      <Loader active inline="centered" size="huge"></Loader>
+    </AmplifyContainer>
   );
 };
 

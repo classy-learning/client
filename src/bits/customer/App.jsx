@@ -37,6 +37,7 @@ const App = (props) => {
     });
   }, []);
 
+  // TODO: make sure dropdown fits contents
   return (
     <StudentsProvider value={studentAccounts}>
       <Page
