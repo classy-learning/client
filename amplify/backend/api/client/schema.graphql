@@ -30,6 +30,10 @@ enum CognitoUserStatus {
   FORCE_CHANGE_PASSWORD
 }
 
+input CreateStripeCustomerInput {
+  customerUsername: ID!
+}
+
 input CreateStudentAccountInput {
   givenName: String!
   familyName: String!
@@ -37,8 +41,18 @@ input CreateStudentAccountInput {
   email: AWSEmail!
 }
 
+input DeleteStripeCustomerInput {
+  id: ID!
+}
+
 input DeleteStudentAccountInput {
   id: ID
+}
+
+input ModelStripeCustomerConditionInput {
+  and: [ModelStripeCustomerConditionInput]
+  or: [ModelStripeCustomerConditionInput]
+  not: ModelStripeCustomerConditionInput
 }
 
 input ModelStudentAccountConditionInput {
@@ -48,14 +62,38 @@ input ModelStudentAccountConditionInput {
 }
 
 type Mutation {
+  createStripeCustomer(
+    input: CreateStripeCustomerInput!
+    condition: ModelStripeCustomerConditionInput
+  ): StripeCustomer
+
   createStudentAccount(
     input: CreateStudentAccountInput!
     condition: ModelStudentAccountConditionInput
   ): StudentAccount
+
+  deleteStripeCustomer(
+    input: DeleteStripeCustomerInput!
+    condition: ModelStripeCustomerConditionInput
+  ): StripeCustomer
+
   deleteStudentAccount(
     input: DeleteStudentAccountInput!
     condition: ModelStudentAccountConditionInput
   ): StudentAccount
+}
+
+type StripeCustomer
+  @auth(rules: [{ allow: private, provider: iam }])
+  @key(
+    name: "ByCustomerUsername"
+    fields: ["customerUsername"]
+    queryField: "stripeCustomersByCustomerUsername"
+  )
+  @model(mutations: null, subscriptions: null) {
+  id: ID!
+  customerUsername: ID!
+  stripeCustomerId: ID!
 }
 
 type StudentAccount
@@ -85,10 +123,21 @@ type StudentAccount
 }
 
 type Subscription {
+  onCreateStripeCustomer(
+    customerUsername: String
+    stripeCustomerId: String
+  ): StripeCustomer @aws_subscribe(mutations: ["createStripeCustomer"])
+
   onCreateStudentAccount(
     customerUsername: String
     studentUsername: String
   ): StudentAccount @aws_subscribe(mutations: ["createStudentAccount"])
+
+  onDeleteStripeCustomer(
+    customerUsername: String
+    stripeCustomerId: String
+  ): StripeCustomer @aws_subscribe(mutations: ["deleteStripeCustomer"])
+
   onDeleteStudentAccount(
     customerUsername: String
     studentUsername: String

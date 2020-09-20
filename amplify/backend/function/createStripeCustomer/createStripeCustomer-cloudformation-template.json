@@ -10,21 +10,13 @@
     "env": {
       "Type": "String"
     },
-    "functionstripeLayerArn": {
-      "Type": "String",
-      "Default": "functionstripeLayerArn"
-    },
-    "authclient01a53182UserPoolId": {
-      "Type": "String",
-      "Default": "authclient01a53182UserPoolId"
-    },
     "apiclientGraphQLAPIIdOutput": {
       "Type": "String",
       "Default": "apiclientGraphQLAPIIdOutput"
     },
-    "apiclientGraphQLAPIEndpointOutput": {
+    "functionstripeLayerArn": {
       "Type": "String",
-      "Default": "apiclientGraphQLAPIEndpointOutput"
+      "Default": "functionstripeLayerArn"
     }
   },
   "Conditions": {
@@ -49,12 +41,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "createBillingPortalSession",
+            "createStripeCustomer",
             {
               "Fn::Join": [
                 "",
                 [
-                  "createBillingPortalSession",
+                  "createStripeCustomer",
                   "-",
                   {
                     "Ref": "env"
@@ -72,14 +64,34 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "AUTH_CLIENT01A53182_USERPOOLID": {
-              "Ref": "authclient01a53182UserPoolId"
+            "API_CLIENT_STRIPECUSTOMERTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StripeCustomerTable:Name"
+              }
+            },
+            "API_CLIENT_STRIPECUSTOMERTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StripeCustomerTable:Name"
+                    }
+                  }
+                ]
+              ]
             },
             "API_CLIENT_GRAPHQLAPIIDOUTPUT": {
               "Ref": "apiclientGraphQLAPIIdOutput"
-            },
-            "API_CLIENT_GRAPHQLAPIENDPOINTOUTPUT": {
-              "Ref": "apiclientGraphQLAPIEndpointOutput"
             }
           }
         },
@@ -98,7 +110,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createBillingPortalSession-3174752b38316278686e-build.zip"
+          "S3Key": "amplify-builds/createStripeCustomer-49734f6e5a4a796e442f-build.zip"
         }
       }
     },
@@ -108,12 +120,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRolec75930d8",
+            "clientLambdaRole137bc47b",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRolec75930d8",
+                  "clientLambdaRole137bc47b",
                   "-",
                   {
                     "Ref": "env"
@@ -156,25 +168,6 @@
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "secretsmanager:GetSecretValue"
-              ],
-              "Resource": {
-                "Fn::Sub": [
-                  "arn:aws:secretsmanager:${region}:${account}:secret:stripe-api-key-ilJYek",
-                  {
-                    "region": {
-                      "Ref": "AWS::Region"
-                    },
-                    "account": {
-                      "Ref": "AWS::AccountId"
-                    }
-                  }
-                ]
-              }
-            },
             {
               "Effect": "Allow",
               "Action": [
@@ -221,27 +214,16 @@
             {
               "Effect": "Allow",
               "Action": [
-                "cognito-identity:Describe*",
-                "cognito-identity:Get*",
-                "cognito-identity:List*",
-                "cognito-idp:Describe*",
-                "cognito-idp:AdminGetDevice",
-                "cognito-idp:AdminGetUser",
-                "cognito-idp:AdminList*",
-                "cognito-idp:List*",
-                "cognito-sync:Describe*",
-                "cognito-sync:Get*",
-                "cognito-sync:List*",
-                "iam:ListOpenIdConnectProviders",
-                "iam:ListRoles",
-                "sns:ListPlatformApplications"
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem"
               ],
               "Resource": [
                 {
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:cognito-idp:",
+                      "arn:aws:dynamodb:",
                       {
                         "Ref": "AWS::Region"
                       },
@@ -249,30 +231,20 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":userpool/",
+                      ":table/",
                       {
-                        "Ref": "authclient01a53182UserPoolId"
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StripeCustomerTable:Name"
+                        }
                       }
                     ]
                   ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "appsync:Create*",
-                "appsync:StartSchemaCreation",
-                "appsync:GraphQL",
-                "appsync:Get*",
-                "appsync:List*"
-              ],
-              "Resource": [
+                },
                 {
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:appsync:",
+                      "arn:aws:dynamodb:",
                       {
                         "Ref": "AWS::Region"
                       },
@@ -280,11 +252,13 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":apis/",
+                      ":table/",
                       {
-                        "Ref": "apiclientGraphQLAPIIdOutput"
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StripeCustomerTable:Name"
+                        }
                       },
-                      "/*"
+                      "/index/*"
                     ]
                   ]
                 }

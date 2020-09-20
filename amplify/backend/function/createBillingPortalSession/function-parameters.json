@@ -11,6 +11,12 @@
       "client01a53182": [
         "read"
       ]
+    },
+    "api": {
+      "client": [
+        "create",
+        "read"
+      ]
     }
   }
 }

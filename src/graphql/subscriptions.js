@@ -1,6 +1,23 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateStripeCustomer = /* GraphQL */ `
+  subscription OnCreateStripeCustomer(
+    $customerUsername: String
+    $stripeCustomerId: String
+  ) {
+    onCreateStripeCustomer(
+      customerUsername: $customerUsername
+      stripeCustomerId: $stripeCustomerId
+    ) {
+      id
+      customerUsername
+      stripeCustomerId
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateStudentAccount = /* GraphQL */ `
   subscription OnCreateStudentAccount(
     $customerUsername: String
@@ -47,6 +64,23 @@ export const onCreateStudentAccount = /* GraphQL */ `
         PreferredMfaSetting
         UserMFASettingList
       }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteStripeCustomer = /* GraphQL */ `
+  subscription OnDeleteStripeCustomer(
+    $customerUsername: String
+    $stripeCustomerId: String
+  ) {
+    onDeleteStripeCustomer(
+      customerUsername: $customerUsername
+      stripeCustomerId: $stripeCustomerId
+    ) {
+      id
+      customerUsername
+      stripeCustomerId
       createdAt
       updatedAt
     }

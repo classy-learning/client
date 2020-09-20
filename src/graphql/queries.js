@@ -126,3 +126,58 @@ export const studentAccountsByCustomerUsername = /* GraphQL */ `
     }
   }
 `;
+export const getStripeCustomer = /* GraphQL */ `
+  query GetStripeCustomer($id: ID!) {
+    getStripeCustomer(id: $id) {
+      id
+      customerUsername
+      stripeCustomerId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listStripeCustomers = /* GraphQL */ `
+  query ListStripeCustomers(
+    $filter: ModelStripeCustomerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listStripeCustomers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        customerUsername
+        stripeCustomerId
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const stripeCustomersByCustomerUsername = /* GraphQL */ `
+  query StripeCustomersByCustomerUsername(
+    $customerUsername: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelStripeCustomerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    stripeCustomersByCustomerUsername(
+      customerUsername: $customerUsername
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        customerUsername
+        stripeCustomerId
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

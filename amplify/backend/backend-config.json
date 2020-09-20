@@ -75,6 +75,49 @@
           "attributes": [
             "UserPoolId"
           ]
+        },
+        {
+          "category": "api",
+          "resourceName": "client",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
+    },
+    "createStripeCustomer": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "client",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "stripeLayer",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "deleteStripeCustomer": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "client",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
         }
       ]
     }
@@ -134,7 +177,11 @@
               "userPoolId": "authclient01a53182"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
         }
       }
     },

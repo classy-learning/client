@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "storage": {
+      "StripeCustomer:@model(appsync)": [
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

@@ -1,12 +1,18 @@
 /* Amplify Params - DO NOT EDIT
+	API_CLIENT_GRAPHQLAPIENDPOINTOUTPUT
+	API_CLIENT_GRAPHQLAPIIDOUTPUT
 	AUTH_CLIENT01A53182_USERPOOLID
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */
 
-// TODO: import stripe; configure with key
-// TODO: get sub for cognito user
-// TODO: get stripe customer id from using sub
+// TODO: get sub for cognito user from event
+// TODO: get username from cognito using sub
+// TODO: get stripe customer id from gqlapi using username
+// TODO: if no stripe customer exists, create one using gql api mutation
+// TODO: use stripe customer id to return new billing portal session
+
+// TODO: create createStripeCustomer mutation that invokes a lambda function to create a customer
 
 const STRIPE_API_KEY_SECRET_ID = "stripe-api-key";
 const RETURN_URL = "https://classy.name/account";
