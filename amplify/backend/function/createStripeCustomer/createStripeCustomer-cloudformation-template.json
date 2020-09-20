@@ -110,7 +110,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createStripeCustomer-49734f6e5a4a796e442f-build.zip"
+          "S3Key": "amplify-builds/createStripeCustomer-366f5159464f78424567-build.zip"
         }
       }
     },
