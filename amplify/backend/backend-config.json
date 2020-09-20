@@ -70,10 +70,10 @@
       "service": "Lambda",
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "stripeLayer",
+          "category": "auth",
+          "resourceName": "client01a53182",
           "attributes": [
-            "Arn"
+            "UserPoolId"
           ]
         }
       ]
