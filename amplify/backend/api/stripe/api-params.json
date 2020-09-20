@@ -1,0 +1,54 @@
+{
+    "paths": [
+        {
+            "name": "/billingPortalSession",
+            "lambdaFunction": "createBillingPortalSession",
+            "privacy": {
+                "userPoolGroups": {
+                    "Customers": [
+                        "/GET"
+                    ]
+                }
+            },
+            "policyResourceName": "/billingPortalSession"
+        }
+    ],
+    "resourceName": "stripe",
+    "apiName": "stripe",
+    "authResourceName": "client01a53182",
+    "functionArns": [
+        {
+            "lambdaFunction": "createBillingPortalSession"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-client-dev-221802-authRole",
+        "unAuthRoleName": "amplify-client-dev-221802-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "createBillingPortalSession",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        },
+        {
+            "category": "auth",
+            "resourceName": "client01a53182",
+            "attributes": [
+                "UserPoolId"
+            ]
+        },
+        {
+            "category": "auth",
+            "resourceName": "userPoolGroups",
+            "attributes": [
+                "CustomersGroupRole"
+            ]
+        }
+    ]
+}

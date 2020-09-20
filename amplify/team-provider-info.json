@@ -20,10 +20,30 @@
         },
         "client01a53182PostConfirmation": {
           "GROUP": "Customers"
+        },
+        "stripeLayer": {
+          "deploymentBucketName": "amplify-client-dev-221802-deployment",
+          "s3Key": "amplify-builds/stripeLayer-build.zip"
         }
       },
       "auth": {
         "client01a53182": {}
+      }
+    },
+    "nonCFNdata": {
+      "function": {
+        "stripeLayer": {
+          "layerVersionMap": {
+            "1": {
+              "permissions": [
+                {
+                  "type": "private"
+                }
+              ],
+              "hash": "M3YBSBm4i/9Pjlou9iz6FRI1Ygr3HjuDOo2UTtIfw1k="
+            }
+          }
+        }
       }
     }
   }

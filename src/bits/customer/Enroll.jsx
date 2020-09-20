@@ -31,12 +31,10 @@ const Enroll = (props) => {
 
   const handleCheckboxChange = (e, { name, checked }) => {
     setInput({ ...input, [name]: checked });
-    // console.log(input);
   };
 
   const handleInputChange = (e) => {
     setInput({ ...input, [e.currentTarget.name]: e.currentTarget.value });
-    // console.log(input);
   };
 
   const setFormState = (state) => {
@@ -142,7 +140,7 @@ const Enroll = (props) => {
               header={errorMessage.header}
               content={errorMessage.content}
             />
-            <Form.Button content="Submit" fluid primary />
+            <Form.Button content="Enroll" fluid primary />
           </Form>
         </Segment>
       </Grid.Column>

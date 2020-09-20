@@ -3,7 +3,7 @@ import { AmplifyAuthenticator, AmplifyContainer } from "@aws-amplify/ui-react";
 import React from "react";
 
 const Authenticator = (props) => {
-  // TODO: customize authenticator for teachers, students, and customers.
+  // TODO: custom authenticators for teachers, students, and customers.
   return (
     <AmplifyContainer>
       <AmplifyAuthenticator></AmplifyAuthenticator>
