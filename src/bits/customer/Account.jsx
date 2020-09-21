@@ -1,9 +1,11 @@
 import { Button, Grid, Header } from "semantic-ui-react";
+import React, { useState } from "react";
 
 import { API } from "aws-amplify";
-import React from "react";
 
 const Account = (props) => {
+  const [awaitingRedirect, setAwaitingRedirect] = useState(false);
+
   return (
     <Grid container padded>
       <Grid.Column>
@@ -17,13 +19,17 @@ const Account = (props) => {
             content="Visit secure billing portal"
             icon="right arrow"
             labelPosition="right"
+            loading={awaitingRedirect}
             onClick={() => {
-              console.log("go to billing portal");
+              setAwaitingRedirect(true);
               API.get("stripe", "/billingPortalSession", { response: true })
                 .then((response) => {
-                  console.log(response);
+                  window.location.href = response.data;
                 })
-                .catch((error) => console.log(error));
+                .catch((error) => {
+                  console.log(error);
+                  setAwaitingRedirect(false);
+                });
             }}
             secondary
           ></Button>

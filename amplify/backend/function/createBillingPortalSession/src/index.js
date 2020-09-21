@@ -6,10 +6,6 @@
 	REGION
 Amplify Params - DO NOT EDIT */
 
-// TODO: get stripe customer id from gqlapi using username
-// TODO: if no stripe customer exists, create one using gql api mutation
-// TODO: use stripe customer id to return new billing portal session
-
 const AWS = require("aws-sdk");
 const https = require("https");
 const stripe = require("stripe");
@@ -53,14 +49,17 @@ exports.handler = async (event) => {
     stripeCustomer = await createStripeCustomer(username);
   }
 
-  console.log(stripeCustomer);
+  const session = await Stripe.billingPortal.sessions.create({
+    customer: stripeCustomer.stripeCustomerId,
+    return_url: RETURN_URL,
+  });
 
   return {
     statusCode: 200,
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
-    body: JSON.stringify("Hello from Lambda!"),
+    body: JSON.stringify(session.url),
   };
 };
 

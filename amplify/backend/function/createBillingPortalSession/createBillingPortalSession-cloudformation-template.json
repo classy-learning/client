@@ -98,7 +98,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createBillingPortalSession-7178656935495670776d-build.zip"
+          "S3Key": "amplify-builds/createBillingPortalSession-48456e50426743336869-build.zip"
         }
       }
     },

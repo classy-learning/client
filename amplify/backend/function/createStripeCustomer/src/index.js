@@ -32,7 +32,6 @@ exports.handler = async (event) => {
     stripeCustomerId: customer.id,
   };
 
-  // TODO: create dynamodb record with stripe customerId and customerUsername
   await createStripeCustomer(stripeCustomer);
 
   return stripeCustomer;
