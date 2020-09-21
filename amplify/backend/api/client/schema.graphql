@@ -65,7 +65,7 @@ type Mutation {
   createStripeCustomer(
     input: CreateStripeCustomerInput!
     condition: ModelStripeCustomerConditionInput
-  ): StripeCustomer
+  ): StripeCustomer @aws_iam
 
   createStudentAccount(
     input: CreateStudentAccountInput!
@@ -75,7 +75,7 @@ type Mutation {
   deleteStripeCustomer(
     input: DeleteStripeCustomerInput!
     condition: ModelStripeCustomerConditionInput
-  ): StripeCustomer
+  ): StripeCustomer @aws_iam
 
   deleteStudentAccount(
     input: DeleteStudentAccountInput!

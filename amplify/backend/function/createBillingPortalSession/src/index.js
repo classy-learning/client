@@ -10,8 +10,6 @@ Amplify Params - DO NOT EDIT */
 // TODO: if no stripe customer exists, create one using gql api mutation
 // TODO: use stripe customer id to return new billing portal session
 
-// TODO: create createStripeCustomer mutation that invokes a lambda function to create a customer
-
 const AWS = require("aws-sdk");
 const https = require("https");
 const stripe = require("stripe");
@@ -47,11 +45,16 @@ const secretsManager = new AWS.SecretsManager();
 
 exports.handler = async (event) => {
   const Stripe = await configureStripe();
+
   const username = await getUsername(event);
+
   let stripeCustomer = await getStripeCustomer(username);
   if (!stripeCustomer) {
     stripeCustomer = await createStripeCustomer(username);
   }
+
+  console.log(stripeCustomer);
+
   return {
     statusCode: 200,
     headers: {
@@ -87,8 +90,7 @@ function createStripeCustomer(username) {
     "CreateStripeCustomer",
     { input: { customerUsername: username } }
   ).then((response) => {
-    console.log(response);
-    // TODO: extract and return data
+    return response.data.createStripeCustomer;
   });
 }
 

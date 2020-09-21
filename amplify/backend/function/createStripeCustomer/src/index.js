@@ -18,26 +18,22 @@ if (!STRIPE_CUSTOMER_TABLE_NAME) {
 }
 
 const documentClient = new AWS.DynamoDB.DocumentClient();
+const secretsManager = new AWS.SecretsManager();
 
 exports.handler = async (event) => {
   const Stripe = await configureStripe();
 
-  console.log(event);
-
-  // TODO: extract customerUsername from event
-  // TODO: create stripe customer & extract stripe customerId
-  // TODO: create dynamodb record with stripe customerId and customerUsername
+  const username = event.arguments.input.customerUsername;
+  const customer = await Stripe.customers.create();
 
   const stripeCustomer = {
     id: event.stripeCustomerId,
-    customerUsername: "",
-    stripeCustomerId: "",
+    customerUsername: username,
+    stripeCustomerId: customer.id,
   };
 
-  // await documentClient.put({
-  //   TableName: STRIPE_CUSTOMER_TABLE_NAME,
-  //   Item: stripeCustomer,
-  // });
+  // TODO: create dynamodb record with stripe customerId and customerUsername
+  await createStripeCustomer(stripeCustomer);
 
   return stripeCustomer;
 };
@@ -52,4 +48,13 @@ function configureStripe() {
       ];
       return stripe(stripeApiKey);
     });
+}
+
+function createStripeCustomer(customer) {
+  return documentClient
+    .put({
+      TableName: STRIPE_CUSTOMER_TABLE_NAME,
+      Item: customer,
+    })
+    .promise();
 }
