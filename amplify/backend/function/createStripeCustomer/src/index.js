@@ -28,7 +28,11 @@ exports.handler = async (event) => {
   // TODO: create stripe customer & extract stripe customerId
   // TODO: create dynamodb record with stripe customerId and customerUsername
 
-  const stripeCustomer = { id: event.stripeCustomerId };
+  const stripeCustomer = {
+    id: event.stripeCustomerId,
+    customerUsername: "",
+    stripeCustomerId: "",
+  };
 
   // await documentClient.put({
   //   TableName: STRIPE_CUSTOMER_TABLE_NAME,
