@@ -1,7 +1,7 @@
 {
   "permissions": {
-    "function": {
-      "getUsernameFromAuthProvider": [
+    "auth": {
+      "client01a53182": [
         "read"
       ]
     }

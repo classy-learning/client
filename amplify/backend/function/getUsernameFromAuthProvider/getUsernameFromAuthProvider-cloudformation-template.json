@@ -10,13 +10,9 @@
     "env": {
       "Type": "String"
     },
-    "functionstripeLayerArn": {
+    "authclient01a53182UserPoolId": {
       "Type": "String",
-      "Default": "functionstripeLayerArn"
-    },
-    "functiongetUsernameFromAuthProviderName": {
-      "Type": "String",
-      "Default": "functiongetUsernameFromAuthProviderName"
+      "Default": "authclient01a53182UserPoolId"
     }
   },
   "Conditions": {
@@ -41,12 +37,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "createCheckoutPortalSession",
+            "getUsernameFromAuthProvider",
             {
               "Fn::Join": [
                 "",
                 [
-                  "createCheckoutPortalSession",
+                  "getUsernameFromAuthProvider",
                   "-",
                   {
                     "Ref": "env"
@@ -64,8 +60,8 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "FUNCTION_GETUSERNAMEFROMAUTHPROVIDER_NAME": {
-              "Ref": "functiongetUsernameFromAuthProviderName"
+            "AUTH_CLIENT01A53182_USERPOOLID": {
+              "Ref": "authclient01a53182UserPoolId"
             }
           }
         },
@@ -80,7 +76,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createCheckoutPortalSession-6d58772b4f695049774f-build.zip"
+          "S3Key": "amplify-builds/getUsernameFromAuthProvider-5652783959716c497644-build.zip"
         }
       }
     },
@@ -90,12 +86,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRole258036a4",
+            "clientLambdaRole3691b0b4",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRole258036a4",
+                  "clientLambdaRole3691b0b4",
                   "-",
                   {
                     "Ref": "env"
@@ -184,16 +180,27 @@
             {
               "Effect": "Allow",
               "Action": [
-                "lambda:Get*",
-                "lambda:List*",
-                "lambda:Invoke*"
+                "cognito-identity:Describe*",
+                "cognito-identity:Get*",
+                "cognito-identity:List*",
+                "cognito-idp:Describe*",
+                "cognito-idp:AdminGetDevice",
+                "cognito-idp:AdminGetUser",
+                "cognito-idp:AdminList*",
+                "cognito-idp:List*",
+                "cognito-sync:Describe*",
+                "cognito-sync:Get*",
+                "cognito-sync:List*",
+                "iam:ListOpenIdConnectProviders",
+                "iam:ListRoles",
+                "sns:ListPlatformApplications"
               ],
               "Resource": [
                 {
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:lambda:",
+                      "arn:aws:cognito-idp:",
                       {
                         "Ref": "AWS::Region"
                       },
@@ -201,9 +208,9 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":function:",
+                      ":userpool/",
                       {
-                        "Ref": "functiongetUsernameFromAuthProviderName"
+                        "Ref": "authclient01a53182UserPoolId"
                       }
                     ]
                   ]

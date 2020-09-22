@@ -127,25 +127,24 @@
       "service": "Lambda",
       "dependsOn": [
         {
+          "category": "function",
+          "resourceName": "getUsernameFromAuthProvider",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
+    },
+    "getUsernameFromAuthProvider": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
           "category": "auth",
           "resourceName": "client01a53182",
           "attributes": [
             "UserPoolId"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "client",
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "stripeLayer",
-          "attributes": [
-            "Arn"
           ]
         }
       ]
