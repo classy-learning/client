@@ -10,17 +10,13 @@
     "env": {
       "Type": "String"
     },
-    "functionstripeLayerArn": {
+    "apiclientGraphQLAPIIdOutput": {
       "Type": "String",
-      "Default": "functionstripeLayerArn"
+      "Default": "apiclientGraphQLAPIIdOutput"
     },
-    "functiongetUsernameFromAuthProviderName": {
+    "apiclientGraphQLAPIEndpointOutput": {
       "Type": "String",
-      "Default": "functiongetUsernameFromAuthProviderName"
-    },
-    "functionexecuteGraphQLOperationName": {
-      "Type": "String",
-      "Default": "functionexecuteGraphQLOperationName"
+      "Default": "apiclientGraphQLAPIEndpointOutput"
     }
   },
   "Conditions": {
@@ -45,12 +41,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "createBillingPortalSession",
+            "executeGraphQLOperation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "createBillingPortalSession",
+                  "executeGraphQLOperation",
                   "-",
                   {
                     "Ref": "env"
@@ -68,11 +64,11 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "FUNCTION_GETUSERNAMEFROMAUTHPROVIDER_NAME": {
-              "Ref": "functiongetUsernameFromAuthProviderName"
+            "API_CLIENT_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apiclientGraphQLAPIIdOutput"
             },
-            "FUNCTION_EXECUTEGRAPHQLOPERATION_NAME": {
-              "Ref": "functionexecuteGraphQLOperationName"
+            "API_CLIENT_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apiclientGraphQLAPIEndpointOutput"
             }
           }
         },
@@ -83,15 +79,11 @@
           ]
         },
         "Runtime": "nodejs12.x",
-        "Layers": [
-          {
-            "Fn::Sub": "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:stripeLayer-dev:1"
-          }
-        ],
+        "Layers": [],
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createBillingPortalSession-76426b68356d72645a4c-build.zip"
+          "S3Key": "amplify-builds/executeGraphQLOperation-584d51325564696e6c59-build.zip"
         }
       }
     },
@@ -101,12 +93,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRolec75930d8",
+            "clientLambdaRolee0b73c45",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRolec75930d8",
+                  "clientLambdaRolee0b73c45",
                   "-",
                   {
                     "Ref": "env"
@@ -149,25 +141,6 @@
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "secretsmanager:GetSecretValue"
-              ],
-              "Resource": {
-                "Fn::Sub": [
-                  "arn:aws:secretsmanager:${region}:${account}:secret:stripe-api-key-ilJYek",
-                  {
-                    "region": {
-                      "Ref": "AWS::Region"
-                    },
-                    "account": {
-                      "Ref": "AWS::AccountId"
-                    }
-                  }
-                ]
-              }
-            },
             {
               "Effect": "Allow",
               "Action": [
@@ -214,16 +187,20 @@
             {
               "Effect": "Allow",
               "Action": [
-                "lambda:Get*",
-                "lambda:List*",
-                "lambda:Invoke*"
+                "appsync:Create*",
+                "appsync:StartSchemaCreation",
+                "appsync:GraphQL",
+                "appsync:Get*",
+                "appsync:List*",
+                "appsync:Update*",
+                "appsync:Delete*"
               ],
               "Resource": [
                 {
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:lambda:",
+                      "arn:aws:appsync:",
                       {
                         "Ref": "AWS::Region"
                       },
@@ -231,39 +208,11 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":function:",
+                      ":apis/",
                       {
-                        "Ref": "functiongetUsernameFromAuthProviderName"
-                      }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "lambda:Get*",
-                "lambda:List*",
-                "lambda:Invoke*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:lambda:",
-                      {
-                        "Ref": "AWS::Region"
+                        "Ref": "apiclientGraphQLAPIIdOutput"
                       },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":function:",
-                      {
-                        "Ref": "functionexecuteGraphQLOperationName"
-                      }
+                      "/*"
                     ]
                   ]
                 }

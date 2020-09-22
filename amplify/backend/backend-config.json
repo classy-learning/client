@@ -77,11 +77,10 @@
           ]
         },
         {
-          "category": "api",
-          "resourceName": "client",
+          "category": "function",
+          "resourceName": "executeGraphQLOperation",
           "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
+            "Name"
           ]
         }
       ]
@@ -145,6 +144,21 @@
           "resourceName": "client01a53182",
           "attributes": [
             "UserPoolId"
+          ]
+        }
+      ]
+    },
+    "executeGraphQLOperation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "client",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
           ]
         }
       ]

@@ -1,25 +1,15 @@
 /* Amplify Params - DO NOT EDIT
-	API_CLIENT_GRAPHQLAPIENDPOINTOUTPUT
-	API_CLIENT_GRAPHQLAPIIDOUTPUT
 	ENV
+	FUNCTION_EXECUTEGRAPHQLOPERATION_NAME
 	FUNCTION_GETUSERNAMEFROMAUTHPROVIDER_NAME
 	REGION
 Amplify Params - DO NOT EDIT */
 
 const AWS = require("aws-sdk");
-const https = require("https");
 const stripe = require("stripe");
-const urlParse = require("url").URL;
 
 const RETURN_URL = "https://classy.name/account";
 const STRIPE_API_KEY_SECRET_ID = "stripe-api-key";
-
-const APPSYNC_URL = process.env.API_CLIENT_GRAPHQLAPIENDPOINTOUTPUT;
-if (!APPSYNC_URL) {
-  throw new Error(
-    `Function requires environment variable: 'API_CLIENT_GRAPHQLAPIENDPOINTOUTPUT'`
-  );
-}
 
 const GET_USERNAME_FUNCTION_NAME =
   process.env.FUNCTION_GETUSERNAMEFROMAUTHPROVIDER_NAME;
@@ -29,12 +19,14 @@ if (!GET_USERNAME_FUNCTION_NAME) {
   );
 }
 
-const REGION = process.env.REGION;
-if (!REGION) {
-  throw new Error(`Function requires environment variable: 'REGION'`);
+const EXECUTE_GQL_OPERATION_FUNCTION_NAME =
+  process.env.FUNCTION_EXECUTEGRAPHQLOPERATION_NAME;
+if (!EXECUTE_GQL_OPERATION_FUNCTION_NAME) {
+  throw new Error(
+    `Function requires environment variable: 'FUNCTION_EXECUTEGRAPHQLOPERATION_NAME'`
+  );
 }
 
-const endpoint = new urlParse(APPSYNC_URL).hostname.toString();
 const lambda = new AWS.Lambda();
 const secretsManager = new AWS.SecretsManager();
 
@@ -93,38 +85,20 @@ function createStripeCustomer(username) {
   });
 }
 
-// TODO: extract graphqlOperation code to dedicated lambda
-// TODO: invoke graphqlOperation lambda and use result
-// TODO: remove graphqlOperation-related permissions from this lambda
-
-async function executeGraphQLOperation(operation, operationName, item) {
-  const request = new AWS.HttpRequest(APPSYNC_URL, REGION);
-
-  request.method = "POST";
-  request.path = "/graphql";
-  request.headers.host = endpoint;
-  request.headers["Content-Type"] = "application/json";
-  request.body = JSON.stringify({
-    query: operation,
-    operationName: operationName,
-    variables: item,
-  });
-
-  const signer = new AWS.Signers.V4(request, "appsync", true);
-  signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
-
-  return new Promise((resolve, reject) => {
-    const httpRequest = https.request(
-      { ...request, host: endpoint },
-      (result) => {
-        result.on("data", (data) => {
-          resolve(JSON.parse(data.toString()));
-        });
-      }
-    );
-    httpRequest.write(request.body);
-    httpRequest.end();
-  });
+function executeGraphQLOperation(operation, operationName, item) {
+  return lambda
+    .invoke({
+      FunctionName: EXECUTE_GQL_OPERATION_FUNCTION_NAME,
+      Payload: JSON.stringify({
+        operation: operation,
+        operationName: operationName,
+        item: item,
+      }),
+    })
+    .promise()
+    .then((response) => {
+      return JSON.parse(response.Payload);
+    });
 }
 
 function getStripeCustomer(username) {

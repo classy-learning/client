@@ -10,11 +10,8 @@
     "function": {
       "getUsernameFromAuthProvider": [
         "read"
-      ]
-    },
-    "api": {
-      "client": [
-        "create",
+      ],
+      "executeGraphQLOperation": [
         "read"
       ]
     }
