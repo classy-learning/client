@@ -70,10 +70,10 @@
       "service": "Lambda",
       "dependsOn": [
         {
-          "category": "auth",
-          "resourceName": "client01a53182",
+          "category": "function",
+          "resourceName": "getUsernameFromAuthProvider",
           "attributes": [
-            "UserPoolId"
+            "Name"
           ]
         },
         {

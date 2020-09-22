@@ -14,10 +14,6 @@
       "Type": "String",
       "Default": "functionstripeLayerArn"
     },
-    "authclient01a53182UserPoolId": {
-      "Type": "String",
-      "Default": "authclient01a53182UserPoolId"
-    },
     "apiclientGraphQLAPIIdOutput": {
       "Type": "String",
       "Default": "apiclientGraphQLAPIIdOutput"
@@ -25,6 +21,10 @@
     "apiclientGraphQLAPIEndpointOutput": {
       "Type": "String",
       "Default": "apiclientGraphQLAPIEndpointOutput"
+    },
+    "functiongetUsernameFromAuthProviderName": {
+      "Type": "String",
+      "Default": "functiongetUsernameFromAuthProviderName"
     }
   },
   "Conditions": {
@@ -72,14 +72,14 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "AUTH_CLIENT01A53182_USERPOOLID": {
-              "Ref": "authclient01a53182UserPoolId"
-            },
             "API_CLIENT_GRAPHQLAPIIDOUTPUT": {
               "Ref": "apiclientGraphQLAPIIdOutput"
             },
             "API_CLIENT_GRAPHQLAPIENDPOINTOUTPUT": {
               "Ref": "apiclientGraphQLAPIEndpointOutput"
+            },
+            "FUNCTION_GETUSERNAMEFROMAUTHPROVIDER_NAME": {
+              "Ref": "functiongetUsernameFromAuthProviderName"
             }
           }
         },
@@ -98,7 +98,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createBillingPortalSession-2f7a484135686f4b6c4f-build.zip"
+          "S3Key": "amplify-builds/createBillingPortalSession-7479654f384e4c317933-build.zip"
         }
       }
     },
@@ -221,27 +221,16 @@
             {
               "Effect": "Allow",
               "Action": [
-                "cognito-identity:Describe*",
-                "cognito-identity:Get*",
-                "cognito-identity:List*",
-                "cognito-idp:Describe*",
-                "cognito-idp:AdminGetDevice",
-                "cognito-idp:AdminGetUser",
-                "cognito-idp:AdminList*",
-                "cognito-idp:List*",
-                "cognito-sync:Describe*",
-                "cognito-sync:Get*",
-                "cognito-sync:List*",
-                "iam:ListOpenIdConnectProviders",
-                "iam:ListRoles",
-                "sns:ListPlatformApplications"
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
               ],
               "Resource": [
                 {
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:cognito-idp:",
+                      "arn:aws:lambda:",
                       {
                         "Ref": "AWS::Region"
                       },
@@ -249,9 +238,9 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":userpool/",
+                      ":function:",
                       {
-                        "Ref": "authclient01a53182UserPoolId"
+                        "Ref": "functiongetUsernameFromAuthProviderName"
                       }
                     ]
                   ]

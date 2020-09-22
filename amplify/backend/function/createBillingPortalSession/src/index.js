@@ -1,8 +1,8 @@
 /* Amplify Params - DO NOT EDIT
 	API_CLIENT_GRAPHQLAPIENDPOINTOUTPUT
 	API_CLIENT_GRAPHQLAPIIDOUTPUT
-	AUTH_CLIENT01A53182_USERPOOLID
 	ENV
+	FUNCTION_GETUSERNAMEFROMAUTHPROVIDER_NAME
 	REGION
 Amplify Params - DO NOT EDIT */
 
@@ -21,10 +21,11 @@ if (!APPSYNC_URL) {
   );
 }
 
-const COGNITO_USERPOOL_ID = process.env.AUTH_CLIENT01A53182_USERPOOLID;
-if (!COGNITO_USERPOOL_ID) {
+const GET_USERNAME_FUNCTION_NAME =
+  process.env.FUNCTION_GETUSERNAMEFROMAUTHPROVIDER_NAME;
+if (!GET_USERNAME_FUNCTION_NAME) {
   throw new Error(
-    `Function requires environment variable: 'AUTH_CLIENT01A53182_USERPOOLID'`
+    `Function requires environment variable: 'FUNCTION_GETUSERNAMEFROMAUTHPROVIDER_NAME'`
   );
 }
 
@@ -33,8 +34,8 @@ if (!REGION) {
   throw new Error(`Function requires environment variable: 'REGION'`);
 }
 
-const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
 const endpoint = new urlParse(APPSYNC_URL).hostname.toString();
+const lambda = new AWS.Lambda();
 const secretsManager = new AWS.SecretsManager();
 
 exports.handler = async (event) => {
@@ -61,6 +62,7 @@ exports.handler = async (event) => {
   };
 };
 
+// TODO: extract stripe configuration to dedicated lambda
 function configureStripe() {
   return secretsManager
     .getSecretValue({ SecretId: STRIPE_API_KEY_SECRET_ID })
@@ -142,20 +144,14 @@ function getStripeCustomer(username) {
   });
 }
 
-function getSub(event) {
-  const provider = event.requestContext.identity.cognitoAuthenticationProvider;
-  return provider.substring(provider.lastIndexOf(":") + 1);
-}
-
 function getUsername(event) {
-  const sub = getSub(event);
-  return cognitoIdentityServiceProvider
-    .listUsers({
-      UserPoolId: COGNITO_USERPOOL_ID,
-      Filter: `sub = \"${sub}\"`,
+  return lambda
+    .invoke({
+      FunctionName: GET_USERNAME_FUNCTION_NAME,
+      Payload: JSON.stringify(event),
     })
     .promise()
-    .then((data) => {
-      return data.Users[0].Username;
+    .then((response) => {
+      return JSON.parse(response.Payload);
     });
 }
