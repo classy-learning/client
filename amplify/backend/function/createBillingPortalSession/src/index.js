@@ -11,8 +11,6 @@ const https = require("https");
 const stripe = require("stripe");
 const urlParse = require("url").URL;
 
-const MUTATION = ``;
-const QUERY = ``;
 const RETURN_URL = "https://classy.name/account";
 const STRIPE_API_KEY_SECRET_ID = "stripe-api-key";
 
@@ -92,6 +90,10 @@ function createStripeCustomer(username) {
     return response.data.createStripeCustomer;
   });
 }
+
+// TODO: extract graphqlOperation code to dedicated lambda
+// TODO: invoke graphqlOperation lambda and use result
+// TODO: remove graphqlOperation-related permissions from this lambda
 
 async function executeGraphQLOperation(operation, operationName, item) {
   const request = new AWS.HttpRequest(APPSYNC_URL, REGION);

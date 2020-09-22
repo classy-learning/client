@@ -10,10 +10,6 @@
     "env": {
       "Type": "String"
     },
-    "functionstripeLayerArn": {
-      "Type": "String",
-      "Default": "functionstripeLayerArn"
-    },
     "authclient01a53182UserPoolId": {
       "Type": "String",
       "Default": "authclient01a53182UserPoolId"
@@ -25,6 +21,10 @@
     "apiclientGraphQLAPIEndpointOutput": {
       "Type": "String",
       "Default": "apiclientGraphQLAPIEndpointOutput"
+    },
+    "functionstripeLayerArn": {
+      "Type": "String",
+      "Default": "functionstripeLayerArn"
     }
   },
   "Conditions": {
@@ -49,12 +49,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "createBillingPortalSession",
+            "createCheckoutPortalSession",
             {
               "Fn::Join": [
                 "",
                 [
-                  "createBillingPortalSession",
+                  "createCheckoutPortalSession",
                   "-",
                   {
                     "Ref": "env"
@@ -98,7 +98,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createBillingPortalSession-2f7a484135686f4b6c4f-build.zip"
+          "S3Key": "amplify-builds/createCheckoutPortalSession-737179335072324d7070-build.zip"
         }
       }
     },
@@ -108,12 +108,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRolec75930d8",
+            "clientLambdaRole258036a4",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRolec75930d8",
+                  "clientLambdaRole258036a4",
                   "-",
                   {
                     "Ref": "env"
@@ -156,25 +156,6 @@
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "secretsmanager:GetSecretValue"
-              ],
-              "Resource": {
-                "Fn::Sub": [
-                  "arn:aws:secretsmanager:${region}:${account}:secret:stripe-api-key-ilJYek",
-                  {
-                    "region": {
-                      "Ref": "AWS::Region"
-                    },
-                    "account": {
-                      "Ref": "AWS::AccountId"
-                    }
-                  }
-                ]
-              }
-            },
             {
               "Effect": "Allow",
               "Action": [

@@ -9,8 +9,18 @@
                         "/GET"
                     ]
                 }
-            },
-            "policyResourceName": "/billingPortalSession"
+            }
+        },
+        {
+            "name": "/checkoutPortalSession",
+            "lambdaFunction": "createCheckoutPortalSession",
+            "privacy": {
+                "userPoolGroups": {
+                    "Customers": [
+                        "/GET"
+                    ]
+                }
+            }
         }
     ],
     "resourceName": "stripe",
@@ -19,6 +29,9 @@
     "functionArns": [
         {
             "lambdaFunction": "createBillingPortalSession"
+        },
+        {
+            "lambdaFunction": "createCheckoutPortalSession"
         }
     ],
     "privacy": {
@@ -49,6 +62,15 @@
             "attributes": [
                 "CustomersGroupRole"
             ]
+        },
+        {
+            "category": "function",
+            "resourceName": "createCheckoutPortalSession",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
         }
-    ]
+    ],
+    "uuid": "484d5852"
 }

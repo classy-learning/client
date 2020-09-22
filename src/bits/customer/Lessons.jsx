@@ -9,6 +9,9 @@ const Lessons = (props) => {
   const [upcomingLessons, setUpcomingLessons] = useState();
   const [pastLessons, setPastLessons] = useState();
 
+  // TODO: show popup with redirect to dashboard if student doesn't have a subscription
+  // TODO: book a lesson
+
   return (
     <Segment basic padded>
       <Grid container divided="vertically" padded>

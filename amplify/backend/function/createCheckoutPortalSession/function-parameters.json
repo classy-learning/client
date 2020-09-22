@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "auth": {
+      "client01a53182": [
+        "read"
+      ]
+    },
+    "api": {
+      "client": [
+        "create",
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "stripeLayer",
+      "version": 1
+    }
+  ]
+}

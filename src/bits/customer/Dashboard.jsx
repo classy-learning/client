@@ -9,6 +9,7 @@ import {
 } from "semantic-ui-react";
 import React, { useContext, useState } from "react";
 
+import { API } from "aws-amplify";
 import StudentContext from "bits/customer/StudentContext";
 
 const BILLING_STEP = "Billing";
@@ -18,6 +19,10 @@ const ENROLLMENT_STEP = "Enrollment";
 const Dashboard = (props) => {
   const student = useContext(StudentContext);
 
+  // TODO: setCompletedSteps based on subscription status and first lesson status
+  // TODO: if all steps are completed, show regular dashboard instead of steps
+
+  const [awaitingRedirect, setAwaitingRedirect] = useState(false);
   const [completedSteps, setCompletedSteps] = useState([ENROLLMENT_STEP]);
 
   const steps = [
@@ -43,22 +48,23 @@ const Dashboard = (props) => {
       key: "subscription",
       price: "10",
       unit: "month",
-      popupContent: `This flat fee secures ${student.givenName}'s personal, powerful, fully-configured virtual desktop.`,
+      popupContent: `This flat fee secures ${student.givenName}'s fully-configured virtual desktop.`,
     },
     {
       key: "lesson",
       price: "50",
       unit: "lesson",
-      popupContent: `We pay our instructors competetive hourly rates to attract top-quality industry talent.`,
+      popupContent: `We pay competetively hourly rates to attract top-quality instructors.`,
     },
     {
       key: "desktop hour",
       price: "1",
       unit: "desktop hour",
-      popupContent: `Connect from any internet-connected device. Pay only for what ${student.givenName} uses each month.`,
+      popupContent: `Connect from anywhere. Pay only for what ${student.givenName} uses each month.`,
     },
   ];
 
+  // TODO: get checkout session from stripe using stripeCustomerId
   return (
     <Segment basic padded>
       <Grid container padded>
@@ -101,10 +107,25 @@ const Dashboard = (props) => {
                 </Statistic.Group>
               </Segment>
               <Button
-                content="Get started for $10/month"
+                content={`Get ${student.givenName} started for $10/month`}
                 fluid
                 icon="right arrow"
                 labelPosition="right"
+                loading={awaitingRedirect}
+                onClick={() => {
+                  setAwaitingRedirect(true);
+                  API.get("stripe", "/checkoutPortalSession", {
+                    response: true,
+                  })
+                    .then((response) => {
+                      setAwaitingRedirect(false);
+                      console.log(response);
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                      setAwaitingRedirect(false);
+                    });
+                }}
                 secondary
                 size="large"
               ></Button>

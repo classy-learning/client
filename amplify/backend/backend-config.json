@@ -120,6 +120,35 @@
           ]
         }
       ]
+    },
+    "createCheckoutPortalSession": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "client01a53182",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "client",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "stripeLayer",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
     }
   },
   "auth": {
@@ -209,6 +238,14 @@
           "resourceName": "userPoolGroups",
           "attributes": [
             "CustomersGroupRole"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "createCheckoutPortalSession",
+          "attributes": [
+            "Name",
+            "Arn"
           ]
         }
       ]
