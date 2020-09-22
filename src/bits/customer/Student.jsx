@@ -1,4 +1,4 @@
-import { Grid, Image, Menu } from "semantic-ui-react";
+import { Grid, Image, Loader, Menu } from "semantic-ui-react";
 import {
   Link,
   Route,
@@ -9,9 +9,11 @@ import {
 } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
 
+import Dashboard from "bits/customer/Dashboard";
 import Lessons from "bits/customer/Lessons";
 import Projects from "bits/customer/Projects";
 import Stats from "bits/customer/Stats";
+import { StudentProvider } from "bits/customer/StudentContext";
 import StudentsContext from "bits/customer/StudentsContext";
 
 const Student = (props) => {
@@ -19,6 +21,8 @@ const Student = (props) => {
   const location = useLocation();
   const { path, url } = useRouteMatch();
   const { studentUsername } = useParams();
+
+  // TODO: create student context and assign student value
   const [student, setStudent] = useState();
 
   useEffect(() => {
@@ -32,7 +36,9 @@ const Student = (props) => {
     );
   }, [studentAccounts, studentUsername]);
 
-  return (
+  return student === undefined ? (
+    <Loader active inline="centered"></Loader>
+  ) : (
     <Grid>
       <Grid.Row>
         <Grid.Column>
@@ -52,7 +58,7 @@ const Student = (props) => {
                 to={`${url}`}
                 active={location.pathname === `/student/${studentUsername}`}
               >
-                Home
+                Dashboard
               </Menu.Item>
               <Menu.Item
                 as={Link}
@@ -87,20 +93,22 @@ const Student = (props) => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>
-          <Switch>
-            <Route exact path={path}>
-              {student?.givenName}
-            </Route>
-            <Route path={`${path}/lessons`}>
-              <Lessons></Lessons>
-            </Route>
-            <Route path={`${path}/projects`}>
-              <Projects></Projects>
-            </Route>
-            <Route path={`${path}/stats`}>
-              <Stats></Stats>
-            </Route>
-          </Switch>
+          <StudentProvider value={student}>
+            <Switch>
+              <Route exact path={path}>
+                <Dashboard></Dashboard>
+              </Route>
+              <Route path={`${path}/lessons`}>
+                <Lessons></Lessons>
+              </Route>
+              <Route path={`${path}/projects`}>
+                <Projects></Projects>
+              </Route>
+              <Route path={`${path}/stats`}>
+                <Stats></Stats>
+              </Route>
+            </Switch>
+          </StudentProvider>
         </Grid.Column>
       </Grid.Row>
     </Grid>
