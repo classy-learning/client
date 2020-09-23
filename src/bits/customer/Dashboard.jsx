@@ -114,7 +114,11 @@ const Dashboard = (props) => {
                 loading={awaitingRedirect}
                 onClick={() => {
                   setAwaitingRedirect(true);
+                  // TODO: add student id as query string parameter
                   API.get("stripe", "/checkoutPortalSession", {
+                    queryStringParameters: {
+                      studentUsername: student.username,
+                    },
                     response: true,
                   })
                     .then((response) => {

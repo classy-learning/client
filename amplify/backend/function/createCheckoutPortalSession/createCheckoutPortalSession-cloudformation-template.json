@@ -17,6 +17,14 @@
     "functiongetUsernameFromAuthProviderName": {
       "Type": "String",
       "Default": "functiongetUsernameFromAuthProviderName"
+    },
+    "functionmutationCreateStripeCustomerName": {
+      "Type": "String",
+      "Default": "functionmutationCreateStripeCustomerName"
+    },
+    "functionqueryGetStripeCustomerByCustomerUsernameName": {
+      "Type": "String",
+      "Default": "functionqueryGetStripeCustomerByCustomerUsernameName"
     }
   },
   "Conditions": {
@@ -66,6 +74,12 @@
             },
             "FUNCTION_GETUSERNAMEFROMAUTHPROVIDER_NAME": {
               "Ref": "functiongetUsernameFromAuthProviderName"
+            },
+            "FUNCTION_MUTATIONCREATESTRIPECUSTOMER_NAME": {
+              "Ref": "functionmutationCreateStripeCustomerName"
+            },
+            "FUNCTION_QUERYGETSTRIPECUSTOMERBYCUSTOMERUSERNAME_NAME": {
+              "Ref": "functionqueryGetStripeCustomerByCustomerUsernameName"
             }
           }
         },
@@ -76,11 +90,15 @@
           ]
         },
         "Runtime": "nodejs12.x",
-        "Layers": [],
+        "Layers": [
+          {
+            "Fn::Sub": "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:stripeLayer-dev:1"
+          }
+        ],
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createCheckoutPortalSession-7135396d6a2b724e524d-build.zip"
+          "S3Key": "amplify-builds/createCheckoutPortalSession-5255714d5379692f6368-build.zip"
         }
       }
     },
@@ -138,6 +156,25 @@
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "secretsmanager:GetSecretValue"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:secretsmanager:${region}:${account}:secret:stripe-api-key-ilJYek",
+                  {
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
+                    }
+                  }
+                ]
+              }
+            },
             {
               "Effect": "Allow",
               "Action": [
@@ -204,6 +241,64 @@
                       ":function:",
                       {
                         "Ref": "functiongetUsernameFromAuthProviderName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functionmutationCreateStripeCustomerName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functionqueryGetStripeCustomerByCustomerUsernameName"
                       }
                     ]
                   ]

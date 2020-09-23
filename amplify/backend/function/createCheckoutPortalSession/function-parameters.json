@@ -3,8 +3,20 @@
     "function": {
       "getUsernameFromAuthProvider": [
         "read"
+      ],
+      "mutationCreateStripeCustomer": [
+        "read"
+      ],
+      "queryGetStripeCustomerByCustomerUsername": [
+        "read"
       ]
     }
   },
-  "lambdaLayers": []
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "stripeLayer",
+      "version": 1
+    }
+  ]
 }
