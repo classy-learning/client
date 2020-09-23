@@ -78,7 +78,14 @@
         },
         {
           "category": "function",
-          "resourceName": "executeGraphQLOperation",
+          "resourceName": "mutationCreateStripeCustomer",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "queryGetStripeCustomerByCustomerUsername",
           "attributes": [
             "Name"
           ]
@@ -159,6 +166,34 @@
           "attributes": [
             "GraphQLAPIIdOutput",
             "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
+    },
+    "mutationCreateStripeCustomer": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "executeGraphQLOperation",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
+    },
+    "queryGetStripeCustomerByCustomerUsername": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "executeGraphQLOperation",
+          "attributes": [
+            "Name"
           ]
         }
       ]

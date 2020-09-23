@@ -22,7 +22,6 @@ const Student = (props) => {
   const { path, url } = useRouteMatch();
   const { studentUsername } = useParams();
 
-  // TODO: create student context and assign student value
   const [student, setStudent] = useState();
 
   useEffect(() => {

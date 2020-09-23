@@ -1,7 +1,8 @@
 /* Amplify Params - DO NOT EDIT
 	ENV
-	FUNCTION_EXECUTEGRAPHQLOPERATION_NAME
 	FUNCTION_GETUSERNAMEFROMAUTHPROVIDER_NAME
+	FUNCTION_MUTATIONCREATESTRIPECUSTOMER_NAME
+	FUNCTION_QUERYGETSTRIPECUSTOMERBYCUSTOMERUSERNAME_NAME
 	REGION
 Amplify Params - DO NOT EDIT */
 
@@ -19,11 +20,19 @@ if (!GET_USERNAME_FUNCTION_NAME) {
   );
 }
 
-const EXECUTE_GQL_OPERATION_FUNCTION_NAME =
-  process.env.FUNCTION_EXECUTEGRAPHQLOPERATION_NAME;
-if (!EXECUTE_GQL_OPERATION_FUNCTION_NAME) {
+const MUTATION_CREATE_STRIPE_CUSTOMER_FUNCTION_NAME =
+  process.env.FUNCTION_MUTATIONCREATESTRIPECUSTOMER_NAME;
+if (!MUTATION_CREATE_STRIPE_CUSTOMER_FUNCTION_NAME) {
   throw new Error(
-    `Function requires environment variable: 'FUNCTION_EXECUTEGRAPHQLOPERATION_NAME'`
+    `Function requires environment variable: 'FUNCTION_MUTATIONCREATESTRIPECUSTOMER_NAME'`
+  );
+}
+
+const QUERY_GET_STRIPE_CUSTOMER_FUNCTION_NAME =
+  process.env.FUNCTION_QUERYGETSTRIPECUSTOMERBYCUSTOMERUSERNAME_NAME;
+if (!QUERY_GET_STRIPE_CUSTOMER_FUNCTION_NAME) {
+  throw new Error(
+    `Function requires environment variable: 'FUNCTION_QUERYGETSTRIPECUSTOMERBYCUSTOMERUSERNAME_NAME'`
   );
 }
 
@@ -32,19 +41,15 @@ const secretsManager = new AWS.SecretsManager();
 
 exports.handler = async (event) => {
   const Stripe = await configureStripe();
-
   const username = await getUsername(event);
-
   let stripeCustomer = await getStripeCustomer(username);
   if (!stripeCustomer) {
     stripeCustomer = await createStripeCustomer(username);
   }
-
   const session = await Stripe.billingPortal.sessions.create({
     customer: stripeCustomer.stripeCustomerId,
     return_url: RETURN_URL,
   });
-
   return {
     statusCode: 200,
     headers: {
@@ -54,7 +59,6 @@ exports.handler = async (event) => {
   };
 };
 
-// TODO: extract stripe configuration to dedicated lambda
 function configureStripe() {
   return secretsManager
     .getSecretValue({ SecretId: STRIPE_API_KEY_SECRET_ID })
@@ -68,32 +72,10 @@ function configureStripe() {
 }
 
 function createStripeCustomer(username) {
-  return executeGraphQLOperation(
-    `mutation CreateStripeCustomer(
-      $input: CreateStripeCustomerInput!
-      $condition: ModelStripeCustomerConditionInput
-    ) {
-      createStripeCustomer(input: $input, condition: $condition) {
-        customerUsername
-        stripeCustomerId
-      }
-    }`,
-    "CreateStripeCustomer",
-    { input: { customerUsername: username } }
-  ).then((response) => {
-    return response.data.createStripeCustomer;
-  });
-}
-
-function executeGraphQLOperation(operation, operationName, item) {
   return lambda
     .invoke({
-      FunctionName: EXECUTE_GQL_OPERATION_FUNCTION_NAME,
-      Payload: JSON.stringify({
-        operation: operation,
-        operationName: operationName,
-        item: item,
-      }),
+      FunctionName: MUTATION_CREATE_STRIPE_CUSTOMER_FUNCTION_NAME,
+      Payload: JSON.stringify(username),
     })
     .promise()
     .then((response) => {
@@ -102,20 +84,15 @@ function executeGraphQLOperation(operation, operationName, item) {
 }
 
 function getStripeCustomer(username) {
-  return executeGraphQLOperation(
-    `query StripeCustomersByCustomerUsername($customerUsername: ID) {
-      stripeCustomersByCustomerUsername(customerUsername: $customerUsername) {
-        items {
-          customerUsername
-          stripeCustomerId
-        }
-      }
-    }`,
-    "StripeCustomersByCustomerUsername",
-    { customerUsername: username }
-  ).then((response) => {
-    return response.data.stripeCustomersByCustomerUsername.items[0];
-  });
+  return lambda
+    .invoke({
+      FunctionName: QUERY_GET_STRIPE_CUSTOMER_FUNCTION_NAME,
+      Payload: JSON.stringify(username),
+    })
+    .promise()
+    .then((response) => {
+      return JSON.parse(response.Payload);
+    });
 }
 
 function getUsername(event) {

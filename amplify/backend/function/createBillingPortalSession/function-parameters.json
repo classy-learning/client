@@ -11,7 +11,10 @@
       "getUsernameFromAuthProvider": [
         "read"
       ],
-      "executeGraphQLOperation": [
+      "mutationCreateStripeCustomer": [
+        "read"
+      ],
+      "queryGetStripeCustomerByCustomerUsername": [
         "read"
       ]
     }

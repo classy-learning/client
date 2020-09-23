@@ -10,21 +10,9 @@
     "env": {
       "Type": "String"
     },
-    "functionstripeLayerArn": {
+    "functionexecuteGraphQLOperationName": {
       "Type": "String",
-      "Default": "functionstripeLayerArn"
-    },
-    "functiongetUsernameFromAuthProviderName": {
-      "Type": "String",
-      "Default": "functiongetUsernameFromAuthProviderName"
-    },
-    "functionmutationCreateStripeCustomerName": {
-      "Type": "String",
-      "Default": "functionmutationCreateStripeCustomerName"
-    },
-    "functionqueryGetStripeCustomerByCustomerUsernameName": {
-      "Type": "String",
-      "Default": "functionqueryGetStripeCustomerByCustomerUsernameName"
+      "Default": "functionexecuteGraphQLOperationName"
     }
   },
   "Conditions": {
@@ -49,12 +37,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "createBillingPortalSession",
+            "mutationCreateStripeCustomer",
             {
               "Fn::Join": [
                 "",
                 [
-                  "createBillingPortalSession",
+                  "mutationCreateStripeCustomer",
                   "-",
                   {
                     "Ref": "env"
@@ -72,14 +60,8 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "FUNCTION_GETUSERNAMEFROMAUTHPROVIDER_NAME": {
-              "Ref": "functiongetUsernameFromAuthProviderName"
-            },
-            "FUNCTION_MUTATIONCREATESTRIPECUSTOMER_NAME": {
-              "Ref": "functionmutationCreateStripeCustomerName"
-            },
-            "FUNCTION_QUERYGETSTRIPECUSTOMERBYCUSTOMERUSERNAME_NAME": {
-              "Ref": "functionqueryGetStripeCustomerByCustomerUsernameName"
+            "FUNCTION_EXECUTEGRAPHQLOPERATION_NAME": {
+              "Ref": "functionexecuteGraphQLOperationName"
             }
           }
         },
@@ -90,15 +72,11 @@
           ]
         },
         "Runtime": "nodejs12.x",
-        "Layers": [
-          {
-            "Fn::Sub": "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:stripeLayer-dev:1"
-          }
-        ],
+        "Layers": [],
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createBillingPortalSession-796c6a6b7570366e3465-build.zip"
+          "S3Key": "amplify-builds/mutationCreateStripeCustomer-77466b58334f5a6d674d-build.zip"
         }
       }
     },
@@ -108,12 +86,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRolec75930d8",
+            "clientLambdaRoled49e1bc5",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRolec75930d8",
+                  "clientLambdaRoled49e1bc5",
                   "-",
                   {
                     "Ref": "env"
@@ -156,25 +134,6 @@
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "secretsmanager:GetSecretValue"
-              ],
-              "Resource": {
-                "Fn::Sub": [
-                  "arn:aws:secretsmanager:${region}:${account}:secret:stripe-api-key-ilJYek",
-                  {
-                    "region": {
-                      "Ref": "AWS::Region"
-                    },
-                    "account": {
-                      "Ref": "AWS::AccountId"
-                    }
-                  }
-                ]
-              }
-            },
             {
               "Effect": "Allow",
               "Action": [
@@ -240,65 +199,7 @@
                       },
                       ":function:",
                       {
-                        "Ref": "functiongetUsernameFromAuthProviderName"
-                      }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "lambda:Get*",
-                "lambda:List*",
-                "lambda:Invoke*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:lambda:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":function:",
-                      {
-                        "Ref": "functionmutationCreateStripeCustomerName"
-                      }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "lambda:Get*",
-                "lambda:List*",
-                "lambda:Invoke*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:lambda:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":function:",
-                      {
-                        "Ref": "functionqueryGetStripeCustomerByCustomerUsernameName"
+                        "Ref": "functionexecuteGraphQLOperationName"
                       }
                     ]
                   ]
