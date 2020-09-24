@@ -140,7 +140,14 @@ const Enroll = (props) => {
               header={errorMessage.header}
               content={errorMessage.content}
             />
-            <Form.Button content="Enroll" fluid primary />
+            <Form.Button
+              content="Enroll student"
+              fluid
+              icon="add user"
+              labelPosition="left"
+              secondary
+              size="large"
+            />
           </Form>
         </Segment>
       </Grid.Column>

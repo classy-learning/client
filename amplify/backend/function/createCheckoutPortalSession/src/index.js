@@ -6,7 +6,8 @@
 	REGION
 Amplify Params - DO NOT EDIT */
 
-// TODO: create stripe checkout session with stripeCustomerId
+// TODO: remove this lambda
+// TODO: use stripe elements to handle subscriptions
 
 const AWS = require("aws-sdk");
 const stripe = require("stripe");

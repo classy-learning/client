@@ -18,3 +18,19 @@ code {
   --amplify-primary-tint: #2b2c2d;
   --amplify-primary-shade: #000000;
 }
+
+.CardElementField {
+  font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+  line-height: 1.21428571em;
+  padding: 0.67857143em 1em;
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  color: rgba(0, 0, 0, 0.87);
+  border-radius: 0.28571429rem;
+  box-shadow: 0 0 0 0 transparent inset;
+  transition: color 0.1s ease, border-color 0.1s ease;
+}
+
+.CardElementField_focus {
+  color: rgba(0, 0, 0, 0.95) !important;
+  border-color: #85b7d9 !important;
+}
