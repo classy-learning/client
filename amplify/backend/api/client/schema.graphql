@@ -41,6 +41,19 @@ input CreateStudentAccountInput {
   email: AWSEmail!
 }
 
+type CustomerAccount
+  @auth(rules: [{ allow: private, provider: iam }])
+  @key(
+    name: "ByCustomerUsername"
+    fields: ["customerUsername"]
+    queryField: "customerAccountsByCustomerUsername"
+  )
+  @model(mutations: null, subscriptions: null) {
+  id: ID!
+  customerUsername: ID!
+  stripeCustomerId: ID!
+}
+
 input DeleteCustomerAccountInput {
   id: ID!
 }
@@ -83,47 +96,126 @@ type Mutation {
   ): StudentAccount
 }
 
-# !!!
-# TODO: change the name of this type to CustomerAccount
-type CustomerAccount
-  @auth(rules: [{ allow: private, provider: iam }])
-  @key(
-    name: "ByCustomerUsername"
-    fields: ["customerUsername"]
-    queryField: "customerAccountsByCustomerUsername"
-  )
-  @model(mutations: null, subscriptions: null) {
-  id: ID!
-  customerUsername: ID!
-  stripeCustomerId: ID!
+enum StripeAggregateUsageType {
+  sum
+  max
 }
 
-#type StudentSubscription
+type StripeCard {
+  brand: String!
+  exp_month: Int!
+  exp_year: Int!
+  fingerprint: String!
+  funding: StripeFundingType!
+  last4: String!
+}
 
-#}
+type StripeCustomer {
+  id: ID!
+}
 
-# return this from stripe directly, similarly to how cognito user is returned from cognito
-#type StripeCustomer {
+enum StripeFundingType {
+  credit
+  debit
+  prepaid
+  unknown
+}
 
-#}
+enum StripeIntervalType {
+  day
+  week
+  month
+  year
+}
 
-# return this from stripe directly, similarly to how cognito user is returned from cognito
-#type StripeSubscription {
+type StripePaymentMethod {
+  id: ID!
+  stripeCustomerId: ID
+  type: StripePaymentMethodType!
+  card: StripeCard
+}
 
-#}
+enum StripePaymentMethodType {
+  alipay
+  au_becs_debit
+  bacs_debit
+  bancontact
+  card
+  eps
+  fpx
+  giropay
+  ideal
+  p24
+  sepa_debit
+  sofort
+}
 
-# return this from stripe directly, similarly to how cognito user is returned from cognito
-#type StripeUsageRecord {
+type StripePrice {
+  id: ID!
+  product: StripeProduct!
+  recurring: StripeRecurringPriceAttributes
+  type: StripePriceType!
+  unit_amount: Int!
+}
 
-#}
+enum StripePriceType {
+  one_time
+  recurring
+}
 
-#type Workspace {
+type StripeProduct {
+  id: ID!
+  description: String
+  name: String!
+  unit_label: String
+}
 
-#}
+type StripeRecurringPriceAttributes {
+  aggregate_usage: StripeAggregateUsageType!
+  interval: StripeIntervalType!
+  interval_count: Int!
+  usage_type: StripeUsageType!
+}
 
-#type WorkspaceUsageRecord {
+type StripeSubscription {
+  id: ID!
+  cancel_at_period_end: Boolean!
+  current_period_end: AWSTimestamp!
+  current_period_start: AWSTimestamp!
+  customer: ID!
+  default_payment_method: ID
+  items: [StripeSubscriptionItem!]!
+  status: StripeSubscriptionStatus!
+}
 
-#}
+type StripeSubscriptionItem {
+  id: ID!
+  price: StripePrice!
+  quantity: Int!
+  subscription: ID!
+}
+
+enum StripeSubscriptionStatus {
+  incomplete
+  incomplete_expired
+  trialing
+  active
+  past_due
+  canceled
+  unpaid
+}
+
+type StripeUsageRecord {
+  id: ID!
+  quantity: Int!
+  subscription_item: ID!
+  timestamp: AWSTimestamp
+}
+
+enum StripeUsageType {
+  metered
+  licensed
+}
 
 type StudentAccount
   @auth(
@@ -133,7 +225,7 @@ type StudentAccount
       {
         allow: owner
         ownerField: "customerUsername"
-        operations: [read, delete]
+        operations: [read, update, delete]
       }
       { allow: owner, ownerField: "studentUsername", operations: [read] }
     ]
@@ -149,6 +241,8 @@ type StudentAccount
   customerUser: CognitoUser @function(name: "resolveField-${env}")
   studentUsername: ID!
   studentUser: CognitoUser @function(name: "resolveField-${env}")
+  stripeSubscriptionId: ID!
+  stripeSubscription: StripeSubscription @function(name: "resolveField-${env}")
 }
 
 type Subscription {
@@ -172,3 +266,11 @@ type Subscription {
     studentUsername: String
   ): StudentAccount @aws_subscribe(mutations: ["deleteStudentAccount"])
 }
+
+#type Workspace {
+
+#}
+
+#type WorkspaceUsageRecord {
+
+#}
