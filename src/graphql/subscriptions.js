@@ -1,14 +1,14 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateStripeCustomer = /* GraphQL */ `
-  subscription OnCreateStripeCustomer(
+export const onCreateCustomerAccount = /* GraphQL */ `
+  subscription OnCreateCustomerAccount(
     $customerUsername: String
-    $stripeCustomerId: String
+    $customerAccountId: String
   ) {
-    onCreateStripeCustomer(
+    onCreateCustomerAccount(
       customerUsername: $customerUsername
-      stripeCustomerId: $stripeCustomerId
+      customerAccountId: $customerAccountId
     ) {
       id
       customerUsername
@@ -69,14 +69,14 @@ export const onCreateStudentAccount = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteStripeCustomer = /* GraphQL */ `
-  subscription OnDeleteStripeCustomer(
+export const onDeleteCustomerAccount = /* GraphQL */ `
+  subscription OnDeleteCustomerAccount(
     $customerUsername: String
-    $stripeCustomerId: String
+    $customerAccountId: String
   ) {
-    onDeleteStripeCustomer(
+    onDeleteCustomerAccount(
       customerUsername: $customerUsername
-      stripeCustomerId: $stripeCustomerId
+      customerAccountId: $customerAccountId
     ) {
       id
       customerUsername

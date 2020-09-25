@@ -11,10 +11,10 @@
       "getUsernameFromAuthProvider": [
         "read"
       ],
-      "mutationCreateStripeCustomer": [
+      "createCustomerAccountMutation": [
         "read"
       ],
-      "queryGetStripeCustomerByCustomerUsername": [
+      "getCustomerAccountByUsernameQuery": [
         "read"
       ]
     }

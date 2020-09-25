@@ -78,51 +78,16 @@
         },
         {
           "category": "function",
-          "resourceName": "mutationCreateStripeCustomer",
+          "resourceName": "createCustomerAccountMutation",
           "attributes": [
             "Name"
           ]
         },
         {
           "category": "function",
-          "resourceName": "queryGetStripeCustomerByCustomerUsername",
+          "resourceName": "getCustomerAccountByUsernameQuery",
           "attributes": [
             "Name"
-          ]
-        }
-      ]
-    },
-    "createStripeCustomer": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "client",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "stripeLayer",
-          "attributes": [
-            "Arn"
-          ]
-        }
-      ]
-    },
-    "deleteStripeCustomer": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "client",
-          "attributes": [
-            "GraphQLAPIIdOutput"
           ]
         }
       ]
@@ -156,7 +121,49 @@
         }
       ]
     },
-    "mutationCreateStripeCustomer": {
+    "createCustomerAccount": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "client",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "stripeLayer",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "deleteCustomerAccount": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "client",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "stripeLayer",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "createCustomerAccountMutation": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
@@ -170,7 +177,7 @@
         }
       ]
     },
-    "queryGetStripeCustomerByCustomerUsername": {
+    "getCustomerAccountByUsernameQuery": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",

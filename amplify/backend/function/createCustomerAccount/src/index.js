@@ -1,7 +1,7 @@
 /* Amplify Params - DO NOT EDIT
+	API_CLIENT_CUSTOMERACCOUNTTABLE_ARN
+	API_CLIENT_CUSTOMERACCOUNTTABLE_NAME
 	API_CLIENT_GRAPHQLAPIIDOUTPUT
-	API_CLIENT_STRIPECUSTOMERTABLE_ARN
-	API_CLIENT_STRIPECUSTOMERTABLE_NAME
 Amplify Params - DO NOT EDIT */
 
 const stripe = require("stripe");
@@ -10,10 +10,10 @@ const AWS = require("aws-sdk");
 const STRIPE_API_KEY_SECRET_ID = "stripe-api-key";
 
 const STRIPE_CUSTOMER_TABLE_NAME =
-  process.env.API_CLIENT_STRIPECUSTOMERTABLE_NAME;
+  process.env.API_CLIENT_CUSTOMERACCOUNTTABLE_NAME;
 if (!STRIPE_CUSTOMER_TABLE_NAME) {
   throw new Error(
-    `Function requires environment variable: 'API_CLIENT_STRIPECUSTOMERTABLE_NAME'`
+    `Function requires environment variable: 'API_CLIENT_CUSTOMERACCOUNTTABLE_NAME'`
   );
 }
 
@@ -26,15 +26,15 @@ exports.handler = async (event) => {
   const username = event.arguments.input.customerUsername;
   const customer = await Stripe.customers.create();
 
-  const stripeCustomer = {
+  const customerAccount = {
     id: event.stripeCustomerId,
     customerUsername: username,
     stripeCustomerId: customer.id,
   };
 
-  await createStripeCustomer(stripeCustomer);
+  await createCustomerAccount(customerAccount);
 
-  return stripeCustomer;
+  return customerAccount;
 };
 
 function configureStripe() {
@@ -49,11 +49,11 @@ function configureStripe() {
     });
 }
 
-function createStripeCustomer(customer) {
+function createCustomerAccount(customerAccount) {
   return documentClient
     .put({
       TableName: STRIPE_CUSTOMER_TABLE_NAME,
-      Item: customer,
+      Item: customerAccount,
     })
     .promise();
 }

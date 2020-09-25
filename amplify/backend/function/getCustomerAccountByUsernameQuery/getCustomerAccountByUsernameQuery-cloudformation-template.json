@@ -37,12 +37,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "mutationCreateStripeCustomer",
+            "getCustomerAccountByUsernameQuery",
             {
               "Fn::Join": [
                 "",
                 [
-                  "mutationCreateStripeCustomer",
+                  "getCustomerAccountByUsernameQuery",
                   "-",
                   {
                     "Ref": "env"
@@ -76,7 +76,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/mutationCreateStripeCustomer-77466b58334f5a6d674d-build.zip"
+          "S3Key": "amplify-builds/getCustomerAccountByUsernameQuery-6b7a4563664476584235-build.zip"
         }
       }
     },
@@ -86,12 +86,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRoled49e1bc5",
+            "clientLambdaRole10ed2aec",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRoled49e1bc5",
+                  "clientLambdaRole10ed2aec",
                   "-",
                   {
                     "Ref": "env"

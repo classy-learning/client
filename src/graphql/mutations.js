@@ -1,12 +1,12 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createStripeCustomer = /* GraphQL */ `
-  mutation CreateStripeCustomer(
-    $input: CreateStripeCustomerInput!
-    $condition: ModelStripeCustomerConditionInput
+export const createCustomerAccount = /* GraphQL */ `
+  mutation CreateCustomerAccount(
+    $input: CreateCustomerAccountInput!
+    $condition: ModelCustomerAccountConditionInput
   ) {
-    createStripeCustomer(input: $input, condition: $condition) {
+    createCustomerAccount(input: $input, condition: $condition) {
       id
       customerUsername
       stripeCustomerId
@@ -63,12 +63,12 @@ export const createStudentAccount = /* GraphQL */ `
     }
   }
 `;
-export const deleteStripeCustomer = /* GraphQL */ `
-  mutation DeleteStripeCustomer(
-    $input: DeleteStripeCustomerInput!
-    $condition: ModelStripeCustomerConditionInput
+export const deleteCustomerAccount = /* GraphQL */ `
+  mutation DeleteCustomerAccount(
+    $input: DeleteCustomerAccountInput!
+    $condition: ModelCustomerAccountConditionInput
   ) {
-    deleteStripeCustomer(input: $input, condition: $condition) {
+    deleteCustomerAccount(input: $input, condition: $condition) {
       id
       customerUsername
       stripeCustomerId

@@ -3,7 +3,8 @@
     "operation": "Invoke",
     "payload": {
         "type": "Mutation",
-        "field": "deleteStripeCustomer",
+        "field": "createCustomerAccount",
+        "stripeCustomerId": $utils.toJson($util.autoId()),
         "arguments": $utils.toJson($context.arguments),
         "identity": $utils.toJson($context.identity),
         "source": $utils.toJson($context.source)

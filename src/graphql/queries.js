@@ -126,9 +126,9 @@ export const studentAccountsByCustomerUsername = /* GraphQL */ `
     }
   }
 `;
-export const getStripeCustomer = /* GraphQL */ `
-  query GetStripeCustomer($id: ID!) {
-    getStripeCustomer(id: $id) {
+export const getCustomerAccount = /* GraphQL */ `
+  query GetCustomerAccount($id: ID!) {
+    getCustomerAccount(id: $id) {
       id
       customerUsername
       stripeCustomerId
@@ -137,13 +137,17 @@ export const getStripeCustomer = /* GraphQL */ `
     }
   }
 `;
-export const listStripeCustomers = /* GraphQL */ `
-  query ListStripeCustomers(
-    $filter: ModelStripeCustomerFilterInput
+export const listCustomerAccounts = /* GraphQL */ `
+  query ListCustomerAccounts(
+    $filter: ModelCustomerAccountFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listStripeCustomers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listCustomerAccounts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
         customerUsername
@@ -155,15 +159,15 @@ export const listStripeCustomers = /* GraphQL */ `
     }
   }
 `;
-export const stripeCustomersByCustomerUsername = /* GraphQL */ `
-  query StripeCustomersByCustomerUsername(
+export const customerAccountsByCustomerUsername = /* GraphQL */ `
+  query CustomerAccountsByCustomerUsername(
     $customerUsername: ID
     $sortDirection: ModelSortDirection
-    $filter: ModelStripeCustomerFilterInput
+    $filter: ModelCustomerAccountFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    stripeCustomersByCustomerUsername(
+    customerAccountsByCustomerUsername(
       customerUsername: $customerUsername
       sortDirection: $sortDirection
       filter: $filter

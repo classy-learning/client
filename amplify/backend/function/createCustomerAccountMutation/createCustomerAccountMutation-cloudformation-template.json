@@ -10,9 +10,9 @@
     "env": {
       "Type": "String"
     },
-    "apiclientGraphQLAPIIdOutput": {
+    "functionexecuteGraphQLOperationName": {
       "Type": "String",
-      "Default": "apiclientGraphQLAPIIdOutput"
+      "Default": "functionexecuteGraphQLOperationName"
     }
   },
   "Conditions": {
@@ -37,12 +37,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "deleteStripeCustomer",
+            "createCustomerAccountMutation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "deleteStripeCustomer",
+                  "createCustomerAccountMutation",
                   "-",
                   {
                     "Ref": "env"
@@ -60,34 +60,8 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_CLIENT_STRIPECUSTOMERTABLE_NAME": {
-              "Fn::ImportValue": {
-                "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StripeCustomerTable:Name"
-              }
-            },
-            "API_CLIENT_STRIPECUSTOMERTABLE_ARN": {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:aws:dynamodb:",
-                  {
-                    "Ref": "AWS::Region"
-                  },
-                  ":",
-                  {
-                    "Ref": "AWS::AccountId"
-                  },
-                  ":table/",
-                  {
-                    "Fn::ImportValue": {
-                      "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StripeCustomerTable:Name"
-                    }
-                  }
-                ]
-              ]
-            },
-            "API_CLIENT_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apiclientGraphQLAPIIdOutput"
+            "FUNCTION_EXECUTEGRAPHQLOPERATION_NAME": {
+              "Ref": "functionexecuteGraphQLOperationName"
             }
           }
         },
@@ -102,7 +76,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/deleteStripeCustomer-69596e626d4a2f307143-build.zip"
+          "S3Key": "amplify-builds/createCustomerAccountMutation-7a6d4f56467a6f44394d-build.zip"
         }
       }
     },
@@ -112,12 +86,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRolef8962e85",
+            "clientLambdaRolef1f1ec7e",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRolef8962e85",
+                  "clientLambdaRolef1f1ec7e",
                   "-",
                   {
                     "Ref": "env"
@@ -206,14 +180,16 @@
             {
               "Effect": "Allow",
               "Action": [
-                "dynamodb:Delete*"
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
               ],
               "Resource": [
                 {
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:dynamodb:",
+                      "arn:aws:lambda:",
                       {
                         "Ref": "AWS::Region"
                       },
@@ -221,34 +197,10 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":table/",
+                      ":function:",
                       {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StripeCustomerTable:Name"
-                        }
+                        "Ref": "functionexecuteGraphQLOperationName"
                       }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StripeCustomerTable:Name"
-                        }
-                      },
-                      "/index/*"
                     ]
                   ]
                 }

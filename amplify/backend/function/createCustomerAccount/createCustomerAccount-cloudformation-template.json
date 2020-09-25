@@ -41,12 +41,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "createStripeCustomer",
+            "createCustomerAccount",
             {
               "Fn::Join": [
                 "",
                 [
-                  "createStripeCustomer",
+                  "createCustomerAccount",
                   "-",
                   {
                     "Ref": "env"
@@ -64,12 +64,12 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_CLIENT_STRIPECUSTOMERTABLE_NAME": {
+            "API_CLIENT_CUSTOMERACCOUNTTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StripeCustomerTable:Name"
+                "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:CustomerAccountTable:Name"
               }
             },
-            "API_CLIENT_STRIPECUSTOMERTABLE_ARN": {
+            "API_CLIENT_CUSTOMERACCOUNTTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -84,7 +84,7 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StripeCustomerTable:Name"
+                      "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:CustomerAccountTable:Name"
                     }
                   }
                 ]
@@ -110,7 +110,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createStripeCustomer-3455553243514b775038-build.zip"
+          "S3Key": "amplify-builds/createCustomerAccount-63725a474e4d47733730-build.zip"
         }
       }
     },
@@ -120,12 +120,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRole137bc47b",
+            "clientLambdaRole8cb87981",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRole137bc47b",
+                  "clientLambdaRole8cb87981",
                   "-",
                   {
                     "Ref": "env"
@@ -253,7 +253,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StripeCustomerTable:Name"
+                          "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:CustomerAccountTable:Name"
                         }
                       }
                     ]
@@ -274,7 +274,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:StripeCustomerTable:Name"
+                          "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:CustomerAccountTable:Name"
                         }
                       },
                       "/index/*"

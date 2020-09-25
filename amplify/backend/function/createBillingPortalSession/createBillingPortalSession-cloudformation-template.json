@@ -18,13 +18,13 @@
       "Type": "String",
       "Default": "functiongetUsernameFromAuthProviderName"
     },
-    "functionmutationCreateStripeCustomerName": {
+    "functioncreateCustomerAccountMutationName": {
       "Type": "String",
-      "Default": "functionmutationCreateStripeCustomerName"
+      "Default": "functioncreateCustomerAccountMutationName"
     },
-    "functionqueryGetStripeCustomerByCustomerUsernameName": {
+    "functiongetCustomerAccountByUsernameQueryName": {
       "Type": "String",
-      "Default": "functionqueryGetStripeCustomerByCustomerUsernameName"
+      "Default": "functiongetCustomerAccountByUsernameQueryName"
     }
   },
   "Conditions": {
@@ -75,11 +75,11 @@
             "FUNCTION_GETUSERNAMEFROMAUTHPROVIDER_NAME": {
               "Ref": "functiongetUsernameFromAuthProviderName"
             },
-            "FUNCTION_MUTATIONCREATESTRIPECUSTOMER_NAME": {
-              "Ref": "functionmutationCreateStripeCustomerName"
+            "FUNCTION_CREATECUSTOMERACCOUNTMUTATION_NAME": {
+              "Ref": "functioncreateCustomerAccountMutationName"
             },
-            "FUNCTION_QUERYGETSTRIPECUSTOMERBYCUSTOMERUSERNAME_NAME": {
-              "Ref": "functionqueryGetStripeCustomerByCustomerUsernameName"
+            "FUNCTION_GETCUSTOMERACCOUNTBYUSERNAMEQUERY_NAME": {
+              "Ref": "functiongetCustomerAccountByUsernameQueryName"
             }
           }
         },
@@ -98,7 +98,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createBillingPortalSession-796c6a6b7570366e3465-build.zip"
+          "S3Key": "amplify-builds/createBillingPortalSession-4e4b3947493550796661-build.zip"
         }
       }
     },
@@ -269,7 +269,7 @@
                       },
                       ":function:",
                       {
-                        "Ref": "functionmutationCreateStripeCustomerName"
+                        "Ref": "functioncreateCustomerAccountMutationName"
                       }
                     ]
                   ]
@@ -298,7 +298,7 @@
                       },
                       ":function:",
                       {
-                        "Ref": "functionqueryGetStripeCustomerByCustomerUsernameName"
+                        "Ref": "functiongetCustomerAccountByUsernameQueryName"
                       }
                     ]
                   ]

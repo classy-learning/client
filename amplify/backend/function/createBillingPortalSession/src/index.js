@@ -1,8 +1,8 @@
 /* Amplify Params - DO NOT EDIT
 	ENV
+	FUNCTION_CREATECUSTOMERACCOUNTMUTATION_NAME
+	FUNCTION_GETCUSTOMERACCOUNTBYUSERNAMEQUERY_NAME
 	FUNCTION_GETUSERNAMEFROMAUTHPROVIDER_NAME
-	FUNCTION_MUTATIONCREATESTRIPECUSTOMER_NAME
-	FUNCTION_QUERYGETSTRIPECUSTOMERBYCUSTOMERUSERNAME_NAME
 	REGION
 Amplify Params - DO NOT EDIT */
 
@@ -20,19 +20,19 @@ if (!GET_USERNAME_FUNCTION_NAME) {
   );
 }
 
-const MUTATION_CREATE_STRIPE_CUSTOMER_FUNCTION_NAME =
-  process.env.FUNCTION_MUTATIONCREATESTRIPECUSTOMER_NAME;
-if (!MUTATION_CREATE_STRIPE_CUSTOMER_FUNCTION_NAME) {
+const CREATE_CUSTOMER_ACCOUNT_MUTATION =
+  process.env.FUNCTION_CREATECUSTOMERACCOUNTMUTATION_NAME;
+if (!CREATE_CUSTOMER_ACCOUNT_MUTATION) {
   throw new Error(
-    `Function requires environment variable: 'FUNCTION_MUTATIONCREATESTRIPECUSTOMER_NAME'`
+    `Function requires environment variable: 'FUNCTION_CREATECUSTOMERACCOUNTMUTATION_NAME'`
   );
 }
 
-const QUERY_GET_STRIPE_CUSTOMER_FUNCTION_NAME =
-  process.env.FUNCTION_QUERYGETSTRIPECUSTOMERBYCUSTOMERUSERNAME_NAME;
-if (!QUERY_GET_STRIPE_CUSTOMER_FUNCTION_NAME) {
+const GET_CUSTOMER_ACCOUNT_QUERY =
+  process.env.FUNCTION_GETCUSTOMERACCOUNTBYUSERNAMEQUERY_NAME;
+if (!GET_CUSTOMER_ACCOUNT_QUERY) {
   throw new Error(
-    `Function requires environment variable: 'FUNCTION_QUERYGETSTRIPECUSTOMERBYCUSTOMERUSERNAME_NAME'`
+    `Function requires environment variable: 'FUNCTION_GETCUSTOMERACCOUNTBYUSERNAMEQUERY_NAME'`
   );
 }
 
@@ -42,12 +42,12 @@ const secretsManager = new AWS.SecretsManager();
 exports.handler = async (event) => {
   const Stripe = await configureStripe();
   const username = await getUsername(event);
-  let stripeCustomer = await getStripeCustomer(username);
-  if (!stripeCustomer) {
-    stripeCustomer = await createStripeCustomer(username);
+  let customerAccount = await getCustomerAccount(username);
+  if (!customerAccount) {
+    customerAccount = await createCustomerAccount(username);
   }
   const session = await Stripe.billingPortal.sessions.create({
-    customer: stripeCustomer.stripeCustomerId,
+    customer: customerAccount.stripeCustomerId,
     return_url: RETURN_URL,
   });
   return {
@@ -71,10 +71,10 @@ function configureStripe() {
     });
 }
 
-function createStripeCustomer(username) {
+function createCustomerAccount(username) {
   return lambda
     .invoke({
-      FunctionName: MUTATION_CREATE_STRIPE_CUSTOMER_FUNCTION_NAME,
+      FunctionName: CREATE_CUSTOMER_ACCOUNT_MUTATION,
       Payload: JSON.stringify(username),
     })
     .promise()
@@ -83,10 +83,10 @@ function createStripeCustomer(username) {
     });
 }
 
-function getStripeCustomer(username) {
+function getCustomerAccount(username) {
   return lambda
     .invoke({
-      FunctionName: QUERY_GET_STRIPE_CUSTOMER_FUNCTION_NAME,
+      FunctionName: GET_CUSTOMER_ACCOUNT_QUERY,
       Payload: JSON.stringify(username),
     })
     .promise()

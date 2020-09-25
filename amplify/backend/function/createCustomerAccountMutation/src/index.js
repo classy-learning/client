@@ -1,9 +1,5 @@
 /* Amplify Params - DO NOT EDIT
-	ENV
 	FUNCTION_EXECUTEGRAPHQLOPERATION_NAME
-	REGION
-Amplify Params - DO NOT EDIT */ /* Amplify Params - DO NOT EDIT
-
 Amplify Params - DO NOT EDIT */
 
 const AWS = require("aws-sdk");
@@ -19,8 +15,26 @@ if (!EXECUTE_GQL_OPERATION_FUNCTION_NAME) {
 const lambda = new AWS.Lambda();
 
 exports.handler = async (event) => {
-  return getStripeCustomer(event);
+  return createCustomerAccount(event);
 };
+
+function createCustomerAccount(username) {
+  return executeGraphQLOperation(
+    `mutation CreateCustomerAccount(
+      $input: CreateCustomerAccountInput!
+      $condition: ModelCustomerAccountConditionInput
+    ) {
+      createCustomerAccount(input: $input, condition: $condition) {
+        customerUsername
+        stripeCustomerId
+      }
+    }`,
+    "CreateCustomerAccount",
+    { input: { customerUsername: username } }
+  ).then((response) => {
+    return response.data.createCustomerAccount;
+  });
+}
 
 function executeGraphQLOperation(operation, operationName, item) {
   return lambda
@@ -36,21 +50,4 @@ function executeGraphQLOperation(operation, operationName, item) {
     .then((response) => {
       return JSON.parse(response.Payload);
     });
-}
-
-function getStripeCustomer(username) {
-  return executeGraphQLOperation(
-    `query StripeCustomersByCustomerUsername($customerUsername: ID) {
-      stripeCustomersByCustomerUsername(customerUsername: $customerUsername) {
-        items {
-          customerUsername
-          stripeCustomerId
-        }
-      }
-    }`,
-    "StripeCustomersByCustomerUsername",
-    { customerUsername: username }
-  ).then((response) => {
-    return response.data.stripeCustomersByCustomerUsername.items[0];
-  });
 }

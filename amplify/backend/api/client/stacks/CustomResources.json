@@ -237,33 +237,33 @@
         }
       }
     },
-    "CreateStripeCustomerLambdaDataSource": {
+    "CreateCustomerAccountLambdaDataSource": {
       "Type": "AWS::AppSync::DataSource",
       "Properties": {
         "ApiId": {
           "Ref": "AppSyncApiId"
         },
-        "Name": "CreateStripeCustomerFunction",
+        "Name": "CreateCustomerAccountFunction",
         "Type": "AWS_LAMBDA",
         "ServiceRoleArn": {
-          "Fn::GetAtt": ["CreateStripeCustomerLambdaDataSourceRole", "Arn"]
+          "Fn::GetAtt": ["CreateCustomerAccountLambdaDataSourceRole", "Arn"]
         },
         "LambdaConfig": {
           "LambdaFunctionArn": {
             "Fn::Sub": [
-              "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:createStripeCustomer-${env}",
+              "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:createCustomerAccount-${env}",
               { "env": { "Ref": "env" } }
             ]
           }
         }
       }
     },
-    "CreateStripeCustomerLambdaDataSourceRole": {
+    "CreateCustomerAccountLambdaDataSourceRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "RoleName": {
           "Fn::Sub": [
-            "CreateStripeCustomerLambdaDataSourceRole-${env}",
+            "CreateCustomerAccountLambdaDataSourceRole-${env}",
             { "env": { "Ref": "env" } }
           ]
         },
@@ -291,7 +291,7 @@
                   "Resource": [
                     {
                       "Fn::Sub": [
-                        "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:createStripeCustomer-${env}",
+                        "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:createCustomerAccount-${env}",
                         { "env": { "Ref": "env" } }
                       ]
                     }
@@ -303,20 +303,20 @@
         ]
       }
     },
-    "MutationCreateStripeCustomerResolver": {
+    "MutationCreateCustomerAccountResolver": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
         "ApiId": {
           "Ref": "AppSyncApiId"
         },
         "DataSourceName": {
-          "Fn::GetAtt": ["CreateStripeCustomerLambdaDataSource", "Name"]
+          "Fn::GetAtt": ["CreateCustomerAccountLambdaDataSource", "Name"]
         },
         "TypeName": "Mutation",
-        "FieldName": "createStripeCustomer",
+        "FieldName": "createCustomerAccount",
         "RequestMappingTemplateS3Location": {
           "Fn::Sub": [
-            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.createStripeCustomer.req.vtl",
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.createCustomerAccount.req.vtl",
             {
               "S3DeploymentBucket": {
                 "Ref": "S3DeploymentBucket"
@@ -329,7 +329,7 @@
         },
         "ResponseMappingTemplateS3Location": {
           "Fn::Sub": [
-            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.createStripeCustomer.res.vtl",
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.createCustomerAccount.res.vtl",
             {
               "S3DeploymentBucket": {
                 "Ref": "S3DeploymentBucket"
@@ -342,33 +342,33 @@
         }
       }
     },
-    "DeleteStripeCustomerLambdaDataSource": {
+    "DeleteCustomerAccountLambdaDataSource": {
       "Type": "AWS::AppSync::DataSource",
       "Properties": {
         "ApiId": {
           "Ref": "AppSyncApiId"
         },
-        "Name": "DeleteStripeCustomerFunction",
+        "Name": "DeleteCustomerAccountFunction",
         "Type": "AWS_LAMBDA",
         "ServiceRoleArn": {
-          "Fn::GetAtt": ["DeleteStripeCustomerLambdaDataSourceRole", "Arn"]
+          "Fn::GetAtt": ["DeleteCustomerAccountLambdaDataSourceRole", "Arn"]
         },
         "LambdaConfig": {
           "LambdaFunctionArn": {
             "Fn::Sub": [
-              "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:deleteStripeCustomer-${env}",
+              "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:deleteCustomerAccount-${env}",
               { "env": { "Ref": "env" } }
             ]
           }
         }
       }
     },
-    "DeleteStripeCustomerLambdaDataSourceRole": {
+    "DeleteCustomerAccountLambdaDataSourceRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "RoleName": {
           "Fn::Sub": [
-            "DeleteStripeCustomerLambdaDataSourceRole-${env}",
+            "DeleteCustomerAccountLambdaDataSourceRole-${env}",
             { "env": { "Ref": "env" } }
           ]
         },
@@ -396,7 +396,7 @@
                   "Resource": [
                     {
                       "Fn::Sub": [
-                        "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:deleteStripeCustomer-${env}",
+                        "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:deleteCustomerAccount-${env}",
                         { "env": { "Ref": "env" } }
                       ]
                     }
@@ -408,20 +408,20 @@
         ]
       }
     },
-    "MutationDeleteStripeCustomerResolver": {
+    "MutationDeleteCustomerAccountResolver": {
       "Type": "AWS::AppSync::Resolver",
       "Properties": {
         "ApiId": {
           "Ref": "AppSyncApiId"
         },
         "DataSourceName": {
-          "Fn::GetAtt": ["DeleteStripeCustomerLambdaDataSource", "Name"]
+          "Fn::GetAtt": ["DeleteCustomerAccountLambdaDataSource", "Name"]
         },
         "TypeName": "Mutation",
-        "FieldName": "deleteStripeCustomer",
+        "FieldName": "deleteCustomerAccount",
         "RequestMappingTemplateS3Location": {
           "Fn::Sub": [
-            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.deleteStripeCustomer.req.vtl",
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.deleteCustomerAccount.req.vtl",
             {
               "S3DeploymentBucket": {
                 "Ref": "S3DeploymentBucket"
@@ -434,7 +434,7 @@
         },
         "ResponseMappingTemplateS3Location": {
           "Fn::Sub": [
-            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.deleteStripeCustomer.res.vtl",
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.deleteCustomerAccount.res.vtl",
             {
               "S3DeploymentBucket": {
                 "Ref": "S3DeploymentBucket"

@@ -30,7 +30,7 @@ enum CognitoUserStatus {
   FORCE_CHANGE_PASSWORD
 }
 
-input CreateStripeCustomerInput {
+input CreateCustomerAccountInput {
   customerUsername: ID!
 }
 
@@ -41,7 +41,7 @@ input CreateStudentAccountInput {
   email: AWSEmail!
 }
 
-input DeleteStripeCustomerInput {
+input DeleteCustomerAccountInput {
   id: ID!
 }
 
@@ -49,10 +49,10 @@ input DeleteStudentAccountInput {
   id: ID
 }
 
-input ModelStripeCustomerConditionInput {
-  and: [ModelStripeCustomerConditionInput]
-  or: [ModelStripeCustomerConditionInput]
-  not: ModelStripeCustomerConditionInput
+input ModelCustomerAccountConditionInput {
+  and: [ModelCustomerAccountConditionInput]
+  or: [ModelCustomerAccountConditionInput]
+  not: ModelCustomerAccountConditionInput
 }
 
 input ModelStudentAccountConditionInput {
@@ -62,20 +62,20 @@ input ModelStudentAccountConditionInput {
 }
 
 type Mutation {
-  createStripeCustomer(
-    input: CreateStripeCustomerInput!
-    condition: ModelStripeCustomerConditionInput
-  ): StripeCustomer @aws_iam
+  createCustomerAccount(
+    input: CreateCustomerAccountInput!
+    condition: ModelCustomerAccountConditionInput
+  ): CustomerAccount @aws_iam
 
   createStudentAccount(
     input: CreateStudentAccountInput!
     condition: ModelStudentAccountConditionInput
   ): StudentAccount
 
-  deleteStripeCustomer(
-    input: DeleteStripeCustomerInput!
-    condition: ModelStripeCustomerConditionInput
-  ): StripeCustomer @aws_iam
+  deleteCustomerAccount(
+    input: DeleteCustomerAccountInput!
+    condition: ModelCustomerAccountConditionInput
+  ): CustomerAccount @aws_iam
 
   deleteStudentAccount(
     input: DeleteStudentAccountInput!
@@ -83,18 +83,47 @@ type Mutation {
   ): StudentAccount
 }
 
-type StripeCustomer
+# !!!
+# TODO: change the name of this type to CustomerAccount
+type CustomerAccount
   @auth(rules: [{ allow: private, provider: iam }])
   @key(
     name: "ByCustomerUsername"
     fields: ["customerUsername"]
-    queryField: "stripeCustomersByCustomerUsername"
+    queryField: "customerAccountsByCustomerUsername"
   )
   @model(mutations: null, subscriptions: null) {
   id: ID!
   customerUsername: ID!
   stripeCustomerId: ID!
 }
+
+#type StudentSubscription
+
+#}
+
+# return this from stripe directly, similarly to how cognito user is returned from cognito
+#type StripeCustomer {
+
+#}
+
+# return this from stripe directly, similarly to how cognito user is returned from cognito
+#type StripeSubscription {
+
+#}
+
+# return this from stripe directly, similarly to how cognito user is returned from cognito
+#type StripeUsageRecord {
+
+#}
+
+#type Workspace {
+
+#}
+
+#type WorkspaceUsageRecord {
+
+#}
 
 type StudentAccount
   @auth(
@@ -123,20 +152,20 @@ type StudentAccount
 }
 
 type Subscription {
-  onCreateStripeCustomer(
+  onCreateCustomerAccount(
     customerUsername: String
-    stripeCustomerId: String
-  ): StripeCustomer @aws_subscribe(mutations: ["createStripeCustomer"])
+    customerAccountId: String
+  ): CustomerAccount @aws_subscribe(mutations: ["createCustomerAccount"])
 
   onCreateStudentAccount(
     customerUsername: String
     studentUsername: String
   ): StudentAccount @aws_subscribe(mutations: ["createStudentAccount"])
 
-  onDeleteStripeCustomer(
+  onDeleteCustomerAccount(
     customerUsername: String
-    stripeCustomerId: String
-  ): StripeCustomer @aws_subscribe(mutations: ["deleteStripeCustomer"])
+    customerAccountId: String
+  ): CustomerAccount @aws_subscribe(mutations: ["deleteCustomerAccount"])
 
   onDeleteStudentAccount(
     customerUsername: String

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "storage": {
+      "CustomerAccount:@model(appsync)": [
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "stripeLayer",
+      "version": 1
+    }
+  ]
+}
