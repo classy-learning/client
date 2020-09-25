@@ -1,45 +1,47 @@
 /* Amplify Params - DO NOT EDIT
-	AUTH_CLIENT01A53182_USERPOOLID
 	ENV
+	FUNCTION_GETCOGNITOUSERBYUSERNAME_NAME
 	REGION
 Amplify Params - DO NOT EDIT */
 
-const { CognitoIdentityServiceProvider } = require("aws-sdk");
-const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
+const AWS = require("aws-sdk");
 
-const COGNITO_USERPOOL_ID = process.env.AUTH_CLIENT01A53182_USERPOOLID;
-if (!COGNITO_USERPOOL_ID) {
+const GET_COGNITO_USER_FUNCTION_NAME =
+  process.env.FUNCTION_GETCOGNITOUSERBYUSERNAME_NAME;
+if (!GET_COGNITO_USER_FUNCTION_NAME) {
   throw new Error(
-    `Function requires environment variable: 'COGNITO_USERPOOL_ID'`
+    `Function requires environment variable: 'FUNCTION_GETCOGNITOUSERBYUSERNAME_NAME'`
   );
 }
 
-async function getUser(username) {
-  try {
-    const result = await cognitoIdentityServiceProvider
-      .adminGetUser({ UserPoolId: COGNITO_USERPOOL_ID, Username: username })
-      .promise();
-    console.log(result);
-    return result;
-  } catch (e) {
-    throw new Error(`NOT FOUND`);
-  }
-}
-
-const resolvers = {
+const FIELD_RESOLVERS = {
   StudentAccount: {
     customerUser: (event) => getUser(event.source.customerUsername),
     studentUser: (event) => getUser(event.source.studentUsername),
   },
 };
 
+const lambda = new AWS.Lambda();
+
 exports.handler = async (event) => {
-  const typeHandler = resolvers[event.typeName];
+  const typeHandler = FIELD_RESOLVERS[event.typeName];
   if (typeHandler) {
     const resolver = typeHandler[event.fieldName];
     if (resolver) {
-      return await resolver(event);
+      return resolver(event);
     }
   }
   throw new Error("Resolver not found.");
 };
+
+function getUser(username) {
+  return lambda
+    .invoke({
+      FunctionName: GET_COGNITO_USER_FUNCTION_NAME,
+      Payload: JSON.stringify(username),
+    })
+    .promise()
+    .then((response) => {
+      return JSON.parse(response.Payload);
+    });
+}

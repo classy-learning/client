@@ -10,9 +10,9 @@
     "env": {
       "Type": "String"
     },
-    "functiongetCognitoUserByUsernameName": {
+    "authclient01a53182UserPoolId": {
       "Type": "String",
-      "Default": "functiongetCognitoUserByUsernameName"
+      "Default": "authclient01a53182UserPoolId"
     }
   },
   "Conditions": {
@@ -37,12 +37,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "resolveField",
+            "getCognitoUserByUsername",
             {
               "Fn::Join": [
                 "",
                 [
-                  "resolveField",
+                  "getCognitoUserByUsername",
                   "-",
                   {
                     "Ref": "env"
@@ -60,8 +60,8 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "FUNCTION_GETCOGNITOUSERBYUSERNAME_NAME": {
-              "Ref": "functiongetCognitoUserByUsernameName"
+            "AUTH_CLIENT01A53182_USERPOOLID": {
+              "Ref": "authclient01a53182UserPoolId"
             }
           }
         },
@@ -76,7 +76,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/resolveField-372b4b4958567a575367-build.zip"
+          "S3Key": "amplify-builds/getCognitoUserByUsername-6f58314670434d37724e-build.zip"
         }
       }
     },
@@ -86,12 +86,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRolefa3645b0",
+            "clientLambdaRole0b039f11",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRolefa3645b0",
+                  "clientLambdaRole0b039f11",
                   "-",
                   {
                     "Ref": "env"
@@ -180,16 +180,27 @@
             {
               "Effect": "Allow",
               "Action": [
-                "lambda:Get*",
-                "lambda:List*",
-                "lambda:Invoke*"
+                "cognito-identity:Describe*",
+                "cognito-identity:Get*",
+                "cognito-identity:List*",
+                "cognito-idp:Describe*",
+                "cognito-idp:AdminGetDevice",
+                "cognito-idp:AdminGetUser",
+                "cognito-idp:AdminList*",
+                "cognito-idp:List*",
+                "cognito-sync:Describe*",
+                "cognito-sync:Get*",
+                "cognito-sync:List*",
+                "iam:ListOpenIdConnectProviders",
+                "iam:ListRoles",
+                "sns:ListPlatformApplications"
               ],
               "Resource": [
                 {
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:lambda:",
+                      "arn:aws:cognito-idp:",
                       {
                         "Ref": "AWS::Region"
                       },
@@ -197,9 +208,9 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":function:",
+                      ":userpool/",
                       {
-                        "Ref": "functiongetCognitoUserByUsernameName"
+                        "Ref": "authclient01a53182UserPoolId"
                       }
                     ]
                   ]

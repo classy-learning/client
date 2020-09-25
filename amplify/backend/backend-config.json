@@ -41,10 +41,10 @@
       "service": "Lambda",
       "dependsOn": [
         {
-          "category": "auth",
-          "resourceName": "client01a53182",
+          "category": "function",
+          "resourceName": "getCognitoUserByUsername",
           "attributes": [
-            "UserPoolId"
+            "Name"
           ]
         }
       ]
@@ -187,6 +187,20 @@
           "resourceName": "executeGraphQLOperation",
           "attributes": [
             "Name"
+          ]
+        }
+      ]
+    },
+    "getCognitoUserByUsername": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "client01a53182",
+          "attributes": [
+            "UserPoolId"
           ]
         }
       ]
