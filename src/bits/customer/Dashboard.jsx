@@ -174,27 +174,27 @@ const Dashboard = (props) => {
                   ></Form.Input>
                 </Form.Field>
                 <Button
-                  content={`Get ${student.givenName} started for $10/month`}
+                  content={`Start ${student.givenName}'s subscription`}
                   fluid
                   icon="credit card"
                   labelPosition="left"
                   loading={awaitingRedirect}
                   onClick={() => {
                     setAwaitingRedirect(true);
-                    API.get("stripe", "/checkoutPortalSession", {
-                      queryStringParameters: {
-                        studentUsername: student.username,
-                      },
-                      response: true,
-                    })
-                      .then((response) => {
-                        setAwaitingRedirect(false);
-                        console.log(response);
-                      })
-                      .catch((error) => {
-                        console.log(error);
-                        setAwaitingRedirect(false);
-                      });
+                    // API.get("stripe", "/checkoutPortalSession", {
+                    //   queryStringParameters: {
+                    //     studentUsername: student.username,
+                    //   },
+                    //   response: true,
+                    // })
+                    //   .then((response) => {
+                    //     setAwaitingRedirect(false);
+                    //     console.log(response);
+                    //   })
+                    //   .catch((error) => {
+                    //     console.log(error);
+                    //     setAwaitingRedirect(false);
+                    //   });
                   }}
                   secondary
                   size="large"

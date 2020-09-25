@@ -10,17 +10,6 @@
                     ]
                 }
             }
-        },
-        {
-            "name": "/checkoutPortalSession",
-            "lambdaFunction": "createCheckoutPortalSession",
-            "privacy": {
-                "userPoolGroups": {
-                    "Customers": [
-                        "/GET"
-                    ]
-                }
-            }
         }
     ],
     "resourceName": "stripe",
@@ -29,9 +18,6 @@
     "functionArns": [
         {
             "lambdaFunction": "createBillingPortalSession"
-        },
-        {
-            "lambdaFunction": "createCheckoutPortalSession"
         }
     ],
     "privacy": {
@@ -62,15 +48,7 @@
             "attributes": [
                 "CustomersGroupRole"
             ]
-        },
-        {
-            "category": "function",
-            "resourceName": "createCheckoutPortalSession",
-            "attributes": [
-                "Name",
-                "Arn"
-            ]
         }
     ],
-    "uuid": "49c19b38"
+    "uuid": "d5b75481"
 }
