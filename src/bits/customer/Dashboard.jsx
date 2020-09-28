@@ -243,36 +243,4 @@ const Dashboard = (props) => {
   );
 };
 
-// onClick={() => {
-//   setAwaitingRedirect(true);
-//   API.get("stripe", "/subscription", {
-//     queryStringParameters: {
-//       paymentMethodId: paymentMethodId,
-//       studentAccountId: student.id,
-//     },
-//     response: true,
-//   })
-//     .then((response) => {
-//       console.log(response);
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
-//
-//   API.get("stripe", "/checkoutPortalSession", {
-//     queryStringParameters: {
-//       studentUsername: student.username,
-//     },
-//     response: true,
-//   })
-//     .then((response) => {
-//       setAwaitingRedirect(false);
-//       console.log(response);
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//       setAwaitingRedirect(false);
-//     });
-// }}
-
 export default Dashboard;

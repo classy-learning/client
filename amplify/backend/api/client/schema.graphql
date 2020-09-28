@@ -279,7 +279,6 @@ type Subscription {
   ): StudentAccount @aws_subscribe(mutations: ["updateStudentAccount"])
 }
 
-# TODO: maybe change stripeSubscriptionId to String! ? possible fix?
 input UpdateStudentAccountInput {
   id: ID!
   stripeSubscriptionId: ID!

@@ -81,7 +81,6 @@ exports.handler = async (event) => {
     ],
   });
 
-  // TODO: update studentaccount with return subscription id
   const studentAccount = await updateStudentAccount(
     event.queryStringParameters.studentAccountId,
     subscription.id
