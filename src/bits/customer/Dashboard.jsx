@@ -15,11 +15,8 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useContext, useState } from "react";
 
 import { API } from "aws-amplify";
+import EnrollmentSteps from "bits/customer/EnrollmentSteps";
 import StudentContext from "bits/customer/StudentContext";
-
-const BILLING_STEP = "Billing";
-const BOOKING_STEP = "Booking";
-const ENROLLMENT_STEP = "Enrollment";
 
 const Dashboard = (props) => {
   const student = useContext(StudentContext);
@@ -28,7 +25,6 @@ const Dashboard = (props) => {
   // TODO: if all steps are completed, show regular dashboard instead of steps
 
   const [awaitingRedirect, setAwaitingRedirect] = useState(false);
-  const [completedSteps, setCompletedSteps] = useState([ENROLLMENT_STEP]);
 
   const [cardElementFocused, setCardElementFocused] = useState(false);
   const [cardElementComplete, setCardElementComplete] = useState(false);
@@ -37,24 +33,6 @@ const Dashboard = (props) => {
   const elements = useElements();
 
   const canSubmit = stripe && elements && cardElementComplete;
-
-  const steps = [
-    {
-      title: ENROLLMENT_STEP,
-      description: `Register ${student.givenName}'s account.`,
-      props: {},
-    },
-    {
-      title: BILLING_STEP,
-      description: `Start a subscription plan.`,
-      props: { active: true },
-    },
-    {
-      title: BOOKING_STEP,
-      description: `Schedule ${student.givenName}'s first lesson.`,
-      props: {},
-    },
-  ];
 
   const priceStats = [
     {
@@ -81,20 +59,7 @@ const Dashboard = (props) => {
     <Grid container>
       <Grid.Row>
         <Grid.Column>
-          <Step.Group ordered size="mini" widths={steps.length}>
-            {steps.map((step) => (
-              <Step
-                {...step.props}
-                completed={completedSteps.includes(step.title)}
-                key={step.title}
-              >
-                <Step.Content>
-                  <Step.Title>{step.title}</Step.Title>
-                  <Step.Description>{step.description}</Step.Description>
-                </Step.Content>
-              </Step>
-            ))}
-          </Step.Group>
+          <EnrollmentSteps></EnrollmentSteps>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
