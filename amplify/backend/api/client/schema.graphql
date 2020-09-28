@@ -94,6 +94,9 @@ type Mutation {
     input: DeleteStudentAccountInput!
     condition: ModelStudentAccountConditionInput
   ): StudentAccount
+
+  updateStudentAccount(input: UpdateStudentAccountInput!): StudentAccount
+    @aws_iam
 }
 
 enum StripeAggregateUsageType {
@@ -225,9 +228,10 @@ type StudentAccount
       {
         allow: owner
         ownerField: "customerUsername"
-        operations: [read, update, delete]
+        operations: [read, delete]
       }
       { allow: owner, ownerField: "studentUsername", operations: [read] }
+      { allow: private, provider: iam, operations: [read, update] }
     ]
   )
   @key(
@@ -237,6 +241,8 @@ type StudentAccount
   )
   @model(mutations: null, subscriptions: null) {
   id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
   customerUsername: ID!
   customerUser: CognitoUser @function(name: "resolveField-${env}")
   studentUsername: ID!
@@ -245,6 +251,7 @@ type StudentAccount
   stripeSubscription: StripeSubscription @function(name: "resolveField-${env}")
 }
 
+# TODO: update subscription inputs?
 type Subscription {
   onCreateCustomerAccount(
     customerUsername: String
@@ -265,6 +272,17 @@ type Subscription {
     customerUsername: String
     studentUsername: String
   ): StudentAccount @aws_subscribe(mutations: ["deleteStudentAccount"])
+
+  onUpdateStudentAccount(
+    customerUsername: String
+    studentUsername: String
+  ): StudentAccount @aws_subscribe(mutations: ["updateStudentAccount"])
+}
+
+# TODO: maybe change stripeSubscriptionId to String! ? possible fix?
+input UpdateStudentAccountInput {
+  id: ID!
+  stripeSubscriptionId: ID!
 }
 
 #type Workspace {

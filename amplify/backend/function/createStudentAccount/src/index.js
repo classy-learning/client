@@ -40,8 +40,11 @@ exports.handler = async (event) => {
   await groupUser(username, "Students");
   const account = {
     id: event.accountId,
+    createdAt: event.dateTime,
+    updatedAt: event.dateTime,
     customerUsername: event.identity.username,
     studentUsername: username,
+    stripeSubscriptionId: "",
   };
   await createAccount(account);
   return account;

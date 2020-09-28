@@ -1,0 +1,25 @@
+{
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "stripeLayer",
+      "version": 1
+    }
+  ],
+  "permissions": {
+    "function": {
+      "getUsernameFromAuthProvider": [
+        "read"
+      ],
+      "createCustomerAccountMutation": [
+        "read"
+      ],
+      "getCustomerAccountByUsernameQuery": [
+        "read"
+      ],
+      "updateStudentAccountMutation": [
+        "read"
+      ]
+    }
+  }
+}

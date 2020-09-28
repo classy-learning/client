@@ -3,6 +3,9 @@
     "function": {
       "getCognitoUserByUsername": [
         "read"
+      ],
+      "getStripeSubscriptionBySubscriptionId": [
+        "read"
       ]
     }
   },

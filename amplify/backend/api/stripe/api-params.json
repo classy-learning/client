@@ -10,6 +10,17 @@
                     ]
                 }
             }
+        },
+        {
+            "name": "/subscription",
+            "lambdaFunction": "createStripeSubscription",
+            "privacy": {
+                "userPoolGroups": {
+                    "Customers": [
+                        "/GET"
+                    ]
+                }
+            }
         }
     ],
     "resourceName": "stripe",
@@ -18,6 +29,9 @@
     "functionArns": [
         {
             "lambdaFunction": "createBillingPortalSession"
+        },
+        {
+            "lambdaFunction": "createStripeSubscription"
         }
     ],
     "privacy": {
@@ -48,7 +62,15 @@
             "attributes": [
                 "CustomersGroupRole"
             ]
+        },
+        {
+            "category": "function",
+            "resourceName": "createStripeSubscription",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
         }
     ],
-    "uuid": "d5b75481"
+    "uuid": "fde98126"
 }

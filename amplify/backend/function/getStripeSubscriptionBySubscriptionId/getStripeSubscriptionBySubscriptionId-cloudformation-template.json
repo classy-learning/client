@@ -10,13 +10,9 @@
     "env": {
       "Type": "String"
     },
-    "functiongetCognitoUserByUsernameName": {
+    "functionstripeLayerArn": {
       "Type": "String",
-      "Default": "functiongetCognitoUserByUsernameName"
-    },
-    "functiongetStripeSubscriptionBySubscriptionIdName": {
-      "Type": "String",
-      "Default": "functiongetStripeSubscriptionBySubscriptionIdName"
+      "Default": "functionstripeLayerArn"
     }
   },
   "Conditions": {
@@ -41,12 +37,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "resolveField",
+            "getStripeSubscriptionBySubscriptionId",
             {
               "Fn::Join": [
                 "",
                 [
-                  "resolveField",
+                  "getStripeSubscriptionBySubscriptionId",
                   "-",
                   {
                     "Ref": "env"
@@ -63,12 +59,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "FUNCTION_GETCOGNITOUSERBYUSERNAME_NAME": {
-              "Ref": "functiongetCognitoUserByUsernameName"
-            },
-            "FUNCTION_GETSTRIPESUBSCRIPTIONBYSUBSCRIPTIONID_NAME": {
-              "Ref": "functiongetStripeSubscriptionBySubscriptionIdName"
             }
           }
         },
@@ -79,11 +69,15 @@
           ]
         },
         "Runtime": "nodejs12.x",
-        "Layers": [],
+        "Layers": [
+          {
+            "Fn::Sub": "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:stripeLayer-dev:1"
+          }
+        ],
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/resolveField-34345479537471587a38-build.zip"
+          "S3Key": "amplify-builds/getStripeSubscriptionBySubscriptionId-39526669714d79794642-build.zip"
         }
       }
     },
@@ -93,12 +87,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRolefa3645b0",
+            "clientLambdaRoled5e00060",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRolefa3645b0",
+                  "clientLambdaRoled5e00060",
                   "-",
                   {
                     "Ref": "env"
@@ -144,6 +138,25 @@
             {
               "Effect": "Allow",
               "Action": [
+                "secretsmanager:GetSecretValue"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:secretsmanager:${region}:${account}:secret:stripe-api-key-ilJYek",
+                  {
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",
                 "logs:PutLogEvents"
@@ -164,83 +177,6 @@
                   }
                 ]
               }
-            }
-          ]
-        }
-      }
-    },
-    "AmplifyResourcesPolicy": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyName": "amplify-lambda-execution-policy",
-        "Roles": [
-          {
-            "Ref": "LambdaExecutionRole"
-          }
-        ],
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "lambda:Get*",
-                "lambda:List*",
-                "lambda:Invoke*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:lambda:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":function:",
-                      {
-                        "Ref": "functiongetCognitoUserByUsernameName"
-                      }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "lambda:Get*",
-                "lambda:List*",
-                "lambda:Invoke*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:lambda:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":function:",
-                      {
-                        "Ref": "functiongetStripeSubscriptionBySubscriptionIdName"
-                      }
-                    ]
-                  ]
-                }
-              ]
             }
           ]
         }

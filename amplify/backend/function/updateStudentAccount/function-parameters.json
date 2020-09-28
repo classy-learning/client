@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "function": {
+      "getStudentAccountByIdQuery": [
+        "read"
+      ]
+    },
+    "storage": {
+      "StudentAccount:@model(appsync)": [
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

@@ -22,6 +22,8 @@ export const createStudentAccount = /* GraphQL */ `
   ) {
     createStudentAccount(input: $input, condition: $condition) {
       id
+      createdAt
+      updatedAt
       customerUsername
       customerUser {
         Username
@@ -58,8 +60,21 @@ export const createStudentAccount = /* GraphQL */ `
         PreferredMfaSetting
         UserMFASettingList
       }
-      createdAt
-      updatedAt
+      stripeSubscriptionId
+      stripeSubscription {
+        id
+        cancel_at_period_end
+        current_period_end
+        current_period_start
+        customer
+        default_payment_method
+        items {
+          id
+          quantity
+          subscription
+        }
+        status
+      }
     }
   }
 `;
@@ -84,6 +99,8 @@ export const deleteStudentAccount = /* GraphQL */ `
   ) {
     deleteStudentAccount(input: $input, condition: $condition) {
       id
+      createdAt
+      updatedAt
       customerUsername
       customerUser {
         Username
@@ -120,8 +137,81 @@ export const deleteStudentAccount = /* GraphQL */ `
         PreferredMfaSetting
         UserMFASettingList
       }
+      stripeSubscriptionId
+      stripeSubscription {
+        id
+        cancel_at_period_end
+        current_period_end
+        current_period_start
+        customer
+        default_payment_method
+        items {
+          id
+          quantity
+          subscription
+        }
+        status
+      }
+    }
+  }
+`;
+export const updateStudentAccount = /* GraphQL */ `
+  mutation UpdateStudentAccount($input: UpdateStudentAccountInput!) {
+    updateStudentAccount(input: $input) {
+      id
       createdAt
       updatedAt
+      customerUsername
+      customerUser {
+        Username
+        UserAttributes {
+          Name
+          Value
+        }
+        UserCreateDate
+        UserLastModifiedDate
+        Enabled
+        UserStatus
+        MFAOptions {
+          DeliveryMedium
+          AttributeName
+        }
+        PreferredMfaSetting
+        UserMFASettingList
+      }
+      studentUsername
+      studentUser {
+        Username
+        UserAttributes {
+          Name
+          Value
+        }
+        UserCreateDate
+        UserLastModifiedDate
+        Enabled
+        UserStatus
+        MFAOptions {
+          DeliveryMedium
+          AttributeName
+        }
+        PreferredMfaSetting
+        UserMFASettingList
+      }
+      stripeSubscriptionId
+      stripeSubscription {
+        id
+        cancel_at_period_end
+        current_period_end
+        current_period_start
+        customer
+        default_payment_method
+        items {
+          id
+          quantity
+          subscription
+        }
+        status
+      }
     }
   }
 `;

@@ -11,10 +11,10 @@ import {
   Statistic,
   Step,
 } from "semantic-ui-react";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useContext, useState } from "react";
 
 import { API } from "aws-amplify";
-import { CardElement } from "@stripe/react-stripe-js";
 import StudentContext from "bits/customer/StudentContext";
 
 const BILLING_STEP = "Billing";
@@ -29,7 +29,14 @@ const Dashboard = (props) => {
 
   const [awaitingRedirect, setAwaitingRedirect] = useState(false);
   const [completedSteps, setCompletedSteps] = useState([ENROLLMENT_STEP]);
+
   const [cardElementFocused, setCardElementFocused] = useState(false);
+  const [cardElementComplete, setCardElementComplete] = useState(false);
+
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const canSubmit = stripe && elements && cardElementComplete;
 
   const steps = [
     {
@@ -70,7 +77,6 @@ const Dashboard = (props) => {
     },
   ];
 
-  // TODO: get checkout session from stripe using stripeCustomerId
   return (
     <Grid container>
       <Grid.Row>
@@ -137,7 +143,48 @@ const Dashboard = (props) => {
                   </List.Content>
                 </List.Item>
               </List>
-              <Form>
+              <Form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (!canSubmit) {
+                    return;
+                  }
+
+                  setAwaitingRedirect(true);
+
+                  const {
+                    error,
+                    paymentMethod,
+                  } = await stripe.createPaymentMethod({
+                    type: "card",
+                    card: elements.getElement(CardElement),
+                  });
+
+                  if (error) {
+                    // TODO: display errors somewhere in the form
+                    console.log(error);
+                    setAwaitingRedirect(false);
+                    return;
+                  }
+
+                  API.get("stripe", "/subscription", {
+                    queryStringParameters: {
+                      paymentMethodId: paymentMethod.id,
+                      studentAccountId: student.id,
+                    },
+                    response: true,
+                  })
+                    .then((response) => {
+                      console.log(response);
+                      setAwaitingRedirect(false);
+                    })
+                    .catch((error) => {
+                      // TODO: display errors somewhere in the form
+                      console.log(error);
+                      setAwaitingRedirect(false);
+                    });
+                }}
+              >
                 <Form.Field
                   className={
                     cardElementFocused
@@ -149,6 +196,9 @@ const Dashboard = (props) => {
                     as={CardElement}
                     onBlur={() => {
                       setCardElementFocused(false);
+                    }}
+                    onChange={(e) => {
+                      setCardElementComplete(e.complete);
                     }}
                     onFocus={() => {
                       setCardElementFocused(true);
@@ -175,29 +225,14 @@ const Dashboard = (props) => {
                 </Form.Field>
                 <Button
                   content={`Start ${student.givenName}'s subscription`}
+                  disabled={!canSubmit}
                   fluid
                   icon="credit card"
                   labelPosition="left"
                   loading={awaitingRedirect}
-                  onClick={() => {
-                    setAwaitingRedirect(true);
-                    // API.get("stripe", "/checkoutPortalSession", {
-                    //   queryStringParameters: {
-                    //     studentUsername: student.username,
-                    //   },
-                    //   response: true,
-                    // })
-                    //   .then((response) => {
-                    //     setAwaitingRedirect(false);
-                    //     console.log(response);
-                    //   })
-                    //   .catch((error) => {
-                    //     console.log(error);
-                    //     setAwaitingRedirect(false);
-                    //   });
-                  }}
                   secondary
                   size="large"
+                  type="submit"
                 ></Button>
               </Form>
             </Segment>
@@ -207,5 +242,37 @@ const Dashboard = (props) => {
     </Grid>
   );
 };
+
+// onClick={() => {
+//   setAwaitingRedirect(true);
+//   API.get("stripe", "/subscription", {
+//     queryStringParameters: {
+//       paymentMethodId: paymentMethodId,
+//       studentAccountId: student.id,
+//     },
+//     response: true,
+//   })
+//     .then((response) => {
+//       console.log(response);
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//     });
+//
+//   API.get("stripe", "/checkoutPortalSession", {
+//     queryStringParameters: {
+//       studentUsername: student.username,
+//     },
+//     response: true,
+//   })
+//     .then((response) => {
+//       setAwaitingRedirect(false);
+//       console.log(response);
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       setAwaitingRedirect(false);
+//     });
+// }}
 
 export default Dashboard;

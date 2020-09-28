@@ -10,13 +10,9 @@
     "env": {
       "Type": "String"
     },
-    "functiongetCognitoUserByUsernameName": {
+    "functionexecuteGraphQLOperationName": {
       "Type": "String",
-      "Default": "functiongetCognitoUserByUsernameName"
-    },
-    "functiongetStripeSubscriptionBySubscriptionIdName": {
-      "Type": "String",
-      "Default": "functiongetStripeSubscriptionBySubscriptionIdName"
+      "Default": "functionexecuteGraphQLOperationName"
     }
   },
   "Conditions": {
@@ -41,12 +37,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "resolveField",
+            "getStudentAccountByIdQuery",
             {
               "Fn::Join": [
                 "",
                 [
-                  "resolveField",
+                  "getStudentAccountByIdQuery",
                   "-",
                   {
                     "Ref": "env"
@@ -64,11 +60,8 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "FUNCTION_GETCOGNITOUSERBYUSERNAME_NAME": {
-              "Ref": "functiongetCognitoUserByUsernameName"
-            },
-            "FUNCTION_GETSTRIPESUBSCRIPTIONBYSUBSCRIPTIONID_NAME": {
-              "Ref": "functiongetStripeSubscriptionBySubscriptionIdName"
+            "FUNCTION_EXECUTEGRAPHQLOPERATION_NAME": {
+              "Ref": "functionexecuteGraphQLOperationName"
             }
           }
         },
@@ -83,7 +76,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/resolveField-34345479537471587a38-build.zip"
+          "S3Key": "amplify-builds/getStudentAccountByIdQuery-6552666f6b58694b5771-build.zip"
         }
       }
     },
@@ -93,12 +86,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRolefa3645b0",
+            "clientLambdaRole8b019646",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRolefa3645b0",
+                  "clientLambdaRole8b019646",
                   "-",
                   {
                     "Ref": "env"
@@ -206,36 +199,7 @@
                       },
                       ":function:",
                       {
-                        "Ref": "functiongetCognitoUserByUsernameName"
-                      }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "lambda:Get*",
-                "lambda:List*",
-                "lambda:Invoke*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:lambda:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":function:",
-                      {
-                        "Ref": "functiongetStripeSubscriptionBySubscriptionIdName"
+                        "Ref": "functionexecuteGraphQLOperationName"
                       }
                     ]
                   ]

@@ -3,8 +3,7 @@
     "operation": "Invoke",
     "payload": {
         "type": "Mutation",
-        "field": "createStudentAccount",
-        "accountId": $utils.toJson($util.autoId()),
+        "field": "updateStudentAccount",
         "dateTime": $utils.toJson($util.time.nowFormatted("yyyy-MM-dd'T'HH:mm:ss[XXXXX]", "-07:00:30")),
         "arguments": $utils.toJson($context.arguments),
         "identity": $utils.toJson($context.identity),

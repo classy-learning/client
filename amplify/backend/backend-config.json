@@ -46,6 +46,13 @@
           "attributes": [
             "Name"
           ]
+        },
+        {
+          "category": "function",
+          "resourceName": "getStripeSubscriptionBySubscriptionId",
+          "attributes": [
+            "Name"
+          ]
         }
       ]
     },
@@ -204,6 +211,104 @@
           ]
         }
       ]
+    },
+    "getStripeSubscriptionBySubscriptionId": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "stripeLayer",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "createStripeSubscription": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "getUsernameFromAuthProvider",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "createCustomerAccountMutation",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "getCustomerAccountByUsernameQuery",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "updateStudentAccountMutation",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
+    },
+    "updateStudentAccountMutation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "executeGraphQLOperation",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
+    },
+    "updateStudentAccount": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "getStudentAccountByIdQuery",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "client",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "getStudentAccountByIdQuery": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "executeGraphQLOperation",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
     }
   },
   "auth": {
@@ -293,6 +398,14 @@
           "resourceName": "userPoolGroups",
           "attributes": [
             "CustomersGroupRole"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "createStripeSubscription",
+          "attributes": [
+            "Name",
+            "Arn"
           ]
         }
       ]
