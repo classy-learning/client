@@ -16,6 +16,7 @@ import React, { useContext, useState } from "react";
 
 import { API } from "aws-amplify";
 import EnrollmentSteps from "bits/customer/EnrollmentSteps";
+import Prices from "bits/customer/Prices";
 import StudentContext from "bits/customer/StudentContext";
 
 const Dashboard = (props) => {
@@ -34,27 +35,6 @@ const Dashboard = (props) => {
 
   const canSubmit = stripe && elements && cardElementComplete;
 
-  const priceStats = [
-    {
-      key: "subscription",
-      price: "$10",
-      unit: "flat rate",
-      popupContent: `This flat fee secures ${student.givenName}'s fully-configured virtual desktop.`,
-    },
-    {
-      key: "lesson",
-      price: "$50",
-      unit: "per lesson",
-      popupContent: `We pay competetively hourly rates to attract top-quality instructors.`,
-    },
-    {
-      key: "desktop hour",
-      price: "$1",
-      unit: "per desktop hour",
-      popupContent: `Connect from anywhere. Pay only for what ${student.givenName} uses each month.`,
-    },
-  ];
-
   return (
     <Grid container>
       <Grid.Row>
@@ -67,21 +47,7 @@ const Dashboard = (props) => {
           <Segment padded>
             <Header>Purchase a subscription</Header>
             <Segment padded>
-              <Statistic.Group size="mini" widths={priceStats.length}>
-                {priceStats.map((stat) => (
-                  <Statistic key={stat.key}>
-                    <Statistic.Value>{stat.price}</Statistic.Value>
-                    <Statistic.Label>
-                      {stat.unit}{" "}
-                      <Popup
-                        content={stat.popupContent}
-                        position="top center"
-                        trigger={<Icon name="info circle"></Icon>}
-                      ></Popup>
-                    </Statistic.Label>
-                  </Statistic>
-                ))}
-              </Statistic.Group>
+              <Prices></Prices>
             </Segment>
             <Segment padded raised>
               <Header>
