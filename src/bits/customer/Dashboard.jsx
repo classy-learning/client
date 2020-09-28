@@ -1,32 +1,15 @@
-import { Grid, Segment } from "semantic-ui-react";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
-import Checkout from "bits/customer/Checkout";
-import EnrollmentSteps from "bits/customer/EnrollmentSteps";
 import StudentContext from "bits/customer/StudentContext";
+import StudentSetup from "bits/customer/StudentSetup";
 
 const Dashboard = (props) => {
   const student = useContext(StudentContext);
 
-  // TODO: setCompletedSteps based on subscription status and first lesson status
-  // TODO: if all steps are completed, show regular dashboard instead of steps
+  // TODO: replace "false" with condition checking if a first lesson has been scheduled
+  const setupCompleted = student.subscriptionStatus && false;
 
-  return (
-    <Grid container>
-      <Grid.Row>
-        <Grid.Column>
-          <EnrollmentSteps></EnrollmentSteps>
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row>
-        <Grid.Column>
-          <Segment padded>
-            <Checkout></Checkout>
-          </Segment>
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
-  );
+  return setupCompleted ? <div>Dashboard</div> : <StudentSetup></StudentSetup>;
 };
 
 export default Dashboard;
