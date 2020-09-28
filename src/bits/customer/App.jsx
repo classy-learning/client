@@ -31,6 +31,7 @@ const App = (props) => {
             picture: item.studentUser.UserAttributes.filter(
               (attribute) => attribute.Name === "picture"
             )[0].Value,
+            subscriptionStatus: item.stripeSubscription.status,
           };
         })
       );

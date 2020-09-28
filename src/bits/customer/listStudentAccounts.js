@@ -3,6 +3,9 @@ export default `
     listStudentAccounts {
       items {
         id
+        stripeSubscription {
+          status
+        }
         studentUser {
           UserAttributes {
             Name
