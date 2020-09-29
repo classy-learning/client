@@ -45,6 +45,9 @@ exports.handler = async (event) => {
 };
 
 function getSubscription(subscriptionId) {
+  if (!subscriptionId) {
+    return null;
+  }
   return lambda
     .invoke({
       FunctionName: GET_STRIPE_SUBSCRIPTION_FUNCTION_NAME,
