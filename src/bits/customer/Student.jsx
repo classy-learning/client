@@ -25,11 +25,11 @@ const Student = (props) => {
   const [student, setStudent] = useState();
 
   useEffect(() => {
-    if (studentAccounts === undefined) {
+    if (studentAccounts.data === undefined) {
       return;
     }
     setStudent(
-      studentAccounts.filter(
+      studentAccounts.data.filter(
         (account) => account.username === studentUsername
       )[0]
     );

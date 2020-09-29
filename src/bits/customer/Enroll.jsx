@@ -7,8 +7,9 @@ import {
   Message,
   Segment,
 } from "semantic-ui-react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
+import StudentsContext from "bits/customer/StudentsContext";
 import createStudentAccount from "bits/customer/createStudentAccount";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
@@ -16,6 +17,8 @@ import validator from "email-validator";
 
 // TODO: focus on first blank required field when user views form
 const Enroll = (props) => {
+  const students = useContext(StudentsContext);
+
   const history = useHistory();
 
   const [input, setInput] = useState({
@@ -79,6 +82,7 @@ const Enroll = (props) => {
                     const username =
                       response.data.createStudentAccount.studentUsername;
                     history.push(`/student/${username}`);
+                    students.refresh();
                   })
                   .catch((error) => {
                     // TODO: transform error into something you can use for seterrormessage

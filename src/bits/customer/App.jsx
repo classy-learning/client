@@ -13,12 +13,14 @@ import listStudentAccounts from "bits/customer/listStudentAccounts";
 
 const App = (props) => {
   // TODO: refresh studentAccounts when you enroll a new student
+  // TODO: refresh studentAccounts when you subscribe a newly enrolled student
+  // TODO: refresh studentAccounts when you book a new lesson
   const [studentAccounts, setStudentAccounts] = useState();
 
-  useEffect(() => {
-    API.graphql(graphqlOperation(listStudentAccounts)).then((response) => {
-      setStudentAccounts(
-        response.data.listStudentAccounts.items.map((item) => {
+  const fetchStudentAccounts = () =>
+    API.graphql(graphqlOperation(listStudentAccounts))
+      .then((response) => {
+        const accounts = response.data.listStudentAccounts.items.map((item) => {
           return {
             id: item.id,
             username: item.studentUser.Username,
@@ -31,16 +33,30 @@ const App = (props) => {
             picture: item.studentUser.UserAttributes.filter(
               (attribute) => attribute.Name === "picture"
             )[0].Value,
-            subscriptionStatus: item.stripeSubscription.status,
+            subscriptionStatus: item.stripeSubscription?.status,
           };
-        })
-      );
-    });
+        });
+        console.log(accounts);
+        setStudentAccounts(accounts);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+  useEffect(() => {
+    fetchStudentAccounts();
   }, []);
 
   // TODO: make sure dropdown fits contents
   return (
-    <StudentsProvider value={studentAccounts}>
+    <StudentsProvider
+      value={{
+        data: studentAccounts,
+        refresh: () => {
+          fetchStudentAccounts();
+        },
+      }}
+    >
       <Page
         menu={
           <Menu.Menu>
