@@ -6,31 +6,49 @@ import StudentContext from "bits/customer/StudentContext";
 const EnrollmentSteps = (props) => {
   const student = useContext(StudentContext);
 
+  const isBillingComplete = () => student.subscriptionStatus === "active";
+  const isBookingComplete = () => false;
+
   return (
-    <Step.Group ordered size="mini" widths={3}>
+    <Step.Group ordered size="mini" widths={4}>
       {[
         {
-          active: false,
-          completed: true,
-          description: `Register ${student.givenName}'s account.`,
-          key: "Enrollment",
+          description: `Make an account`,
+          props: {
+            active: false,
+            completed: true,
+            key: "Enrollment",
+          },
           title: "Enrollment",
         },
         {
-          active: !student.subscriptionStatus,
-          completed: student.subscriptionStatus,
-          description: `Start a subscription plan.`,
-          key: "Billing",
+          description: `Start a plan`,
+          props: {
+            active: !isBillingComplete,
+            completed: isBillingComplete,
+            key: "Billing",
+          },
           title: "Billing",
         },
         {
-          active: student.subscriptionStatus == true,
-          description: `Schedule ${student.givenName}'s first lesson.`,
-          key: "Booking",
+          description: `Book a lesson`,
+          props: {
+            active: isBillingComplete && !isBookingComplete,
+            completed: isBookingComplete,
+            key: "Booking",
+          },
           title: "Booking",
         },
+        {
+          description: `Start learning`,
+          props: {
+            active: student.subscriptionStatus === "active",
+            key: "Learning",
+          },
+          title: "Confirmation",
+        },
       ].map((step) => (
-        <Step {...step}>
+        <Step {...step.props}>
           <Step.Content>
             <Step.Title>{step.title}</Step.Title>
             <Step.Description>{step.description}</Step.Description>
