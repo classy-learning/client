@@ -21,11 +21,11 @@ const Checkout = (props) => {
 
   return (
     <div>
-      <Header>Purchase a subscription</Header>
+      <Header>Purchase a subscription for {student.givenName}</Header>
       <Segment padded>
         <Prices></Prices>
       </Segment>
-      <Segment padded raised>
+      <Segment padded>
         <Header>
           Enter your card details.
           <Header.Subheader>{`${student.givenName}'s subscription will start right away.`}</Header.Subheader>
@@ -50,6 +50,9 @@ const Checkout = (props) => {
             </List.Content>
           </List.Item>
         </List>
+      </Segment>
+      <Segment padded raised>
+        <Header>Checkout</Header>
         <Form
           onSubmit={async (e) => {
             e.preventDefault();
@@ -80,6 +83,7 @@ const Checkout = (props) => {
             })
               .then((response) => {
                 console.log(response);
+                // TODO: call students.refresh()
                 setAwaitingRedirect(false);
               })
               .catch((error) => {
