@@ -1,12 +1,12 @@
 import { Icon, Popup, Statistic } from "semantic-ui-react";
 import React, { useContext } from "react";
 
-import PropTypes from "prop-types";
 import StudentContext from "bits/customer/StudentContext";
 
 const Prices = (props) => {
   const student = useContext(StudentContext);
 
+  // TODO: get this data from stripe to maintain single source of truth
   const priceStats = [
     {
       key: "subscription",

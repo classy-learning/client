@@ -82,7 +82,8 @@ const Enroll = (props) => {
                     const username =
                       response.data.createStudentAccount.studentUsername;
                     history.push(`/student/${username}`);
-                    students.refresh();
+                    // TODO: should i just use subscriptions instead of students.refresh()?
+                    // students.refresh();
                   })
                   .catch((error) => {
                     // TODO: transform error into something you can use for seterrormessage

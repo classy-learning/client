@@ -15,6 +15,8 @@ const App = (props) => {
   // TODO: refresh studentAccounts when you enroll a new student
   // TODO: refresh studentAccounts when you subscribe a newly enrolled student
   // TODO: refresh studentAccounts when you book a new lesson
+  // TODO: should i just subscribe to changes to studentAccounts???
+
   const [studentAccounts, setStudentAccounts] = useState();
 
   const fetchStudentAccounts = () =>
@@ -48,6 +50,7 @@ const App = (props) => {
   }, []);
 
   // TODO: make sure dropdown fits contents
+  // TODO: make sure dropdown items go to /student/mitchrosen0 instead of /student/student/mitchrosen0, for example
   return (
     <StudentsProvider
       value={{
