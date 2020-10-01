@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
+import AdminApp from "bits/admin/App";
 import { AmplifyContainer } from "@aws-amplify/ui-react";
 import CustomerApp from "bits/customer/App";
 import { Loader } from "semantic-ui-react";
@@ -12,7 +13,10 @@ const AppRouter = (props) => {
   const [group, setGroup] = useState();
 
   useEffect(() => {
-    setGroup(user.signInUserSession.accessToken.payload["cognito:groups"][0]);
+    const groups = user.signInUserSession.accessToken.payload["cognito:groups"];
+    if (groups) {
+      setGroup(groups[0]);
+    }
   }, [user]);
 
   return group === "Customers" ? (
@@ -21,6 +25,8 @@ const AppRouter = (props) => {
     <StudentApp></StudentApp>
   ) : group === "Teachers" ? (
     <TeacherApp></TeacherApp>
+  ) : group === "Admins" ? (
+    <AdminApp></AdminApp>
   ) : (
     <AmplifyContainer>
       <Loader active inline="centered" size="huge"></Loader>
