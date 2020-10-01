@@ -344,11 +344,10 @@
       "service": "Lambda",
       "dependsOn": [
         {
-          "category": "api",
-          "resourceName": "client",
+          "category": "function",
+          "resourceName": "executeGraphQLOperation",
           "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
+            "Name"
           ]
         }
       ]

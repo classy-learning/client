@@ -41,7 +41,7 @@ input CreateStudentAccountInput {
   email: AWSEmail!
 }
 
-type CreateTeacherAccountInput {
+input CreateTeacherAccountInput {
   teacherUsername: ID!
 }
 
@@ -137,6 +137,7 @@ type Resource
       { allow: private, operations: [read] }
     ]
   )
+  @model
   @searchable
   @versioned {
   id: ID!
@@ -386,7 +387,7 @@ type TeachableTopic
   @model(queries: null) {
   id: ID!
   teacherAccountId: ID!
-  teacherAccount: Teacher @connection(fields: ["teacherAccountId"])
+  teacherAccount: TeacherAccount @connection(fields: ["teacherAccountId"])
   topicId: ID!
   topic: Topic @connection(fields: ["topicId"])
 }
@@ -404,7 +405,7 @@ type TeacherAccount
   teacherUsername: ID!
   teacherUser: CognitoUser @function(name: "resolveField-${env}")
   topics: [TeachableTopic!]!
-    @connection(keyName: "byTeacherAccountId", fields: ["id"])
+    @connection(keyName: "ByTeacherAccountId", fields: ["id"])
   # TODO: add lessons
 }
 
@@ -417,6 +418,7 @@ type Topic
       { allow: groups, groups: ["Teachers"], operations: [create, update] }
     ]
   )
+  @model
   @searchable
   @versioned {
   id: ID!
