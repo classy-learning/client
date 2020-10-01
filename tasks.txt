@@ -1,5 +1,3 @@
-TODO: create a test teacher account
-TODO: create a bunch of teachable topics for that teacher
 TODO: create a lookup table to get semantic ui icon class names from topics?
 
 TODO: create business phone number and attach it to stripe public business info page

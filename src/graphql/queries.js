@@ -545,6 +545,9 @@ export const listTopics = /* GraphQL */ `
         resourceTopics {
           nextToken
         }
+        teachableTopics {
+          nextToken
+        }
       }
       nextToken
     }
@@ -563,6 +566,16 @@ export const getTopic = /* GraphQL */ `
         items {
           id
           resourceId
+          topicId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      teachableTopics {
+        items {
+          id
+          teacherAccountId
           topicId
           createdAt
           updatedAt
@@ -593,6 +606,9 @@ export const searchTopics = /* GraphQL */ `
         updatedAt
         version
         resourceTopics {
+          nextToken
+        }
+        teachableTopics {
           nextToken
         }
       }

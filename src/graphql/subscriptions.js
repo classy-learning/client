@@ -418,6 +418,9 @@ export const onCreateResourceTopic = /* GraphQL */ `
         resourceTopics {
           nextToken
         }
+        teachableTopics {
+          nextToken
+        }
       }
     }
   }
@@ -452,6 +455,9 @@ export const onUpdateResourceTopic = /* GraphQL */ `
         resourceTopics {
           nextToken
         }
+        teachableTopics {
+          nextToken
+        }
       }
     }
   }
@@ -484,6 +490,9 @@ export const onDeleteResourceTopic = /* GraphQL */ `
         updatedAt
         version
         resourceTopics {
+          nextToken
+        }
+        teachableTopics {
           nextToken
         }
       }
@@ -526,6 +535,9 @@ export const onCreateTeachableTopic = /* GraphQL */ `
         resourceTopics {
           nextToken
         }
+        teachableTopics {
+          nextToken
+        }
       }
     }
   }
@@ -564,6 +576,9 @@ export const onUpdateTeachableTopic = /* GraphQL */ `
         updatedAt
         version
         resourceTopics {
+          nextToken
+        }
+        teachableTopics {
           nextToken
         }
       }
@@ -606,6 +621,9 @@ export const onDeleteTeachableTopic = /* GraphQL */ `
         resourceTopics {
           nextToken
         }
+        teachableTopics {
+          nextToken
+        }
       }
     }
   }
@@ -623,6 +641,16 @@ export const onCreateTopic = /* GraphQL */ `
         items {
           id
           resourceId
+          topicId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      teachableTopics {
+        items {
+          id
+          teacherAccountId
           topicId
           createdAt
           updatedAt
@@ -651,6 +679,16 @@ export const onUpdateTopic = /* GraphQL */ `
         }
         nextToken
       }
+      teachableTopics {
+        items {
+          id
+          teacherAccountId
+          topicId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -667,6 +705,16 @@ export const onDeleteTopic = /* GraphQL */ `
         items {
           id
           resourceId
+          topicId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      teachableTopics {
+        items {
+          id
+          teacherAccountId
           topicId
           createdAt
           updatedAt

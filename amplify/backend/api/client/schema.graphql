@@ -430,6 +430,8 @@ type Topic
   description: String
   resourceTopics: [ResourceTopic!]!
     @connection(keyName: "ByTopicId", fields: ["id"])
+  teachableTopics: [TeachableTopic!]!
+    @connection(keyName: "ByTopicId", fields: ["id"])
 }
 
 input UpdateStudentAccountInput {
