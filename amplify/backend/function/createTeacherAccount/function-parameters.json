@@ -1,5 +1,11 @@
 {
   "permissions": {
+    "auth": {
+      "client01a53182": [
+        "create",
+        "read"
+      ]
+    },
     "storage": {
       "TeacherAccount:@model(appsync)": [
         "create"

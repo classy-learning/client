@@ -42,7 +42,10 @@ input CreateStudentAccountInput {
 }
 
 input CreateTeacherAccountInput {
-  teacherUsername: ID!
+  givenName: String!
+  familyName: String!
+  email: AWSEmail!
+  phone: AWSPhone!
 }
 
 type CustomerAccount
@@ -107,7 +110,7 @@ type Mutation {
   createTeacherAccount(
     input: CreateTeacherAccountInput!
     condition: ModelTeacherAccountConditionInput
-  ): TeacherAccount @aws_iam
+  ): TeacherAccount
 
   deleteCustomerAccount(
     input: DeleteCustomerAccountInput!
@@ -122,7 +125,7 @@ type Mutation {
   deleteTeacherAccount(
     input: DeleteTeacherAccountInput!
     condition: ModelTeacherAccountConditionInput
-  ): TeacherAccount @aws_iam
+  ): TeacherAccount
 
   updateStudentAccount(input: UpdateStudentAccountInput!): StudentAccount
     @aws_iam
@@ -392,10 +395,11 @@ type TeachableTopic
   topic: Topic @connection(fields: ["topicId"])
 }
 
+# TODO: implement update mutation
+# TODO: authorize iam to perform update mutation
 type TeacherAccount
   @auth(
     rules: [
-      { allow: private, provider: iam }
       { allow: groups, groups: ["Admins"] }
       { allow: private, operations: [read] }
     ]
@@ -424,7 +428,6 @@ type Topic
   id: ID!
   name: String!
   description: String
-  url: AWSURL
   resourceTopics: [ResourceTopic!]!
     @connection(keyName: "ByTopicId", fields: ["id"])
 }

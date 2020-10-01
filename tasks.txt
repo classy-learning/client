@@ -1,8 +1,15 @@
+TODO: create a test teacher account
+TODO: create a bunch of teachable topics for that teacher
+TODO: create a lookup table to get semantic ui icon class names from topics?
+
 TODO: create business phone number and attach it to stripe public business info page
+
 TODO: create support page @ https://classy.name/support
 TODO: create terms page @ https://classy.name/terms
 TODO: create privacy page @ https://classy.name/privacy
+
 TODO: require customer to start a subscription for an enrolled student before they can take lessons or connect to workspace
+
 TODO: instantiate new workspace for new student
 TODO: report workspace usage hours to stripe for billing purposes
 TODO: report completed lessons to stripe for billing purposes

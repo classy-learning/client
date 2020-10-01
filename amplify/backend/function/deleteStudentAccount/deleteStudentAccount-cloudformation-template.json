@@ -76,7 +76,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/deleteStudentAccount-747671487974726d4c6c-build.zip"
+          "S3Key": "amplify-builds/deleteStudentAccount-724e32446d31624b4d76-build.zip"
         }
       }
     },
