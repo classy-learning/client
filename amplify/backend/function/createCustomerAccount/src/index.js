@@ -9,9 +9,9 @@ const AWS = require("aws-sdk");
 
 const STRIPE_API_KEY_SECRET_ID = "stripe-api-key";
 
-const STRIPE_CUSTOMER_TABLE_NAME =
+const CUSTOMER_ACCOUNT_TABLE_NAME =
   process.env.API_CLIENT_CUSTOMERACCOUNTTABLE_NAME;
-if (!STRIPE_CUSTOMER_TABLE_NAME) {
+if (!CUSTOMER_ACCOUNT_TABLE_NAME) {
   throw new Error(
     `Function requires environment variable: 'API_CLIENT_CUSTOMERACCOUNTTABLE_NAME'`
   );
@@ -52,7 +52,7 @@ function configureStripe() {
 function createCustomerAccount(customerAccount) {
   return documentClient
     .put({
-      TableName: STRIPE_CUSTOMER_TABLE_NAME,
+      TableName: CUSTOMER_ACCOUNT_TABLE_NAME,
       Item: customerAccount,
     })
     .promise();
