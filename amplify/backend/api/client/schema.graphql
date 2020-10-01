@@ -41,6 +41,10 @@ input CreateStudentAccountInput {
   email: AWSEmail!
 }
 
+type CreateTeacherAccountInput {
+  teacherUsername: ID!
+}
+
 type CustomerAccount
   @auth(rules: [{ allow: private, provider: iam }])
   @key(
@@ -62,6 +66,15 @@ input DeleteStudentAccountInput {
   id: ID
 }
 
+input DeleteTeacherAccountInput {
+  id: ID
+}
+
+# TODO: create lesson
+# TODO: mirror booking
+# TODO: attach lessons to students
+# TODO: create StudentEvent type
+
 input ModelCustomerAccountConditionInput {
   and: [ModelCustomerAccountConditionInput]
   or: [ModelCustomerAccountConditionInput]
@@ -72,6 +85,12 @@ input ModelStudentAccountConditionInput {
   and: [ModelStudentAccountConditionInput]
   or: [ModelStudentAccountConditionInput]
   not: ModelStudentAccountConditionInput
+}
+
+input ModelTeacherAccountConditionInput {
+  and: [ModelTeacherAccountConditionInput]
+  or: [ModelTeacherAccountConditionInput]
+  not: ModelTeacherAccountConditionInput
 }
 
 type Mutation {
@@ -85,6 +104,11 @@ type Mutation {
     condition: ModelStudentAccountConditionInput
   ): StudentAccount
 
+  createTeacherAccount(
+    input: CreateTeacherAccountInput!
+    condition: ModelTeacherAccountConditionInput
+  ): TeacherAccount @aws_iam
+
   deleteCustomerAccount(
     input: DeleteCustomerAccountInput!
     condition: ModelCustomerAccountConditionInput
@@ -95,8 +119,59 @@ type Mutation {
     condition: ModelStudentAccountConditionInput
   ): StudentAccount
 
+  deleteTeacherAccount(
+    input: DeleteTeacherAccountInput!
+    condition: ModelTeacherAccountConditionInput
+  ): TeacherAccount @aws_iam
+
   updateStudentAccount(input: UpdateStudentAccountInput!): StudentAccount
     @aws_iam
+}
+
+type Resource
+  @auth(
+    rules: [
+      { allow: private, provider: iam }
+      { allow: groups, groups: ["Admins"] }
+      { allow: groups, groups: ["Teachers"], operations: [create, update] }
+      { allow: private, operations: [read] }
+    ]
+  )
+  @searchable
+  @versioned {
+  id: ID!
+  name: String!
+  description: String
+  url: AWSURL
+  resourceTopics: [ResourceTopic!]!
+    @connection(keyName: "ByResourceId", fields: ["id"])
+}
+
+type ResourceTopic
+  @auth(
+    rules: [
+      { allow: private, provider: iam }
+      { allow: groups, groups: ["Admins"] }
+      { allow: groups, groups: ["Teachers"], operations: [create, delete] }
+      { allow: private, operations: [read] }
+    ]
+  )
+  @key(
+    name: "ByResourceId"
+    fields: ["resourceId"]
+    queryField: "resourceTopicByResourceId"
+  )
+  @key(
+    name: "ByTopicId"
+    fields: ["topicId"]
+    queryField: "resourceTopicByTopicId"
+  )
+  @model(queries: null) {
+  id: ID!
+  resourceId: ID!
+  resource: Resource @connection(fields: ["resourceId"])
+  topicId: ID!
+  topic: Topic @connection(fields: ["topicId"])
 }
 
 enum StripeAggregateUsageType {
@@ -223,6 +298,7 @@ enum StripeUsageType {
 type StudentAccount
   @auth(
     rules: [
+      { allow: groups, groups: ["Admins"] }
       { allow: groups, groups: ["Customers"], operations: [create] }
       { allow: groups, groups: ["Teachers"], operations: [read] }
       {
@@ -263,6 +339,11 @@ type Subscription {
     studentUsername: String
   ): StudentAccount @aws_subscribe(mutations: ["createStudentAccount"])
 
+  onCreateTeacherAccount(
+    teacherUsername: String
+    teacherAccountId: String
+  ): TeacherAccount @aws_subscribe(mutations: ["createTeacherAccount"])
+
   onDeleteCustomerAccount(
     customerUsername: String
     customerAccountId: String
@@ -273,10 +354,84 @@ type Subscription {
     studentUsername: String
   ): StudentAccount @aws_subscribe(mutations: ["deleteStudentAccount"])
 
+  onDeleteTeacherAccount(
+    teacherUsername: String
+    teacherAccountId: String
+  ): TeacherAccount @aws_subscribe(mutations: ["deleteTeacherAccount"])
+
   onUpdateStudentAccount(
     customerUsername: String
     studentUsername: String
   ): StudentAccount @aws_subscribe(mutations: ["updateStudentAccount"])
+}
+
+# TODO: should this be searchable or no?
+# TODO: disable queries on this resource as per tutorial
+type TeachableTopic
+  @auth(
+    rules: [
+      { allow: private, provider: iam }
+      { allow: groups, groups: ["Admins"] }
+      { allow: private, operations: [read] }
+    ]
+  )
+  @key(
+    name: "ByTeacherAccountId"
+    fields: ["teacherAccountId"]
+    queryField: "teachableTopicByTeacherAccountId"
+  )
+  @key(
+    name: "ByTopicId"
+    fields: ["topicId"]
+    queryField: "teachableTopicTopicByTopicId"
+  )
+  @model(queries: null) {
+  id: ID!
+  teacherAccountId: ID!
+  teacherAccount: Teacher @connection(fields: ["teacherAccountId"])
+  topicId: ID!
+  topic: Topic @connection(fields: ["topicId"])
+}
+
+# TODO: create functions: createTeacherAccount, createTeacherAccountMutation, deleteTeacherAccount, deleteTeacherAccountMutation
+# TODO: create .vtl resolver files for TeacherAccount createTeacherAccount and deleteTeacherAccount
+# TODO: update CustomResources.json for createTeacherAccount lambdas
+# TODO: update fieldResolver lambda for TeacherAccount.teacherUser
+type TeacherAccount
+  @auth(
+    rules: [
+      { allow: private, provider: iam }
+      { allow: groups, groups: ["Admins"] }
+      { allow: private, operations: [read] }
+    ]
+  )
+  @model(mutations: null, subscriptions: null) {
+  id: ID!
+  teacherUsername: ID!
+  teacherUser: CognitoUser @function(name: "resolveField-${env}")
+  topics: [TeachableTopic!]!
+    @connection(keyName: "byTeacherAccountId", fields: ["id"])
+  # TODO: add lessons
+}
+
+# TODO: multiple urls for this and resource?
+type Topic
+  @auth(
+    rules: [
+      { allow: private, provider: iam }
+      { allow: groups, groups: ["Admins"] }
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Teachers"], operations: [create, update] }
+    ]
+  )
+  @searchable
+  @versioned {
+  id: ID!
+  name: String!
+  description: String
+  url: AWSURL
+  resourceTopics: [ResourceTopic!]!
+    @connection(keyName: "ByTopicId", fields: ["id"])
 }
 
 input UpdateStudentAccountInput {
