@@ -365,8 +365,6 @@ type Subscription {
   ): StudentAccount @aws_subscribe(mutations: ["updateStudentAccount"])
 }
 
-# TODO: should this be searchable or no?
-# TODO: disable queries on this resource as per tutorial
 type TeachableTopic
   @auth(
     rules: [
@@ -393,10 +391,6 @@ type TeachableTopic
   topic: Topic @connection(fields: ["topicId"])
 }
 
-# TODO: create functions: createTeacherAccount, createTeacherAccountMutation, deleteTeacherAccount, deleteTeacherAccountMutation
-# TODO: create .vtl resolver files for TeacherAccount createTeacherAccount and deleteTeacherAccount
-# TODO: update CustomResources.json for createTeacherAccount lambdas
-# TODO: update fieldResolver lambda for TeacherAccount.teacherUser
 type TeacherAccount
   @auth(
     rules: [
@@ -414,7 +408,6 @@ type TeacherAccount
   # TODO: add lessons
 }
 
-# TODO: multiple urls for this and resource?
 type Topic
   @auth(
     rules: [

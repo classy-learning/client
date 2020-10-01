@@ -33,6 +33,9 @@ exports.handler = async (event) => {
       stripeSubscription: (event) =>
         getSubscription(event.source.stripeSubscriptionId),
     },
+    TeacherAccount: {
+      teacherUser: (event) => getUser(event.source.teacherUsername),
+    },
   };
   const typeHandler = resolvers[event.typeName];
   if (typeHandler) {

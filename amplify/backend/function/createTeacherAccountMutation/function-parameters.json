@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "api": {
+      "client": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

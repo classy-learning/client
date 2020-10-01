@@ -1,0 +1,13 @@
+{
+    "version": "2017-02-28",
+    "operation": "Invoke",
+    "payload": {
+        "type": "Mutation",
+        "field": "createTeacherAccount",
+        "accountId": $utils.toJson($util.autoId()),
+        "dateTime": $utils.toJson($util.time.nowFormatted("yyyy-MM-dd'T'HH:mm:ss[XXXXX]", "-07:00:30")),
+        "arguments": $utils.toJson($context.arguments),
+        "identity": $utils.toJson($context.identity),
+        "source": $utils.toJson($context.source)
+    }
+}
