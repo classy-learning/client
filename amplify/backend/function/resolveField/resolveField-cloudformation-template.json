@@ -17,6 +17,30 @@
     "functiongetStripeSubscriptionBySubscriptionIdName": {
       "Type": "String",
       "Default": "functiongetStripeSubscriptionBySubscriptionIdName"
+    },
+    "functiongetStripeUsageRecordByIdName": {
+      "Type": "String",
+      "Default": "functiongetStripeUsageRecordByIdName"
+    },
+    "functiongetTimekitCustomerByIdName": {
+      "Type": "String",
+      "Default": "functiongetTimekitCustomerByIdName"
+    },
+    "functiongetTimekitResourceByIdName": {
+      "Type": "String",
+      "Default": "functiongetTimekitResourceByIdName"
+    },
+    "functiongetStudentUsernameByStudentAccountIdQueryName": {
+      "Type": "String",
+      "Default": "functiongetStudentUsernameByStudentAccountIdQueryName"
+    },
+    "functiongetTeacherUsernameByTeacherAccountIdQueryName": {
+      "Type": "String",
+      "Default": "functiongetTeacherUsernameByTeacherAccountIdQueryName"
+    },
+    "functiongetCustomerUsernameByStudentAccountIdQueryName": {
+      "Type": "String",
+      "Default": "functiongetCustomerUsernameByStudentAccountIdQueryName"
     }
   },
   "Conditions": {
@@ -69,6 +93,24 @@
             },
             "FUNCTION_GETSTRIPESUBSCRIPTIONBYSUBSCRIPTIONID_NAME": {
               "Ref": "functiongetStripeSubscriptionBySubscriptionIdName"
+            },
+            "FUNCTION_GETSTRIPEUSAGERECORDBYID_NAME": {
+              "Ref": "functiongetStripeUsageRecordByIdName"
+            },
+            "FUNCTION_GETTIMEKITCUSTOMERBYID_NAME": {
+              "Ref": "functiongetTimekitCustomerByIdName"
+            },
+            "FUNCTION_GETTIMEKITRESOURCEBYID_NAME": {
+              "Ref": "functiongetTimekitResourceByIdName"
+            },
+            "FUNCTION_GETSTUDENTUSERNAMEBYSTUDENTACCOUNTIDQUERY_NAME": {
+              "Ref": "functiongetStudentUsernameByStudentAccountIdQueryName"
+            },
+            "FUNCTION_GETTEACHERUSERNAMEBYTEACHERACCOUNTIDQUERY_NAME": {
+              "Ref": "functiongetTeacherUsernameByTeacherAccountIdQueryName"
+            },
+            "FUNCTION_GETCUSTOMERUSERNAMEBYSTUDENTACCOUNTIDQUERY_NAME": {
+              "Ref": "functiongetCustomerUsernameByStudentAccountIdQueryName"
             }
           }
         },
@@ -236,6 +278,180 @@
                       ":function:",
                       {
                         "Ref": "functiongetStripeSubscriptionBySubscriptionIdName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functiongetStripeUsageRecordByIdName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functiongetTimekitCustomerByIdName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functiongetTimekitResourceByIdName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functiongetStudentUsernameByStudentAccountIdQueryName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functiongetTeacherUsernameByTeacherAccountIdQueryName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functiongetCustomerUsernameByStudentAccountIdQueryName"
                       }
                     ]
                   ]

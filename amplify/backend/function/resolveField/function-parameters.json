@@ -6,6 +6,15 @@
       ],
       "getStripeSubscriptionBySubscriptionId": [
         "read"
+      ],
+      "getStripeUsageRecordById": [
+        "read"
+      ],
+      "getTimekitCustomerById": [
+        "read"
+      ],
+      "getTimekitResourceById": [
+        "read"
       ]
     }
   },

@@ -53,6 +53,27 @@
           "attributes": [
             "Name"
           ]
+        },
+        {
+          "category": "function",
+          "resourceName": "getStripeUsageRecordById",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "getTimekitCustomerById",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "getTimekitResourceById",
+          "attributes": [
+            "Name"
+          ]
         }
       ]
     },
@@ -416,6 +437,74 @@
       ]
     },
     "updateLessonMutation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "executeGraphQLOperation",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
+    },
+    "getStripeUsageRecordById": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "stripeLayer",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "getTimekitCustomerById": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
+    },
+    "getTimekitResourceById": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
+    },
+    "getStudentUsernameByStudentAccountIdQuery": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "executeGraphQLOperation",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
+    },
+    "getTeacherUsernameByTeacherAccountIdQuery": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "executeGraphQLOperation",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
+    },
+    "getCustomerUsernameByStudentAccountIdQuery": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
