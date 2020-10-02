@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "function": {
+      "executeGraphQLOperation": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

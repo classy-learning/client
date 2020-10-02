@@ -27,6 +27,16 @@ const lambda = new AWS.Lambda();
 
 exports.handler = async (event) => {
   const resolvers = {
+    Lesson: {
+      customerUsername: (event) =>
+        getCustomerUsernameByStudentAccountId(event.source.studentAccountId),
+      studentUsername: (event) =>
+        getStudentUsernameByStudentAccountId(event.source.studentAccountId),
+      teacherUsername: (event) =>
+        getTeacherUsernameByTeacherAccountId(event.source.teacherAccountId),
+      stripeUsageRecord: (event) =>
+        getStripeUsageRecord(event.source.stripeUsageRecordId),
+    },
     StudentAccount: {
       customerUser: (event) => getUser(event.source.customerUsername),
       studentUser: (event) => getUser(event.source.studentUsername),
@@ -35,6 +45,8 @@ exports.handler = async (event) => {
     },
     TeacherAccount: {
       teacherUser: (event) => getUser(event.source.teacherUsername),
+      timekitResource: (event) =>
+        getTimekitResource(event.source.timekitResourceId),
     },
   };
   const typeHandler = resolvers[event.typeName];
@@ -46,6 +58,10 @@ exports.handler = async (event) => {
   }
   throw new Error("Resolver not found.");
 };
+
+function getStripeUsageRecord(stripeUsageRecordId) {
+  // TODO: implement getStripeUsageRecord
+}
 
 function getSubscription(subscriptionId) {
   if (!subscriptionId) {
@@ -72,4 +88,16 @@ function getUser(username) {
     .then((response) => {
       return JSON.parse(response.Payload);
     });
+}
+
+function getCustomerUsernameByStudentAccountId(accountId) {
+  // TODO: implement getCustomerUsernameByStudentAccountId
+}
+
+function getStudentUsernameByStudentAccountId(accountId) {
+  // TODO: implements getStudentUsernameByStudentAccountId
+}
+
+function getTeacherUsernameByTeacherAccountId(accountId) {
+  // TODO: implement getTeacherUsernameByTeacherAccountId
 }

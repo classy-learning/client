@@ -34,6 +34,13 @@ input CreateCustomerAccountInput {
   customerUsername: ID!
 }
 
+input CreateLessonInput {
+  studentAccountId: ID!
+  teacherAccountId: ID!
+  start: AWSDateTime
+  end: AWSDateTime
+}
+
 input CreateStudentAccountInput {
   givenName: String!
   familyName: String!
@@ -65,6 +72,10 @@ input DeleteCustomerAccountInput {
   id: ID!
 }
 
+input DeleteLessonInput {
+  id: ID!
+}
+
 input DeleteStudentAccountInput {
   id: ID
 }
@@ -73,15 +84,54 @@ input DeleteTeacherAccountInput {
   id: ID
 }
 
-# TODO: create lesson
-# TODO: mirror booking
-# TODO: attach lessons to students
+type Lesson
+  @auth(
+    rules: [
+      { allow: private, provider: iam }
+      { allow: groups, groups: ["Admins"] }
+      { allow: groups, groups: ["Customers"], operations: [create] }
+      { allow: owner, ownerField: "studentUsername", operations: [read] }
+      { allow: owner, ownerField: "customerUsername", operations: [read] }
+      { allow: owner, ownerField: "teacherUsername", operations: [read] }
+    ]
+  )
+  @key(
+    name: "ByStudentAccountId"
+    fields: ["studentAccountId"]
+    queryField: "lessonsByStudentAccountId"
+  )
+  @key(
+    name: "ByTeacherAccountId"
+    fields: ["teacherAccountId"]
+    queryField: "lessonsByTeacherAccountId"
+  )
+  @model(mutations: null, subscriptions: null) {
+  id: ID!
+  customerUsername: ID! @function(name: "resolveField-${env}")
+  studentUsername: ID! @function(name: "resolveField-${env}")
+  teacherUsername: ID! @function(name: "resolveField-${env}")
+  stripeUsageRecordId: ID!
+  stripeUsageRecord: StripeUsageRecord @function(name: "resolveField-${env}")
+  studentAccountId: ID!
+  studentAccount: StudentAccount @connection(fields: ["studentAccountId"])
+  teacherAccountId: ID!
+  teacherAccount: TeacherAccount @connection(fields: ["teacherAccountId"])
+  timekitBookingId: ID!
+  timekitBooking: TimekitBooking @connection(fields: ["timekitBookingId"])
+}
+
 # TODO: create StudentEvent type
 
 input ModelCustomerAccountConditionInput {
   and: [ModelCustomerAccountConditionInput]
   or: [ModelCustomerAccountConditionInput]
   not: ModelCustomerAccountConditionInput
+}
+
+input ModelLessonConditionInput {
+  and: [ModelLessonConditionInput]
+  or: [ModelLessonConditionInput]
+  not: ModelLessonConditionInput
 }
 
 input ModelStudentAccountConditionInput {
@@ -102,6 +152,11 @@ type Mutation {
     condition: ModelCustomerAccountConditionInput
   ): CustomerAccount @aws_iam
 
+  createLesson(
+    input: CreateLessonInput!
+    condition: ModelLessonConditionInput
+  ): Lesson @aws_iam
+
   createStudentAccount(
     input: CreateStudentAccountInput!
     condition: ModelStudentAccountConditionInput
@@ -117,6 +172,11 @@ type Mutation {
     condition: ModelCustomerAccountConditionInput
   ): CustomerAccount @aws_iam
 
+  deleteLesson(
+    input: DeleteLessonInput!
+    condition: ModelLessonConditionInput
+  ): Lesson @aws_iam
+
   deleteStudentAccount(
     input: DeleteStudentAccountInput!
     condition: ModelStudentAccountConditionInput
@@ -126,6 +186,8 @@ type Mutation {
     input: DeleteTeacherAccountInput!
     condition: ModelTeacherAccountConditionInput
   ): TeacherAccount
+
+  updateLesson(input: UpdateLessonInput!): Lesson @aws_iam
 
   updateStudentAccount(input: UpdateStudentAccountInput!): StudentAccount
     @aws_iam
@@ -323,12 +385,15 @@ type StudentAccount
   id: ID!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  lessons: [Lesson!]! @connection(keyName: "ByStudentAccountId", fields: ["id"])
   customerUsername: ID!
   customerUser: CognitoUser @function(name: "resolveField-${env}")
   studentUsername: ID!
   studentUser: CognitoUser @function(name: "resolveField-${env}")
   stripeSubscriptionId: ID!
   stripeSubscription: StripeSubscription @function(name: "resolveField-${env}")
+  timekitCustomerId: ID!
+  timekitCustomer: TimekitCustomer @function(name: "resolveField-${env}")
 }
 
 # TODO: update subscription inputs?
@@ -337,6 +402,9 @@ type Subscription {
     customerUsername: String
     customerAccountId: String
   ): CustomerAccount @aws_subscribe(mutations: ["createCustomerAccount"])
+
+  onCreateLesson(customerUsername: String, studentUsername: String): Lesson
+    @aws_subscribe(mutation: ["createLesson"])
 
   onCreateStudentAccount(
     customerUsername: String
@@ -353,6 +421,9 @@ type Subscription {
     customerAccountId: String
   ): CustomerAccount @aws_subscribe(mutations: ["deleteCustomerAccount"])
 
+  onDeleteLesson(customerUsername: String, studentUsername: String): Lesson
+    @aws_subscribe(mutations: ["deleteLesson"])
+
   onDeleteStudentAccount(
     customerUsername: String
     studentUsername: String
@@ -362,6 +433,9 @@ type Subscription {
     teacherUsername: String
     teacherAccountId: String
   ): TeacherAccount @aws_subscribe(mutations: ["deleteTeacherAccount"])
+
+  onUpdateLesson(customerUsername: String, studentUsername: String): Lesson
+    @aws_subscribe(mutations: ["updateLesson"])
 
   onUpdateStudentAccount(
     customerUsername: String
@@ -395,8 +469,6 @@ type TeachableTopic
   topic: Topic @connection(fields: ["topicId"])
 }
 
-# TODO: implement update mutation
-# TODO: authorize iam to perform update mutation
 type TeacherAccount
   @auth(
     rules: [
@@ -408,9 +480,136 @@ type TeacherAccount
   id: ID!
   teacherUsername: ID!
   teacherUser: CognitoUser @function(name: "resolveField-${env}")
+  timekitResourceId: ID!
+  timekitResource: TimekitResource @function(name: "resolveField-${env}")
   topics: [TeachableTopic!]!
     @connection(keyName: "ByTeacherAccountId", fields: ["id"])
-  # TODO: add lessons
+  lessons: [Lesson!]! @connection(keyName: "ByTeacherAccountId", fields: ["id"])
+}
+
+type TimekitAvailabilityConstraint {
+  key: TimekitConstraintType
+  value: TimekitConstraint
+}
+
+type TimekitBooking {
+  id: ID!
+  graph: TimekitGraph!
+  state: TimekitBookingState!
+  completed: Boolean!
+  created_at: AWSDateTime!
+  updated_at: AWSDateTime!
+  available_actions: [TimekitBookingAction!]!
+  customers: [TimekitCustomer!]!
+  attributes: TimekitBookingAttributes
+  calendar: TimekitBookingCalendar
+}
+
+enum TimekitBookingAction {
+  cancel
+  cancel_by_customer
+  cancel_by_owner
+  complete
+  confirm
+  create
+  decline
+}
+
+type TimekitBookingAttributes {
+  event_info: TimekitEvent
+}
+
+type TimekitBookingCalendar {
+  calendar: TimekitCalendar
+}
+
+enum TimekitBookingState {
+  cancelled
+  cancelled_by_customer
+  cancelled_by_host
+  completed
+  confirmed
+  declined
+  error
+  tentative
+}
+
+type TimekitCalendar {
+  id: ID!
+  name: String
+  display_name: String
+  description: String
+  foregroundColor: String
+  backgroundColor: String
+  created_at: AWSDateTime
+  updated_at: AWSDateTime
+}
+
+enum TimekitConstraintType {
+  allow_day
+  allow_day_and_time
+  allow_period
+  allow_hours
+  allow_weekends
+  block_day
+  block_day_and_time
+  block_period
+  block_hours
+  block_weekends
+}
+
+type TimekitConstraint {
+  day: TimekitDay
+  start: TimekitPeriodValue
+  end: TimekitPeriodValue
+}
+
+type TimekitCustomer {
+  id: ID!
+  name: String!
+  email: AWSEmail!
+  phone: AWSPhone
+  voip: String
+  timezone: String!
+}
+
+enum TimekitDay {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
+}
+
+type TimekitEvent {
+  description: String
+  end: AWSDateTime
+  start: AWSDateTime
+  what: String
+  where: String
+}
+
+enum TimekitGraph {
+  instant
+  confirm_decline
+  group_owner
+  group_customer
+}
+
+# TODO: any required union implementations for TimekitPeriodValue
+union TimekitPeriodValue = Int | AWSDateTime
+
+type TimekitResource {
+  id: ID!
+  name: String!
+  timezone: String!
+  email: AWSEmail
+  first_name: String
+  last_name: String
+  availabilityConstraints: [TimekitConstraint!]!
+  image: AWSURL
 }
 
 type Topic
@@ -432,6 +631,12 @@ type Topic
     @connection(keyName: "ByTopicId", fields: ["id"])
   teachableTopics: [TeachableTopic!]!
     @connection(keyName: "ByTopicId", fields: ["id"])
+}
+
+input UpdateLessonInput {
+  id: ID!
+  timekitBookingId: ID
+  stripeUsageRecordId: ID
 }
 
 input UpdateStudentAccountInput {
