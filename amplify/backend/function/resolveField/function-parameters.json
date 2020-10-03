@@ -7,13 +7,19 @@
       "getStripeSubscriptionBySubscriptionId": [
         "read"
       ],
-      "getStripeUsageRecordById": [
-        "read"
-      ],
-      "getTimekitCustomerById": [
-        "read"
-      ],
       "getTimekitResourceById": [
+        "read"
+      ],
+      "getStudentUsernameByStudentAccountIdQuery": [
+        "read"
+      ],
+      "getTeacherUsernameByTeacherAccountIdQuery": [
+        "read"
+      ],
+      "getCustomerUsernameByStudentAccountIdQuery": [
+        "read"
+      ],
+      "getTimekitBookingById": [
         "read"
       ]
     }

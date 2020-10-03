@@ -2,7 +2,7 @@
   "lambdaLayers": [
     {
       "type": "ProjectLayer",
-      "resourceName": "stripeLayer",
+      "resourceName": "timekitLayer",
       "version": 1
     }
   ]

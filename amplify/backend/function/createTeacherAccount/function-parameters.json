@@ -12,5 +12,11 @@
       ]
     }
   },
-  "lambdaLayers": []
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "timekitLayer",
+      "version": 1
+    }
+  ]
 }

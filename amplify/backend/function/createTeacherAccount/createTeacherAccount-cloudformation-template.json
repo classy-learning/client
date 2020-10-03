@@ -17,6 +17,10 @@
     "authclient01a53182UserPoolId": {
       "Type": "String",
       "Default": "authclient01a53182UserPoolId"
+    },
+    "functiontimekitLayerArn": {
+      "Type": "String",
+      "Default": "functiontimekitLayerArn"
     }
   },
   "Conditions": {
@@ -105,11 +109,15 @@
           ]
         },
         "Runtime": "nodejs12.x",
-        "Layers": [],
+        "Layers": [
+          {
+            "Fn::Sub": "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:timekitLayer-dev:1"
+          }
+        ],
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createTeacherAccount-477543434b3837616966-build.zip"
+          "S3Key": "amplify-builds/createTeacherAccount-476d3872505643625156-build.zip"
         }
       }
     },

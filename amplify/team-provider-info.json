@@ -24,6 +24,10 @@
         "stripeLayer": {
           "deploymentBucketName": "amplify-client-dev-221802-deployment",
           "s3Key": "amplify-builds/stripeLayer-build.zip"
+        },
+        "timekitLayer": {
+          "deploymentBucketName": "amplify-client-dev-221802-deployment",
+          "s3Key": "amplify-builds/timekitLayer-build.zip"
         }
       },
       "auth": {
@@ -41,6 +45,24 @@
                 }
               ],
               "hash": "M3YBSBm4i/9Pjlou9iz6FRI1Ygr3HjuDOo2UTtIfw1k="
+            }
+          }
+        },
+        "timekitLayer": {
+          "layerVersionMap": {
+            "1": {
+              "permissions": [
+                {
+                  "type": "awsAccounts",
+                  "accounts": [
+                    "998711510845"
+                  ]
+                },
+                {
+                  "type": "private"
+                }
+              ],
+              "hash": "PnV8upDgGvz9gNBKPO0LuPOGs9INwWYVEGGQhkXQ3LY="
             }
           }
         }

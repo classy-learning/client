@@ -28,7 +28,7 @@ const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
 const documentClient = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event) => {
-  // TODO: create timekit layer? attach that layer to this lambda?
+  // TODO: attach timekit layer to this lambda
   // TODO: create timekit bookable resource
   // TODO: link bookable resource object to teacher account object
   const args = event.arguments.input;

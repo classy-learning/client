@@ -3,10 +3,9 @@
 	FUNCTION_GETCOGNITOUSERBYUSERNAME_NAME
 	FUNCTION_GETCUSTOMERUSERNAMEBYSTUDENTACCOUNTIDQUERY_NAME
 	FUNCTION_GETSTRIPESUBSCRIPTIONBYSUBSCRIPTIONID_NAME
-	FUNCTION_GETSTRIPEUSAGERECORDBYID_NAME
 	FUNCTION_GETSTUDENTUSERNAMEBYSTUDENTACCOUNTIDQUERY_NAME
 	FUNCTION_GETTEACHERUSERNAMEBYTEACHERACCOUNTIDQUERY_NAME
-	FUNCTION_GETTIMEKITCUSTOMERBYID_NAME
+	FUNCTION_GETTIMEKITBOOKINGBYID_NAME
 	FUNCTION_GETTIMEKITRESOURCEBYID_NAME
 	REGION
 Amplify Params - DO NOT EDIT */
@@ -38,14 +37,6 @@ if (!GET_STRIPE_SUBSCRIPTION_FUNCTION_NAME) {
   );
 }
 
-const GET_STRIPE_USAGE_RECORD_FUNCTION_NAME =
-  process.env.FUNCTION_GETSTRIPEUSAGERECORDBYID_NAME;
-if (!GET_STRIPE_USAGE_RECORD_FUNCTION_NAME) {
-  throw new Error(
-    `Function requires environment variable: 'FUNCTION_GETSTRIPEUSAGERECORDBYID_NAME'`
-  );
-}
-
 const GET_STUDENT_USERNAME_FUNCTION_NAME =
   process.env.FUNCTION_GETSTUDENTUSERNAMEBYSTUDENTACCOUNTIDQUERY_NAME;
 if (!GET_STUDENT_USERNAME_FUNCTION_NAME) {
@@ -62,11 +53,11 @@ if (!GET_TEACHER_USERNAME_FUNCTION_NAME) {
   );
 }
 
-const GET_TIMEKIT_CUSTOMER_FUNCTION_NAME =
-  process.env.FUNCTION_GETTIMEKITCUSTOMERBYID_NAME;
-if (!GET_TIMEKIT_CUSTOMER_FUNCTION_NAME) {
+const GET_TIMEKIT_BOOKING_FUNCTION_NAME =
+  process.env.FUNCTION_GETTIMEKITBOOKINGBYID_NAME;
+if (!GET_TIMEKIT_BOOKING_FUNCTION_NAME) {
   throw new Error(
-    `Function requires environment variable: 'FUNCTION_GETTIMEKITCUSTOMERBYID_NAME'`
+    `Function requires environment variable: 'FUNCTION_GETTIMEKITBOOKINGBYID_NAME'`
   );
 }
 
@@ -89,16 +80,14 @@ exports.handler = async (event) => {
         getStudentUsernameByStudentAccountId(event.source.studentAccountId),
       teacherUsername: (event) =>
         getTeacherUsernameByTeacherAccountId(event.source.teacherAccountId),
-      stripeUsageRecord: (event) =>
-        getStripeUsageRecord(event.source.stripeUsageRecordId),
+      timekitBooking: (event) =>
+        getTimekitBooking(event.source.timekitBookingId),
     },
     StudentAccount: {
       customerUser: (event) => getCognitoUser(event.source.customerUsername),
       studentUser: (event) => getCognitoUser(event.source.studentUsername),
       stripeSubscription: (event) =>
         getStripeSubscription(event.source.stripeSubscriptionId),
-      timekitCustomer: (event) =>
-        getTimekitCustomer(event.source.timekitCustomerId),
     },
     TeacherAccount: {
       teacherUser: (event) => getCognitoUser(event.source.teacherUsername),
@@ -156,21 +145,6 @@ function getStripeSubscription(stripeSubscriptionId) {
     });
 }
 
-function getStripeUsageRecord(stripeUsageRecordId) {
-  if (!stripeUsageRecordId) {
-    return null;
-  }
-  return lambda
-    .invoke({
-      FunctionName: GET_STRIPE_USAGE_RECORD_FUNCTION_NAME,
-      Payload: JSON.stringify(stripeUsageRecordId),
-    })
-    .promise()
-    .then((response) => {
-      return JSON.parse(response.Payload);
-    });
-}
-
 function getStudentUsernameByStudentAccountId(studentAccountId) {
   return lambda
     .invoke({
@@ -195,14 +169,14 @@ function getTeacherUsernameByTeacherAccountId(teacherAccountId) {
     });
 }
 
-function getTimekitCustomer(timekitCustomerId) {
-  if (!timekitCustomerId) {
+function getTimekitBooking(timekitBookingId) {
+  if (!timekitBookingId) {
     return null;
   }
   return lambda
     .invoke({
-      FunctionName: GET_TIMEKIT_CUSTOMER_FUNCTION_NAME,
-      Payload: JSON.stringify(timekitCustomerId),
+      FunctionName: GET_TIMEKIT_BOOKING_FUNCTION_NAME,
+      Payload: JSON.stringify(timekitBookingId),
     })
     .promise()
     .then((response) => {

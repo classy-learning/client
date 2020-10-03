@@ -56,21 +56,35 @@
         },
         {
           "category": "function",
-          "resourceName": "getStripeUsageRecordById",
-          "attributes": [
-            "Name"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "getTimekitCustomerById",
-          "attributes": [
-            "Name"
-          ]
-        },
-        {
-          "category": "function",
           "resourceName": "getTimekitResourceById",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "getStudentUsernameByStudentAccountIdQuery",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "getTeacherUsernameByTeacherAccountIdQuery",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "getCustomerUsernameByStudentAccountIdQuery",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "getTimekitBookingById",
           "attributes": [
             "Name"
           ]
@@ -349,6 +363,13 @@
           "attributes": [
             "GraphQLAPIIdOutput"
           ]
+        },
+        {
+          "category": "function",
+          "resourceName": "timekitLayer",
+          "attributes": [
+            "Arn"
+          ]
         }
       ]
     },
@@ -390,6 +411,13 @@
           "resourceName": "client",
           "attributes": [
             "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "timekitLayer",
+          "attributes": [
+            "Arn"
           ]
         }
       ]
@@ -450,31 +478,19 @@
         }
       ]
     },
-    "getStripeUsageRecordById": {
+    "getTimekitResourceById": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
       "dependsOn": [
         {
           "category": "function",
-          "resourceName": "stripeLayer",
+          "resourceName": "timekitLayer",
           "attributes": [
             "Arn"
           ]
         }
       ]
-    },
-    "getTimekitCustomerById": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": []
-    },
-    "getTimekitResourceById": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": []
     },
     "getStudentUsernameByStudentAccountIdQuery": {
       "build": true,
@@ -514,6 +530,25 @@
           "resourceName": "executeGraphQLOperation",
           "attributes": [
             "Name"
+          ]
+        }
+      ]
+    },
+    "timekitLayer": {
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "build": true
+    },
+    "getTimekitBookingById": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "timekitLayer",
+          "attributes": [
+            "Arn"
           ]
         }
       ]

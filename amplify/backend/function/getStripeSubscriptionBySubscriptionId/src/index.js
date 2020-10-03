@@ -7,8 +7,7 @@ const secretsManager = new AWS.SecretsManager();
 
 exports.handler = async (event) => {
   const Stripe = await configureStripe();
-  const subscription = await Stripe.subscriptions.retrieve(event);
-  return subscription;
+  return Stripe.subscriptions.retrieve(event);
 };
 
 function configureStripe() {

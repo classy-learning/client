@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "timekit-sdk": "^1.18.1"
+  },
+  "devDependencies": {}
+}

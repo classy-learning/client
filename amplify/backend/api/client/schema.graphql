@@ -110,14 +110,12 @@ type Lesson
   customerUsername: ID! @function(name: "resolveField-${env}")
   studentUsername: ID! @function(name: "resolveField-${env}")
   teacherUsername: ID! @function(name: "resolveField-${env}")
-  stripeUsageRecordId: ID!
-  stripeUsageRecord: StripeUsageRecord @function(name: "resolveField-${env}")
   studentAccountId: ID!
   studentAccount: StudentAccount @connection(fields: ["studentAccountId"])
   teacherAccountId: ID!
   teacherAccount: TeacherAccount @connection(fields: ["teacherAccountId"])
   timekitBookingId: ID!
-  timekitBooking: TimekitBooking @connection(fields: ["timekitBookingId"])
+  timekitBooking: TimekitBooking @function(name: "resolveField-${env}")
 }
 
 # TODO: create StudentEvent type
@@ -393,7 +391,6 @@ type StudentAccount
   stripeSubscriptionId: ID!
   stripeSubscription: StripeSubscription @function(name: "resolveField-${env}")
   timekitCustomerId: ID!
-  timekitCustomer: TimekitCustomer @function(name: "resolveField-${env}")
 }
 
 # TODO: update subscription inputs?
@@ -404,7 +401,7 @@ type Subscription {
   ): CustomerAccount @aws_subscribe(mutations: ["createCustomerAccount"])
 
   onCreateLesson(customerUsername: String, studentUsername: String): Lesson
-    @aws_subscribe(mutation: ["createLesson"])
+    @aws_subscribe(mutations: ["createLesson"])
 
   onCreateStudentAccount(
     customerUsername: String
@@ -560,8 +557,8 @@ enum TimekitConstraintType {
 
 type TimekitConstraint {
   day: TimekitDay
-  start: TimekitPeriodValue
-  end: TimekitPeriodValue
+  start: String
+  end: String
 }
 
 type TimekitCustomer {
@@ -597,9 +594,6 @@ enum TimekitGraph {
   group_owner
   group_customer
 }
-
-# TODO: any required union implementations for TimekitPeriodValue
-union TimekitPeriodValue = Int | AWSDateTime
 
 type TimekitResource {
   id: ID!
