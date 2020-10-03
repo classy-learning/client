@@ -77,7 +77,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/getTimekitBookingById-3233723639676c57696c-build.zip"
+          "S3Key": "amplify-builds/getTimekitBookingById-705a3253787042787246-build.zip"
         }
       }
     },
@@ -135,6 +135,25 @@
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "secretsmanager:GetSecretValue"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:secretsmanager:${region}:${account}:secret:timekit-app-key-DOppTo",
+                  {
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
+                    }
+                  }
+                ]
+              }
+            },
             {
               "Effect": "Allow",
               "Action": [
