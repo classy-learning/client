@@ -17,8 +17,28 @@ if (!EXECUTE_GQL_OPERATION_FUNCTION_NAME) {
 const lambda = new AWS.Lambda();
 
 exports.handler = async (event) => {
-  return getCustomerUsernameByStudentAccountId(event);
+  return getTeacherAccount(event);
 };
+
+function getTeacherAccount({ teacherAccountId, responseStructure }) {
+  if (!responseStructure) {
+    responseStructure = `{
+      id
+    }`;
+  }
+
+  return executeGraphQLOperation(
+    `query GetTeacherAccount(
+      $id: ID!
+    ) {
+      getTeacherAccount(id: $id) ${responseStructure}
+    }`,
+    "GetTeacherAccount",
+    { id: teacherAccountId }
+  ).then((response) => {
+    return response.data.getTeacherAccount;
+  });
+}
 
 function executeGraphQLOperation(operation, operationName, item) {
   return lambda
@@ -34,18 +54,4 @@ function executeGraphQLOperation(operation, operationName, item) {
     .then((response) => {
       return JSON.parse(response.Payload);
     });
-}
-
-function getCustomerUsernameByStudentAccountId(studentAccountId) {
-  return executeGraphQLOperation(
-    `query GetStudentAccount($id: ID!) {
-      getStudentAccount(id: $id) {
-        customerUsername
-      }
-    }`,
-    "GetStudentAccount",
-    { id: studentAccountId }
-  ).then((response) => {
-    return response.data.getStudentAccount;
-  });
 }

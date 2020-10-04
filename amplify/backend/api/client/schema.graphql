@@ -116,8 +116,11 @@ type Lesson
   teacherAccount: TeacherAccount @connection(fields: ["teacherAccountId"])
   timekitBookingId: ID!
   timekitBooking: TimekitBooking @function(name: "resolveField-${env}")
+  # TODO: add zoom meeting id to this type
+  # TODO: add function resolver for ZoomMeeting to this type
 }
 
+# TODO: mirror zoom api infrastructure
 # TODO: create StudentEvent type
 
 input ModelCustomerAccountConditionInput {

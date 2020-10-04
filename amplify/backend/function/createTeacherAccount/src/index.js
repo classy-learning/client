@@ -28,9 +28,8 @@ const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
 const documentClient = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event) => {
-  // TODO: attach timekit layer to this lambda
-  // TODO: create timekit bookable resource
-  // TODO: link bookable resource object to teacher account object
+  // TODO: send timekit resource creation link to new user's email
+  // TODO: update teacheraccount with timekit resource id whenever it's ready
   const args = event.arguments.input;
   const username = await getUsername(args.givenName, args.familyName);
   const user = await createUser(
@@ -45,6 +44,7 @@ exports.handler = async (event) => {
     createdAt: event.dateTime,
     updatedAt: event.dateTime,
     teacherUsername: username,
+    timekitResourceId: "",
   };
   await createAccount(account);
   return account;

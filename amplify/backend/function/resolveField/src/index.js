@@ -1,10 +1,9 @@
 /* Amplify Params - DO NOT EDIT
 	ENV
 	FUNCTION_GETCOGNITOUSERBYUSERNAME_NAME
-	FUNCTION_GETCUSTOMERUSERNAMEBYSTUDENTACCOUNTIDQUERY_NAME
 	FUNCTION_GETSTRIPESUBSCRIPTIONBYSUBSCRIPTIONID_NAME
-	FUNCTION_GETSTUDENTUSERNAMEBYSTUDENTACCOUNTIDQUERY_NAME
-	FUNCTION_GETTEACHERUSERNAMEBYTEACHERACCOUNTIDQUERY_NAME
+	FUNCTION_GETSTUDENTACCOUNTBYIDQUERY_NAME
+	FUNCTION_GETTEACHERACCOUNTBYIDQUERY_NAME
 	FUNCTION_GETTIMEKITBOOKINGBYID_NAME
 	FUNCTION_GETTIMEKITRESOURCEBYID_NAME
 	REGION
@@ -12,20 +11,12 @@ Amplify Params - DO NOT EDIT */
 
 const AWS = require("aws-sdk");
 
-// TODO: abstract common code to a getEnvData() function?
+// TODO: abstract common code to a getEnvData() function layer
 const GET_COGNITO_USER_FUNCTION_NAME =
   process.env.FUNCTION_GETCOGNITOUSERBYUSERNAME_NAME;
 if (!GET_COGNITO_USER_FUNCTION_NAME) {
   throw new Error(
     `Function requires environment variable: 'FUNCTION_GETCOGNITOUSERBYUSERNAME_NAME'`
-  );
-}
-
-const GET_CUSTOMER_USERNAME_FUNCTION_NAME =
-  process.env.FUNCTION_GETCUSTOMERUSERNAMEBYSTUDENTACCOUNTIDQUERY_NAME;
-if (!GET_CUSTOMER_USERNAME_FUNCTION_NAME) {
-  throw new Error(
-    `Function requires environment variable: 'FUNCTION_GETCUSTOMERUSERNAMEBYSTUDENTACCOUNTIDQUERY_NAME'`
   );
 }
 
@@ -37,19 +28,19 @@ if (!GET_STRIPE_SUBSCRIPTION_FUNCTION_NAME) {
   );
 }
 
-const GET_STUDENT_USERNAME_FUNCTION_NAME =
-  process.env.FUNCTION_GETSTUDENTUSERNAMEBYSTUDENTACCOUNTIDQUERY_NAME;
-if (!GET_STUDENT_USERNAME_FUNCTION_NAME) {
+const GET_STUDENT_ACCOUNT_FUNCTION_NAME =
+  process.env.FUNCTION_GETSTUDENTACCOUNTBYIDQUERY_NAME;
+if (!GET_STUDENT_ACCOUNT_FUNCTION_NAME) {
   throw new Error(
-    `Function requires environment variable: 'FUNCTION_GETSTUDENTUSERNAMEBYSTUDENTACCOUNTIDQUERY_NAME'`
+    `Function requires environment variable: 'FUNCTION_GETSTUDENTACCOUNTBYIDQUERY_NAME'`
   );
 }
 
-const GET_TEACHER_USERNAME_FUNCTION_NAME =
-  process.env.FUNCTION_GETTEACHERUSERNAMEBYTEACHERACCOUNTIDQUERY_NAME;
-if (!GET_TEACHER_USERNAME_FUNCTION_NAME) {
+const GET_TEACHER_ACCOUNT_FUNCTION_NAME =
+  process.env.FUNCTION_GETTEACHERACCOUNTBYIDQUERY_NAME;
+if (!GET_TEACHER_ACCOUNT_FUNCTION_NAME) {
   throw new Error(
-    `Function requires environment variable: 'FUNCTION_GETTEACHERUSERNAMEBYTEACHERACCOUNTIDQUERY_NAME'`
+    `Function requires environment variable: 'FUNCTION_GETTEACHERACCOUNTBYIDQUERY_NAME'`
   );
 }
 
@@ -105,7 +96,7 @@ exports.handler = async (event) => {
   throw new Error("Resolver not found.");
 };
 
-// TODO: abstract common code to an invokeLambda() function?
+// TODO: abstract common code (lambda invokepromisethen) to an invokeLambda() function layer
 function getCognitoUser(username) {
   return lambda
     .invoke({
@@ -119,15 +110,12 @@ function getCognitoUser(username) {
 }
 
 function getCustomerUsernameByStudentAccountId(studentAccountId) {
-  return lambda
-    .invoke({
-      FunctionName: GET_CUSTOMER_USERNAME_FUNCTION_NAME,
-      Payload: JSON.stringify(studentAccountId),
-    })
-    .promise()
-    .then((response) => {
-      return JSON.parse(response.Payload);
-    });
+  return getStudentAccountByIdQuery(
+    studentAccountId,
+    `{
+      customerUsername
+    }`
+  );
 }
 
 function getStripeSubscription(stripeSubscriptionId) {
@@ -145,11 +133,38 @@ function getStripeSubscription(stripeSubscriptionId) {
     });
 }
 
-function getStudentUsernameByStudentAccountId(studentAccountId) {
+function getStudentAccountByIdQuery(studentAccountId, responseStructure) {
   return lambda
     .invoke({
-      FunctionName: GET_STUDENT_USERNAME_FUNCTION_NAME,
-      Payload: JSON.stringify(studentAccountId),
+      FunctionName: GET_STUDENT_ACCOUNT_FUNCTION_NAME,
+      Payload: JSON.stringify({
+        studentAccountId: studentAccountId,
+        responseStructure: responseStructure,
+      }),
+    })
+    .promise()
+    .then((response) => {
+      return JSON.parse(response.Payload);
+    });
+}
+
+function getStudentUsernameByStudentAccountId(studentAccountId) {
+  return getStudentAccountByIdQuery(
+    studentAccountId,
+    `{
+      studentUsername
+    }`
+  );
+}
+
+function getTeacherAccountByIdQuery(teacherAccountId, responseStructure) {
+  return lambda
+    .invoke({
+      FunctionName: GET_STUDENT_ACCOUNT_FUNCTION_NAME,
+      Payload: JSON.stringify({
+        studentAccountId: teacherAccountId,
+        responseStructure: responseStructure,
+      }),
     })
     .promise()
     .then((response) => {
@@ -158,15 +173,12 @@ function getStudentUsernameByStudentAccountId(studentAccountId) {
 }
 
 function getTeacherUsernameByTeacherAccountId(teacherAccountId) {
-  return lambda
-    .invoke({
-      FunctionName: GET_TEACHER_USERNAME_FUNCTION_NAME,
-      Payload: JSON.stringify(teacherAccountId),
-    })
-    .promise()
-    .then((response) => {
-      return JSON.parse(response.Payload);
-    });
+  return getStudentAccountByIdQuery(
+    teacherAccountId,
+    `{
+      teacherUsername
+    }`
+  );
 }
 
 function getTimekitBooking(timekitBookingId) {

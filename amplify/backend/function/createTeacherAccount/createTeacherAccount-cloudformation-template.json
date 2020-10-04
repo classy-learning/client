@@ -117,7 +117,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createTeacherAccount-476d3872505643625156-build.zip"
+          "S3Key": "amplify-builds/createTeacherAccount-4e467a4e722b51733032-build.zip"
         }
       }
     },

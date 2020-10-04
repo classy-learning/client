@@ -37,12 +37,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "getStudentUsernameByStudentAccountIdQuery",
+            "getTeacherAccountByIdQuery",
             {
               "Fn::Join": [
                 "",
                 [
-                  "getStudentUsernameByStudentAccountIdQuery",
+                  "getTeacherAccountByIdQuery",
                   "-",
                   {
                     "Ref": "env"
@@ -76,7 +76,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/getStudentUsernameByStudentAccountIdQuery-742f5436367a764a6673-build.zip"
+          "S3Key": "amplify-builds/getTeacherAccountByIdQuery-30516665584d74437876-build.zip"
         }
       }
     },
@@ -86,12 +86,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRole8cf3c0d6",
+            "clientLambdaRolec87ac427",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRole8cf3c0d6",
+                  "clientLambdaRolec87ac427",
                   "-",
                   {
                     "Ref": "env"

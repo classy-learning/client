@@ -20,84 +20,18 @@ exports.handler = async (event) => {
   return getStudentAccount(event);
 };
 
-function getStudentAccount(studentAccountId) {
+function getStudentAccount({ studentAccountId, responseStructure }) {
+  if (!responseStructure) {
+    responseStructure = `{
+      id
+    }`;
+  }
+
   return executeGraphQLOperation(
     `query GetStudentAccount(
       $id: ID!
     ) {
-      getStudentAccount(id: $id) {
-        createdAt
-        customerUsername
-        id
-        stripeSubscriptionId
-        studentUsername
-        updatedAt
-        studentUser {
-          Username
-          UserStatus
-          UserMFASettingList
-          UserLastModifiedDate
-          UserCreateDate
-          UserAttributes {
-            Name
-            Value
-          }
-          PreferredMfaSetting
-          MFAOptions {
-            AttributeName
-            DeliveryMedium
-          }
-          Enabled
-        }
-        stripeSubscription {
-          cancel_at_period_end
-          current_period_end
-          current_period_start
-          customer
-          default_payment_method
-          id
-          status
-          items {
-            id
-            quantity
-            subscription
-            price {
-              unit_amount
-              type
-              id
-              recurring {
-                aggregate_usage
-                interval
-                interval_count
-                usage_type
-              }
-              product {
-                description
-                id
-                name
-                unit_label
-              }
-            }
-          }
-        }
-        customerUser {
-          Enabled
-          PreferredMfaSetting
-          UserCreateDate
-          UserLastModifiedDate
-          UserMFASettingList
-          UserStatus
-          Username
-          UserAttributes {
-            Name
-            Value
-          }
-          MFAOptions {
-            AttributeName
-            DeliveryMedium
-          }
-        }
-      }
+      getStudentAccount(id: $id) ${responseStructure}
     }`,
     "GetStudentAccount",
     { id: studentAccountId }

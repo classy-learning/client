@@ -56,6 +56,13 @@
         },
         {
           "category": "function",
+          "resourceName": "getStudentAccountByIdQuery",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
           "resourceName": "getTimekitResourceById",
           "attributes": [
             "Name"
@@ -63,28 +70,14 @@
         },
         {
           "category": "function",
-          "resourceName": "getStudentUsernameByStudentAccountIdQuery",
-          "attributes": [
-            "Name"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "getTeacherUsernameByTeacherAccountIdQuery",
-          "attributes": [
-            "Name"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "getCustomerUsernameByStudentAccountIdQuery",
-          "attributes": [
-            "Name"
-          ]
-        },
-        {
-          "category": "function",
           "resourceName": "getTimekitBookingById",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "getTeacherAccountByIdQuery",
           "attributes": [
             "Name"
           ]
@@ -492,35 +485,7 @@
         }
       ]
     },
-    "getStudentUsernameByStudentAccountIdQuery": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "executeGraphQLOperation",
-          "attributes": [
-            "Name"
-          ]
-        }
-      ]
-    },
     "getTeacherUsernameByTeacherAccountIdQuery": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "executeGraphQLOperation",
-          "attributes": [
-            "Name"
-          ]
-        }
-      ]
-    },
-    "getCustomerUsernameByStudentAccountIdQuery": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
@@ -549,6 +514,20 @@
           "resourceName": "timekitLayer",
           "attributes": [
             "Arn"
+          ]
+        }
+      ]
+    },
+    "getTeacherAccountByIdQuery": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "executeGraphQLOperation",
+          "attributes": [
+            "Name"
           ]
         }
       ]

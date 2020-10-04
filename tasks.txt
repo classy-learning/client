@@ -1,3 +1,9 @@
+TODO: finish mocking lesson infrastructure
+TODO: test lesson infrastructure and implement changes
+TODO: implement lesson booking functionality in ui
+
+TODO: refactor redundant code (e.g. lambda get/parse and env data lookups)
+
 TODO: create a lookup table to get semantic ui icon class names from topics?
 
 TODO: create business phone number and attach it to stripe public business info page
