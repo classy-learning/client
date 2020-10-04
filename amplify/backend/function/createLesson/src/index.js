@@ -1,8 +1,10 @@
-/* Amplify Params - DO NOT EDIT
+getTeacherAccountByIdQuery; /* Amplify Params - DO NOT EDIT
 	API_CLIENT_GRAPHQLAPIIDOUTPUT
 	API_CLIENT_LESSONTABLE_ARN
 	API_CLIENT_LESSONTABLE_NAME
 	ENV
+	FUNCTION_GETSTUDENTACCOUNTBYIDQUERY_NAME
+	FUNCTION_GETTEACHERACCOUNTBYIDQUERY_NAME
 	REGION
 Amplify Params - DO NOT EDIT */
 
@@ -10,6 +12,22 @@ const AWS = require("aws-sdk");
 const timekit = require("timekit-sdk");
 
 const TIMEKIT_API_KEY_SECRET_ID = "timekit-app-key";
+
+const GET_STUDENT_ACCOUNT_FUNCTION_NAME =
+  process.env.FUNCTION_GETSTUDENTACCOUNTBYIDQUERY_NAME;
+if (!GET_STUDENT_ACCOUNT_FUNCTION_NAME) {
+  throw new Error(
+    `Function requires environment variable: 'FUNCTION_GETSTUDENTACCOUNTBYIDQUERY_NAME'`
+  );
+}
+
+const GET_TEACHER_ACCOUNT_FUNCTION_NAME =
+  process.env.FUNCTION_GETTEACHERACCOUNTBYIDQUERY_NAME;
+if (!GET_TEACHER_ACCOUNT_FUNCTION_NAME) {
+  throw new Error(
+    `Function requires environment variable: 'FUNCTION_GETTEACHERACCOUNTBYIDQUERY_NAME'`
+  );
+}
 
 const LESSON_TABLE_NAME = process.env.API_CLIENT_LESSONTABLE_NAME;
 if (!LESSON_TABLE_NAME) {
@@ -22,16 +40,15 @@ const documentClient = new AWS.DynamoDB.DocumentClient();
 const secretsManager = new AWS.SecretsManager();
 
 exports.handler = async (event) => {
+  await configureTimekit();
+
   const teacherAccountId = event.arguments.input.teacherAccountId;
   const studentAccountId = event.arguments.input.studentAccountId;
   const start = event.arguments.input.start;
   const end = event.arguments.input.end;
 
-  await configureTimekit();
-
-  const teacherAccount = await getTeacherAccountById(teacherAccountId);
-
-  const studentAccount = await getStudentAccountById(studentAccountId);
+  const teacherData = await getLessonInputTeacherData(teacherAccountId);
+  const studentData = await getLessonInputStudentData(studentAccountId);
 
   // TODO: pass parameters necessary for zoom meeting creation
   const zoomMeeting = await createZoomMeeting();
@@ -39,11 +56,11 @@ exports.handler = async (event) => {
   const timekitBooking = await createTimekitBooking(
     end,
     start,
-    studentAccount.email,
-    studentAccount.givenName,
-    studentAccount.username,
-    teacherAccount.givenName,
-    teacherAccount.timekitResourceId,
+    studentData.email,
+    studentData.givenName,
+    studentData.username,
+    teacherData.givenName,
+    teacherData.timekitResourceId,
     zoomMeeting.url // TODO: pass actual zoom meeting url
   );
 
@@ -118,12 +135,74 @@ function createZoomMeeting() {
   // TODO: create zoom meeting at given time between participants
 }
 
-function getStudentAccountById(studentAccountId) {
-  // TODO: get student account by id
-  // TODO: transform response into flat object
+function getLessonInputStudentData(studentAccountId) {
+  return getStudentAccountByIdQuery(
+    studentAccountId,
+    `{
+      studentUsername
+      studentUser {
+        UserAttributes {
+          Name
+          Value
+        }
+      }
+    }`
+  ).then((response) => {
+    const userAttributes = mapCognitoUserAttributes(
+      response.studentUser.userAttributes
+    );
+    return {
+      email: userAttributes.email,
+      givenName: userAttributes.given_name,
+      username: response.studentUsername,
+    };
+  });
 }
 
-function getTeacherAccountById(teacherAccountId) {
-  // TODO: get teacher account by id
-  // TODO: transform response into flat object
+function getLessonInputTeacherData(teacherAccountId) {
+  return getTeacherAccountByIdQuery(
+    teacherAccountId,
+    `{
+      teacherUsername
+      timekitResourceId
+    }`
+  );
+}
+
+function getStudentAccountByIdQuery(studentAccountId, responseStructure) {
+  return lambda
+    .invoke({
+      FunctionName: GET_STUDENT_ACCOUNT_FUNCTION_NAME,
+      Payload: JSON.stringify({
+        studentAccountId: studentAccountId,
+        responseStructure: responseStructure,
+      }),
+    })
+    .promise()
+    .then((response) => {
+      const result = JSON.parse(response.Payload);
+    });
+}
+
+function getTeacherAccountByIdQuery(teacherAccountId, responseStructure) {
+  return lambda
+    .invoke({
+      FunctionName: GET_STUDENT_ACCOUNT_FUNCTION_NAME,
+      Payload: JSON.stringify({
+        studentAccountId: teacherAccountId,
+        responseStructure: responseStructure,
+      }),
+    })
+    .promise()
+    .then((response) => {
+      const result = JSON.parse(response.Payload);
+    });
+}
+
+function mapCognitoUserAttributes(userAttributes) {
+  const result = {};
+  userAttributes.forEach((attribute, i) => {
+    result[attribute.name] = attribute.value;
+  });
+  return result;
 }

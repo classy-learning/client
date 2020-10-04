@@ -400,17 +400,24 @@
       "service": "Lambda",
       "dependsOn": [
         {
-          "category": "api",
-          "resourceName": "client",
+          "category": "function",
+          "resourceName": "getStudentAccountByIdQuery",
           "attributes": [
-            "GraphQLAPIIdOutput"
+            "Name"
           ]
         },
         {
           "category": "function",
-          "resourceName": "timekitLayer",
+          "resourceName": "getTeacherAccountByIdQuery",
           "attributes": [
-            "Arn"
+            "Name"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "client",
+          "attributes": [
+            "GraphQLAPIIdOutput"
           ]
         }
       ]

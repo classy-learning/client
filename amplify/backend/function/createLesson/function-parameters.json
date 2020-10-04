@@ -1,5 +1,13 @@
 {
   "permissions": {
+    "function": {
+      "getStudentAccountByIdQuery": [
+        "read"
+      ],
+      "getTeacherAccountByIdQuery": [
+        "read"
+      ]
+    },
     "storage": {
       "Lesson:@model(appsync)": [
         "create"

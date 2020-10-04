@@ -17,6 +17,14 @@
     "functiontimekitLayerArn": {
       "Type": "String",
       "Default": "functiontimekitLayerArn"
+    },
+    "functiongetStudentAccountByIdQueryName": {
+      "Type": "String",
+      "Default": "functiongetStudentAccountByIdQueryName"
+    },
+    "functiongetTeacherAccountByIdQueryName": {
+      "Type": "String",
+      "Default": "functiongetTeacherAccountByIdQueryName"
     }
   },
   "Conditions": {
@@ -92,6 +100,12 @@
             },
             "API_CLIENT_GRAPHQLAPIIDOUTPUT": {
               "Ref": "apiclientGraphQLAPIIdOutput"
+            },
+            "FUNCTION_GETSTUDENTACCOUNTBYIDQUERY_NAME": {
+              "Ref": "functiongetStudentAccountByIdQueryName"
+            },
+            "FUNCTION_GETTEACHERACCOUNTBYIDQUERY_NAME": {
+              "Ref": "functiongetTeacherAccountByIdQueryName"
             }
           }
         },
@@ -211,6 +225,64 @@
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functiongetStudentAccountByIdQueryName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functiongetTeacherAccountByIdQueryName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
             {
               "Effect": "Allow",
               "Action": [
