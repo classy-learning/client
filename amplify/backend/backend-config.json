@@ -443,34 +443,6 @@
         }
       ]
     },
-    "updateLesson": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "client",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        }
-      ]
-    },
-    "updateLessonMutation": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "executeGraphQLOperation",
-          "attributes": [
-            "Name"
-          ]
-        }
-      ]
-    },
     "getTimekitResourceById": {
       "build": true,
       "providerPlugin": "awscloudformation",
