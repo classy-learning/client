@@ -43,7 +43,7 @@ const EnrollmentSteps = (props) => {
           description: `Start learning`,
           props: {
             active: student.subscriptionStatus === "active",
-            key: "Learning",
+            key: "Confirmation",
           },
           title: "Confirmation",
         },
