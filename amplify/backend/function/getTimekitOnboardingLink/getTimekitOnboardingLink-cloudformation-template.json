@@ -10,21 +10,21 @@
     "env": {
       "Type": "String"
     },
-    "apiclientGraphQLAPIIdOutput": {
-      "Type": "String",
-      "Default": "apiclientGraphQLAPIIdOutput"
-    },
     "functiontimekitLayerArn": {
       "Type": "String",
       "Default": "functiontimekitLayerArn"
     },
-    "functiongetStudentAccountByIdQueryName": {
+    "functionhashTeacherAccountIdName": {
       "Type": "String",
-      "Default": "functiongetStudentAccountByIdQueryName"
+      "Default": "functionhashTeacherAccountIdName"
     },
-    "functiongetTeacherAccountByIdQueryName": {
+    "apitimekitApiName": {
       "Type": "String",
-      "Default": "functiongetTeacherAccountByIdQueryName"
+      "Default": "apitimekitApiName"
+    },
+    "apitimekitApiId": {
+      "Type": "String",
+      "Default": "apitimekitApiId"
     }
   },
   "Conditions": {
@@ -49,12 +49,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "createLesson",
+            "getTimekitOnboardingLink",
             {
               "Fn::Join": [
                 "",
                 [
-                  "createLesson",
+                  "getTimekitOnboardingLink",
                   "-",
                   {
                     "Ref": "env"
@@ -72,40 +72,14 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_CLIENT_LESSONTABLE_NAME": {
-              "Fn::ImportValue": {
-                "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:LessonTable:Name"
-              }
+            "FUNCTION_HASHTEACHERACCOUNTID_NAME": {
+              "Ref": "functionhashTeacherAccountIdName"
             },
-            "API_CLIENT_LESSONTABLE_ARN": {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:aws:dynamodb:",
-                  {
-                    "Ref": "AWS::Region"
-                  },
-                  ":",
-                  {
-                    "Ref": "AWS::AccountId"
-                  },
-                  ":table/",
-                  {
-                    "Fn::ImportValue": {
-                      "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:LessonTable:Name"
-                    }
-                  }
-                ]
-              ]
+            "API_TIMEKIT_APINAME": {
+              "Ref": "apitimekitApiName"
             },
-            "API_CLIENT_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apiclientGraphQLAPIIdOutput"
-            },
-            "FUNCTION_GETSTUDENTACCOUNTBYIDQUERY_NAME": {
-              "Ref": "functiongetStudentAccountByIdQueryName"
-            },
-            "FUNCTION_GETTEACHERACCOUNTBYIDQUERY_NAME": {
-              "Ref": "functiongetTeacherAccountByIdQueryName"
+            "API_TIMEKIT_APIID": {
+              "Ref": "apitimekitApiId"
             }
           }
         },
@@ -124,7 +98,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-client-dev-221802-deployment",
-          "S3Key": "amplify-builds/createLesson-66535057733965363073-build.zip"
+          "S3Key": "amplify-builds/getTimekitOnboardingLink-4b326e7256656b426135-build.zip"
         }
       }
     },
@@ -134,12 +108,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "clientLambdaRole9afa2ed3",
+            "clientLambdaRole65704e8b",
             {
               "Fn::Join": [
                 "",
                 [
-                  "clientLambdaRole9afa2ed3",
+                  "clientLambdaRole65704e8b",
                   "-",
                   {
                     "Ref": "env"
@@ -247,90 +221,8 @@
                       },
                       ":function:",
                       {
-                        "Ref": "functiongetStudentAccountByIdQueryName"
+                        "Ref": "functionhashTeacherAccountIdName"
                       }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "lambda:Get*",
-                "lambda:List*",
-                "lambda:Invoke*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:lambda:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":function:",
-                      {
-                        "Ref": "functiongetTeacherAccountByIdQueryName"
-                      }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:Put*",
-                "dynamodb:Create*",
-                "dynamodb:BatchWriteItem"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:LessonTable:Name"
-                        }
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apiclientGraphQLAPIIdOutput}:GetAtt:LessonTable:Name"
-                        }
-                      },
-                      "/index/*"
                     ]
                   ]
                 }

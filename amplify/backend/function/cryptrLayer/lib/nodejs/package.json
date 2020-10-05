@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "cryptr": "^6.0.2"
+  },
+  "devDependencies": {}
+}

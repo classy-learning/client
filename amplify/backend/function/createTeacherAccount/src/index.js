@@ -26,10 +26,9 @@ if (!TEACHER_ACCOUNT_TABLE_NAME) {
 
 const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
 const documentClient = new AWS.DynamoDB.DocumentClient();
+const lambda = new AWS.Lambda();
 
 exports.handler = async (event) => {
-  // TODO: send timekit resource creation link to new user's email
-  // TODO: update teacheraccount with timekit resource id whenever it's ready
   const args = event.arguments.input;
   const username = await getUsername(args.givenName, args.familyName);
   const user = await createUser(
@@ -39,22 +38,22 @@ exports.handler = async (event) => {
     args.familyName
   );
   await groupUser(username, "Teachers");
-  const account = {
+  const teacherAccount = {
     id: event.accountId,
     createdAt: event.dateTime,
     updatedAt: event.dateTime,
     teacherUsername: username,
     timekitResourceId: "",
   };
-  await createAccount(account);
+  await createTeacherAccountRecord(teacherAccount);
   return account;
 };
 
-function createAccount(item) {
+function createTeacherAccountRecord(teacherAccount) {
   return documentClient
     .put({
       TableName: TEACHER_ACCOUNT_TABLE_NAME,
-      Item: item,
+      Item: teacherAccount,
     })
     .promise();
 }

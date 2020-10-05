@@ -37,6 +37,7 @@ if (!LESSON_TABLE_NAME) {
 }
 
 const documentClient = new AWS.DynamoDB.DocumentClient();
+const lambda = new AWS.Lambda();
 const secretsManager = new AWS.SecretsManager();
 
 exports.handler = async (event) => {

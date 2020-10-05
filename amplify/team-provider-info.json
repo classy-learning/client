@@ -28,6 +28,10 @@
         "timekitLayer": {
           "deploymentBucketName": "amplify-client-dev-221802-deployment",
           "s3Key": "amplify-builds/timekitLayer-build.zip"
+        },
+        "cryptrLayer": {
+          "deploymentBucketName": "amplify-client-dev-221802-deployment",
+          "s3Key": "amplify-builds/cryptrLayer-build.zip"
         }
       },
       "auth": {
@@ -63,6 +67,24 @@
                 }
               ],
               "hash": "PnV8upDgGvz9gNBKPO0LuPOGs9INwWYVEGGQhkXQ3LY="
+            }
+          }
+        },
+        "cryptrLayer": {
+          "layerVersionMap": {
+            "1": {
+              "permissions": [
+                {
+                  "type": "awsAccounts",
+                  "accounts": [
+                    "998711510845"
+                  ]
+                },
+                {
+                  "type": "private"
+                }
+              ],
+              "hash": "7XhsSMkXzWV/uK+QuEzZEbBK0jDDWHHdYDIVU5ArhDQ="
             }
           }
         }

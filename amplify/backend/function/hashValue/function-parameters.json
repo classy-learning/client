@@ -1,0 +1,10 @@
+{
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "cryptrLayer",
+      "version": 1
+    }
+  ],
+  "permissions": {}
+}

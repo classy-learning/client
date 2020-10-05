@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "function": {
+      "hashTeacherAccountId": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "timekitLayer",
+      "version": 1
+    }
+  ]
+}

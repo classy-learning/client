@@ -2,6 +2,15 @@ TODO: finish mocking lesson infrastructure
 TODO: test lesson infrastructure and implement changes
 TODO: implement lesson booking functionality in ui
 
+TODO: create SendTimekitResourceOnboardingEmailToTeacher lambda
+TODO: create internal timekit rest api
+TODO: create HashTeacherAccountId/UnhashTeacherAccountId lambdas that hash/unhash teacher id and a secret
+TODO: create /confirmResource endpoint that accepts hash of teacher id and secret as parameter
+TODO: create custom onboarding url from timekiturl + apiurl + hashed teacher id
+TODO: email custom onboarding email to address associated with teacher account
+TODO: attach lambda to /confirmResource endpoint that returns redirect to https://classy.name
+TODO: /confirmResource lambda unhashes teacherAccountId, finds timekit resource by teacher account email, update teacheraccount with timekit resource id
+
 TODO: refactor redundant code (e.g. lambda get/parse and env data lookups)
 
 TODO: create a lookup table to get semantic ui icon class names from topics?

@@ -356,13 +356,6 @@
           "attributes": [
             "GraphQLAPIIdOutput"
           ]
-        },
-        {
-          "category": "function",
-          "resourceName": "timekitLayer",
-          "attributes": [
-            "Arn"
-          ]
         }
       ]
     },
@@ -538,6 +531,87 @@
           ]
         }
       ]
+    },
+    "hashValue": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "cryptrLayer",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "unhashValue": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "cryptrLayer",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "hashTeacherAccountId": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "hashValue",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
+    },
+    "unhashTeacherAccountId": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "unhashValue",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
+    },
+    "getTimekitOnboardingLink": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "hashTeacherAccountId",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
+    },
+    "confirmTimekitResource": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
+    },
+    "cryptrLayer": {
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "build": true
     }
   },
   "auth": {
@@ -632,6 +706,42 @@
         {
           "category": "function",
           "resourceName": "createStripeSubscription",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "timekit": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "getTimekitOnboardingLink",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "auth",
+          "resourceName": "client01a53182",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "auth",
+          "resourceName": "userPoolGroups",
+          "attributes": [
+            "TeachersGroupRole"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "confirmTimekitResource",
           "attributes": [
             "Name",
             "Arn"

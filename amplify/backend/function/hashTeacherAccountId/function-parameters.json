@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "function": {
+      "hashValue": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
